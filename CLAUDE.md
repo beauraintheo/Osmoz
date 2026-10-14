@@ -4,17 +4,18 @@ pnpm monorepo built with Vite+, TypeScript strict. Applications in `apps/*`,
 shared code in `packages/*`. The human docs live in `docs/` and are imported
 below: they are the single source of truth, do not restate them here.
 
-| Topic                                               | Full page                 |
-| --------------------------------------------------- | ------------------------- |
-| Setup, commands, ticket to PR flow                  | `docs/getting-started.md` |
-| Naming, TypeScript, React, tests, git, PRs, tickets | `docs/conventions.md`     |
+| Topic                                                       | Full page                 |
+| ----------------------------------------------------------- | ------------------------- |
+| Setup, commands, ticket to PR flow                          | `docs/getting-started.md` |
+| Naming, TypeScript, React, design, tests, git, PRs, tickets | `docs/conventions.md`     |
 
 @docs/getting-started.md
 @docs/conventions.md
 
 ## Rules for Claude
 
-- Never commit to `main`. Create a branch per the conventions first.
+- Never commit to `develop` or `main`. Create a branch off `develop` per the
+  conventions first.
 - Never bypass hooks (`--no-verify`), disable a lint rule, skip a test or lower
   the coverage threshold to make a check green.
 - Every `.ts` file you create or touch has its `.test.ts`. If unsure whether a

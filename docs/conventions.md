@@ -21,9 +21,10 @@ Claude Code loads it when working in that app.
 👀 **Code used by one app stays in that app.** Code used by several apps lives
 in `packages/*`. Move it there when a second app needs it, not before.
 
-A package exposes its files through `exports` subpaths in its `package.json`
-(`"./*": "./src/*.ts"`), so a consumer imports the file it needs:
-`@Osmoz/<package>/<file>`.
+A package exposes `src/` through a single `exports` pattern in its
+`package.json`, never a list of files: `"./*": "./src/*.ts"` for code,
+`"./*": "./src/*"` for assets. A consumer imports the file it needs:
+`@osmoz/<package>/<file>`.
 
 ## Naming
 
@@ -82,7 +83,7 @@ it for you.
 ```ts
 import { readFileSync } from "node:fs";
 
-import { formatPrice } from "@Osmoz/format/format-price";
+import { formatPrice } from "@osmoz/format/format-price";
 import { z } from "zod";
 
 import { env } from "@/config/env";
@@ -149,6 +150,95 @@ Add one only for a measured problem, with the measurement in the PR.
 👀 **No `useEffect` to derive state.** Compute it during render. An effect is for
 syncing with something outside React.
 
+## Design
+
+Each project has its own visual identity. These principles hold in all of them.
+
+### Tokens
+
+👀 **Semantic tokens only.** A token is named after its role, never after its
+value. No palette token (`--blue-500`, `--gray-100`): the value goes straight
+into the semantic token.
+
+👀 **The color contract is shadcn's.** Every theme defines these tokens, and a
+project may add its own roles on top:
+
+| Role                  | Tokens                                                                       |
+| --------------------- | ---------------------------------------------------------------------------- |
+| Page                  | `--background`, `--foreground`                                               |
+| Surfaces              | `--card`, `--card-foreground`, `--popover`, `--popover-foreground`           |
+| Actions               | `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground` |
+| Quiet and highlighted | `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`           |
+| Danger                | `--destructive`, `--destructive-foreground`                                  |
+| Lines and focus       | `--border`, `--input`, `--ring`                                              |
+
+👀 **The Tailwind palette is removed.** `@osmoz/theme/base.css` resets
+`--color-*` and maps the contract to utilities, so `bg-primary` exists and
+`bg-blue-500` generates nothing. Every app imports it right after Tailwind:
+
+```css
+@import "tailwindcss";
+@import "@osmoz/theme/base.css";
+```
+
+👀 **Sizes use Tailwind's default scales**: spacing, text, radius, shadow,
+breakpoints. An app gives them its identity by changing their values in its
+`@theme` block (`--radius-md: 0`, `--font-sans: …`), not by adding names. A new
+name is allowed only for a real role, like `--font-display`.
+
+👀 **No arbitrary value** in a component: no `p-[13px]`, no `bg-[#fff]`.
+
+👀 **Colors in OKLCH.** OKLCH keeps contrast predictable when deriving a
+variant.
+
+👀 **One theme file per app.** Its location is set in `apps/<app>/CLAUDE.md`.
+
+### Themes
+
+A project can ship any number of themes, not only light and dark.
+
+- A theme is a `[data-theme="<name>"]` block that redefines the whole contract,
+  and sets `color-scheme` (`light` or `dark`) for native controls.
+- 👀 **No `dark:` variant**, nor any per-theme class in a component: a third
+  theme would break it. Only tokens change between themes.
+- The default theme follows `prefers-color-scheme`; a manual choice is
+  remembered.
+- Every theme meets the accessibility rules below on its own.
+
+```css
+[data-theme="terminal"] {
+  color-scheme: dark;
+  --background: oklch(0.16 0.02 150);
+  --foreground: oklch(0.88 0.17 150);
+}
+```
+
+### shadcn/ui
+
+👀 **A generated component is a template.** Before it is committed, it follows
+every convention of this page: arrow function with a return type, tokens only,
+no `dark:` variant, tests.
+
+👀 The `cn` helper lives in `lib/cn.ts`, not `lib/utils.ts`: set
+`"utils": "@/lib/cn"` in `components.json`.
+
+### Accessibility
+
+WCAG 2.2 AA is the floor.
+
+👀 **Contrast**: 4.5:1 for body text, 3:1 for large text, UI components and
+focus indicators. Checked on the mockups, before any code.
+
+👀 **Focus is always visible**: `:focus-visible` styled with an outline of at
+least 2px. Never `outline: none` without a replacement.
+
+👀 **Motion is opt-in**: animations live inside
+`@media (prefers-reduced-motion: no-preference)`.
+
+👀 **Targets** are at least 24×24px.
+
+👀 **Color never carries information alone**: pair it with text or an icon.
+
 ## Tests
 
 🔒 **Coverage is 100%**: lines, functions, branches and statements, on
@@ -177,8 +267,15 @@ carry. Never remove those.
 
 ### Branches
 
-`main` is the only long-lived branch. Every change goes through a short-lived
-branch and a pull request.
+Two long-lived branches:
+
+| Branch    | Holds                                     |
+| --------- | ----------------------------------------- |
+| `develop` | Integrated work, the base of every branch |
+| `main`    | Released work only                        |
+
+Every change goes through a short-lived branch off `develop` and a pull request
+back into `develop`. Nothing is committed directly to `develop` or `main`.
 
 ```
 <type>/<slug>
@@ -216,11 +313,11 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 
 ## Pull requests
 
-- One issue, one branch, one pull request.
-- Squash merge only, once `pnpm validate` passes.
+- One issue, one branch, one pull request, targeting `develop`.
+- Squash merge into `develop`, once `pnpm validate` passes.
 - `/pull-request` in Claude Code drafts one.
 
-**Title**: commit format, in **English**. It becomes the commit on `main`.
+**Title**: commit format, in **English**. It becomes the commit on `develop`.
 
 **Description**: in **French**. Concise Markdown, drop any empty section.
 
@@ -249,6 +346,23 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 
 👀 Describe the change, not the commit history. List only the checks that were
 actually run.
+
+### Release
+
+A release is a pull request from `develop` into `main`.
+
+- **Merge commit**, never squash: each commit on `main` keeps its own message
+  and Linear issue.
+- **Title**: `chore(release): <short summary>`, in English.
+- **Description**: in French, the list of shipped issues, one closing keyword
+  per issue so Linear can move them to Done:
+
+```markdown
+## Contenu
+
+- Fixes OSM-6 — Initialiser l'app Flex Playground
+- Fixes OSM-7 — Initialiser l'app Grid Playground
+```
 
 ## Tickets
 
@@ -306,5 +420,9 @@ Nothing will catch these. Reviewers, check them:
 - No test deleted, skipped or weakened to go green.
 - No `memo`, `useMemo`, `useCallback` without a measurement.
 - No `useEffect` to derive state, no mutation of shared state, no `delete`.
+- Semantic colors only, Tailwind scales for sizes, no arbitrary value, no
+  `dark:` variant.
+- shadcn components adapted to these conventions before commit.
+- WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets.
 - No noise comments.
 - English commit subjects and PR titles, French PR descriptions and tickets.

@@ -26,7 +26,8 @@ below: they are the single source of truth, do not restate them here.
   in the ticket or the docs is not yours to make silently: ask.
 - When a convention is missing or contradicts the code, flag it instead of
   inventing a rule.
-- Use `/linear-ticket` for Linear tickets and `/pull-request` for PR drafts.
+- Use `/linear-ticket` for Linear tickets, `/pull-request` for PR drafts and
+  `/self-review` to review a branch before merging.
 
 ## Before you finish
 

@@ -37,17 +37,19 @@ pnpm dev
 
 1. **Ticket.** Every change starts from a Linear issue. `/linear-ticket` drafts
    one.
-2. **Branch** off an up-to-date `main`, named after the issue:
+2. **Branch** off an up-to-date `develop`, named after the issue:
    `feat/OSM-12-login-form`.
 3. **Write the code** following [conventions.md](conventions.md).
 4. **Test it**: each `.ts` file gets its `.test.ts`, coverage stays at 100%.
 5. **Commit.** The `pre-commit` hook formats and lints staged files, `commit-msg`
    checks Conventional Commits.
-6. **Run `pnpm validate`**, then push and open the pull request.
+6. **Run `pnpm validate`**, then push and open the pull request into `develop`.
    `/pull-request` drafts it.
 7. **Review.** At least one approval. Every comment gets a change or a reply.
-8. **Merge.** Squash merge once `pnpm validate` passes, delete the branch, move the Linear
-   issue to Done.
+8. **Merge.** Squash merge into `develop` once `pnpm validate` passes, delete
+   the branch.
+9. **Release.** A pull request from `develop` into `main`, merged with a merge
+   commit. Its issues move to Done.
 
 > [!IMPORTANT]
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to

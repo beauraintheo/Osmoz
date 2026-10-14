@@ -45,7 +45,9 @@ pnpm dev
    checks Conventional Commits.
 6. **Run `pnpm validate`**, then push and open the pull request into `develop`.
    `/pull-request` drafts it.
-7. **Review.** At least one approval. Every comment gets a change or a reply.
+7. **Review.** `/self-review` reports no blocking finding, ideally run in a
+   fresh Claude Code session. A PR touching code also goes through
+   `/code-review`. Every finding gets a change or a reply.
 8. **Merge.** Squash merge into `develop` once `pnpm validate` passes, delete
    the branch.
 9. **Release.** A pull request from `develop` into `main`, merged with a merge

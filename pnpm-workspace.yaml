@@ -1,0 +1,18 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  esbuild: true
+
+overrides:
+  vite@*: npm:@voidzero-dev/vite-plus-core@1.1.0
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
+
+catalog:
+  typescript: ^7.0.2

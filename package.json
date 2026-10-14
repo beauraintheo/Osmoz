@@ -1,0 +1,33 @@
+{
+  "name": "Osmoz",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "type": "module",
+  "scripts": {
+    "dev": "vp run -r dev",
+    "build": "vp run -r build",
+    "check": "vp check",
+    "check:fix": "vp check --fix",
+    "check-types": "tsc --noEmit && vp run -r check-types",
+    "test": "vp test run",
+    "test:coverage": "vp test run --coverage",
+    "validate": "vp check && pnpm check-types && pnpm test:coverage",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@Osmoz/config": "workspace:*",
+    "@commitlint/cli": "^21.2.3",
+    "@commitlint/config-conventional": "^21.2.3",
+    "@types/node": "^26.4.1",
+    "@vitest/coverage-v8": "5.0.3",
+    "husky": "^9.1.7",
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
+    "typescript": "catalog:",
+    "vite-plus": "1.1.0"
+  },
+  "packageManager": "pnpm@12.11.2"
+}

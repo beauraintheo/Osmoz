@@ -8,6 +8,7 @@ below: they are the single source of truth, do not restate them here.
 | ----------------------------------------------------------- | ------------------------- |
 | Setup, commands, ticket to PR flow                          | `docs/getting-started.md` |
 | Naming, TypeScript, React, design, tests, git, PRs, tickets | `docs/conventions.md`     |
+| Template of an app's `CLAUDE.md`                            | `docs/app-spec.md`        |
 
 @docs/getting-started.md
 @docs/conventions.md
@@ -26,8 +27,9 @@ below: they are the single source of truth, do not restate them here.
   in the ticket or the docs is not yours to make silently: ask.
 - When a convention is missing or contradicts the code, flag it instead of
   inventing a rule.
-- Use `/linear-ticket` for Linear tickets, `/pull-request` for PR drafts and
-  `/self-review` to review a branch before merging.
+- Use `/linear-ticket` for Linear tickets, `/new-app` to create an app,
+  `/pull-request` for PR drafts and `/self-review` to review a branch before
+  merging.
 
 ## Before you finish
 

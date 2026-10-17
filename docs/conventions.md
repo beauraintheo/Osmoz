@@ -16,7 +16,8 @@ not: each project picks the one that fits it.
 
 👀 **Each app documents its architecture** in `apps/<app>/CLAUDE.md`: its
 folders, its layers if any, where a file goes, which dependencies are allowed.
-Claude Code loads it when working in that app.
+Claude Code loads it when working in that app. Its required sections and
+template are in [app-spec.md](app-spec.md).
 
 👀 **Code used by one app stays in that app.** Code used by several apps lives
 in `packages/*`. Move it there when a second app needs it, not before.

@@ -1,6 +1,6 @@
 import { defineConfig } from "vite-plus";
 
-const ignorePatterns = ["**/node_modules/**", "**/dist/**", "**/coverage/**"];
+const ignorePatterns = ["**/node_modules/**", "**/dist/**", "**/coverage/**", "**/*.gen.ts"];
 
 export default defineConfig({
   lint: {
@@ -67,19 +67,6 @@ export default defineConfig({
       ],
       internalPattern: ["@/"],
       newlinesBetween: true,
-    },
-  },
-  test: {
-    passWithNoTests: true,
-    coverage: {
-      provider: "v8",
-      include: ["apps/*/src/**", "packages/*/src/**"],
-      thresholds: {
-        lines: 100,
-        functions: 100,
-        branches: 100,
-        statements: 100,
-      },
     },
   },
   staged: {

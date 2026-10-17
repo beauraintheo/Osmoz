@@ -239,6 +239,16 @@ least 2px. Never `outline: none` without a replacement.
 
 👀 **Color never carries information alone**: pair it with text or an icon.
 
+👀 **Semantic HTML before ARIA**: a `button` to act, a link to navigate, a
+heading for a title. No clickable `div`, and ARIA only where no native element
+fits.
+
+👀 **Every field has a label**, visible or `aria-label`, and every image an
+`alt` (empty when decorative).
+
+👀 **Everything works with the keyboard**: every action reachable with Tab, in
+a logical order, and a dialog traps and restores focus.
+
 ## Tests
 
 🔒 **Coverage is 100%**: lines, functions, branches and statements, on
@@ -409,7 +419,8 @@ created by the project owner.
 
 ## The 👀 list
 
-Nothing will catch these. Reviewers, check them:
+Nothing will catch these. `/self-review` checks them, and so does any human
+reviewer:
 
 - The app's architecture is documented in `apps/<app>/CLAUDE.md`, and followed.
 - Code used by one app stays in it; shared code moves to `packages/*` on the
@@ -423,6 +434,7 @@ Nothing will catch these. Reviewers, check them:
 - Semantic colors only, Tailwind scales for sizes, no arbitrary value, no
   `dark:` variant.
 - shadcn components adapted to these conventions before commit.
-- WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets.
+- WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets, semantic
+  HTML, labels and `alt`, keyboard access.
 - No noise comments.
 - English commit subjects and PR titles, French PR descriptions and tickets.

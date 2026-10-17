@@ -1,0 +1,29 @@
+{
+  "name": "@osmoz/flex-playground",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "check-types": "tsc --noEmit",
+    "test": "vp test run",
+    "test:coverage": "vp test run --coverage",
+    "validate": "vp run check-types && vp run test:coverage"
+  },
+  "dependencies": {
+    "@tanstack/react-router": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:"
+  },
+  "devDependencies": {
+    "@osmoz/config": "workspace:*",
+    "@osmoz/theme": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "tailwindcss": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

@@ -22,10 +22,10 @@ template are in [app-spec.md](app-spec.md).
 👀 **Code used by one app stays in that app.** Code used by several apps lives
 in `packages/*`. Move it there when a second app needs it, not before.
 
-A package exposes `src/` through a single `exports` pattern in its
-`package.json`, never a list of files: `"./*": "./src/*.ts"` for code,
-`"./*": "./src/*"` for assets. A consumer imports the file it needs:
-`@osmoz/<package>/<file>`.
+A package exposes `src/` through `exports` patterns in its `package.json`, one
+per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
+`"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` next to code for
+JSON configs. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
 
 ## Naming
 
@@ -252,11 +252,15 @@ a logical order, and a dialog traps and restores focus.
 
 ## Tests
 
-🔒 **Coverage is 100%**: lines, functions, branches and statements, on
-`apps/*/src` and `packages/*/src`.
+🔒 **Coverage is 100%**: lines, functions, branches and statements, on the
+`.ts` files of each workspace's `src/`. Each workspace checks its own threshold.
 
 👀 **Every `.ts` file has its test file**: `x.test.ts` sits next to `x.ts`.
-Exceptions: `*.test.ts`, `*.d.ts`, `*.config.ts` and generated code.
+Exceptions: `*.test.ts`, `*.d.ts`, `*.config.ts` and generated code
+(`*.gen.ts`).
+
+👀 **`.tsx` files get no unit test.** They render: logic worth testing moves to
+a `.ts` file next to them. Rendering will be covered by end-to-end tests.
 
 👀 **Every bug fix starts with a failing test.**
 

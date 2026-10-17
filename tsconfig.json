@@ -1,3 +1,4 @@
 {
-  "extends": "@osmoz/config/tsconfig.base.json"
+  "extends": "@osmoz/config/tsconfig.base.json",
+  "include": ["*.ts"]
 }

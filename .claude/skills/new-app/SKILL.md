@@ -28,7 +28,9 @@ The base is what already exists, never what this skill imagines.
 
 1. **Shared packages**: read every `packages/*/package.json` and its `exports`. The new app consumes them by subpath, never by copy.
 2. **Reference app**: list `apps/*`. With one app, it is the reference. With several, propose the closest one to the intention and let the user confirm. Read its `CLAUDE.md`, `package.json`, config files and the tree of `src/`.
-3. **No app yet**: say so. The plan of step 4 is then built only from the shared packages and `docs/`, and every choice they do not settle is a question of step 3.
+3. **No app yet**: say so. The plan of step 4 is then built from the "Create an app" section of `docs/getting-started.md` and the shared packages, and every choice they do not settle is a question of step 3.
+
+A front app never redeclares what `@osmoz/config` holds: its `vite.config.ts` calls `defineAppConfig`, its `tsconfig.json` extends `@osmoz/config/tsconfig.react.json`, and every dependency version comes from the pnpm catalog.
 
 ## 3. Ask what is specific
 
@@ -62,7 +64,7 @@ End with: "Je crée l'app ? (ou indique les modifications)". Create nothing with
 - Take the reference app's config files and replace its name. Keep its structure, drop its features: `src/` holds only the entry point and a minimal root component.
 - Import the shared packages by subpath, as the reference app does. Declare in the app only what is its own (`@theme` values, theme file).
 - Write `apps/<app-name>/CLAUDE.md` from the template of `docs/app-spec.md`, every section filled with the approved choices.
-- Every `.ts` and `.tsx` file gets its test. No comments.
+- Every `.ts` file gets its test; `.tsx` files get none. No comments.
 
 ## 6. Verify
 

@@ -1,0 +1,24 @@
+{
+  "name": "@osmoz/scripts",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "test": "vp test run",
+    "test:coverage": "vp test run --coverage",
+    "validate": "vp run check-types && vp run test:coverage"
+  },
+  "dependencies": {
+    "@clack/prompts": "catalog:"
+  },
+  "devDependencies": {
+    "@osmoz/config": "workspace:*",
+    "@types/node": "catalog:",
+    "@vitest/coverage-v8": "catalog:",
+    "typescript": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

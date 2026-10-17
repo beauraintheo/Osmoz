@@ -16,7 +16,10 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
-  "[css]": {
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "[tailwindcss]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[markdown]": {

@@ -1,6 +1,14 @@
 {
   "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.ts": "${capture}.*.ts",
+    "*.tsx": "${capture}.*.ts, ${capture}.*.tsx",
+    "package.json": "pnpm-lock.yaml, pnpm-workspace.yaml, .node-version",
+    "tsconfig.json": "tsconfig.*.json"
+  },
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "explicit"
   },

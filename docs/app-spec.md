@@ -10,7 +10,7 @@ never repeated: link to it, or leave it out.
 
 | Section           | Answers                                                     |
 | ----------------- | ----------------------------------------------------------- |
-| Stack             | Which libraries the app adds, and why. No versions.         |
+| Stack             | Libraries added to `@osmoz/config`'s base, and why.         |
 | Structure         | What each folder of `src/` holds, one line each.            |
 | Layers            | Which folder may import which. What is forbidden.           |
 | Where a file goes | For each kind of file, its folder and an example name.      |

@@ -6,6 +6,9 @@ const ignorePatterns = [
   "**/coverage/**",
   "**/*.gen.ts",
   "**/.claude/settings.local.json",
+  ".claude/skills/**",
+  ".claude/agents/**",
+  ".impeccable/**",
 ];
 
 export default defineConfig({

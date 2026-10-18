@@ -23,6 +23,8 @@ src/
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
   theme.css     the app's theme
+public/         static files served as is: favicon.svg and
+                apple-touch-icon.png, copied from docs/brand/
 ```
 
 `features/`, `domain/`, `components/` and `lib/` are created by their first

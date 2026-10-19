@@ -6,7 +6,7 @@ and why is in [spec.md](spec.md).
 ## Stack
 
 - Zod (planned): validates the layout state at its boundaries (browser
-  storage, and URLs from v2). Added to the catalog by the first ticket that
+  storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
   needs it.
 - shadcn/ui (planned): set up with its first component (`components.json`,
   `lib/cn.ts`), not before.
@@ -16,8 +16,8 @@ and why is in [spec.md](spec.md).
 ```
 src/
   routes/       TanStack Router file routes; thin, they only compose features
-  features/     one folder per mode, its UI and logic: playground/ (v1),
-                docs/ (v2), exercises/ (v3)
+  features/     one folder per mode, its UI and logic: playground/, docs/,
+                exercises/
   domain/       Flexbox knowledge shared by every mode: property descriptions,
                 layout state, CSS and HTML generation; plain TypeScript
   components/   shared UI with no domain knowledge

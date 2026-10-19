@@ -358,6 +358,40 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 👀 Describe the change, not the commit history. List only the checks that were
 actually run.
 
+### Release
+
+Each app has its own SemVer version, tags, changelog and GitHub Releases. The
+shared packages `config` and `theme` are versioned the same way; the root and
+`scripts` are not. Nothing is released by hand: release-please computes it
+from the commits on `main` (`.github/workflows/release.yml`,
+`release-please-config.json`).
+
+1. Every squash merge into `main` updates a **release pull request** per
+   workspace it touches, like `chore(main): release flex-playground 0.2.0`. It
+   holds the new version and the `CHANGELOG.md`.
+2. Merging it, squash like any other pull request, releases the workspace: tag
+   `flex-playground-v0.2.0` and a GitHub Release with its changelog.
+
+The type of the pull request title, which becomes the squash commit, sets the
+bump:
+
+| Commit                        | While `0.x` | From `1.0.0` |
+| ----------------------------- | ----------- | ------------ |
+| `feat`                        | minor       | minor        |
+| `fix`, `perf`, `revert`       | patch       | patch        |
+| `!` or `BREAKING CHANGE:`     | minor       | major        |
+| `chore`, `ci`, `docs`, others | none        | none         |
+
+- A release of `config` or `theme` bumps every app that depends on it with a
+  patch. When the change is a feature of the app, the pull request touches the
+  app too, and its `feat` title bumps the app with a minor.
+- 👀 To force a version, like `1.0.0`, add a `Release-As: 1.0.0` footer to the
+  squash commit. It only applies to the workspaces the commit touches, and only
+  to a commit that releases (`feat`, `fix`, `perf`, `revert` or breaking).
+- Release pull requests are opened by the repository's GitHub App, so the
+  `validate` check runs on them. It reads the `RELEASE_APP_CLIENT_ID` variable
+  and the `RELEASE_APP_PRIVATE_KEY` secret.
+
 ## Tickets
 
 Tickets live in Linear, written in **French**. `/linear-ticket <intention>` in

@@ -140,7 +140,8 @@ What the app adds to the base, and why, goes in its `CLAUDE.md`
 Every pull request runs `pnpm validate` in GitHub Actions
 (`.github/workflows/validate.yml`), with the Node version of `.node-version`
 and the pnpm version of `package.json`. The `main` ruleset requires its
-`validate` check: a red check blocks the merge.
+`validate` check on a branch up to date with `main`: a red check, or a branch
+behind `main`, blocks the merge.
 
 > [!IMPORTANT]
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to

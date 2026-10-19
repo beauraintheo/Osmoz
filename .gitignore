@@ -8,6 +8,7 @@ build
 
 # Generated files
 graphify-out/
+.impeccable/
 
 # Environment variables
 .env
@@ -21,6 +22,8 @@ graphify-out/
 !.vscode/extensions.json
 .idea
 .claude/settings.local.json
+.claude/skills/impeccable/
+.claude/agents/impeccable-*.md
 *.swp
 *.swo
 *~

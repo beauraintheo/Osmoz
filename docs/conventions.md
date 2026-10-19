@@ -282,15 +282,12 @@ carry. Never remove those.
 
 ### Branches
 
-Two long-lived branches:
+`main` is the only long-lived branch. Every change goes through a short-lived
+branch off `main` and a pull request back into `main`. Nothing is committed
+directly to `main`.
 
-| Branch    | Holds                                     |
-| --------- | ----------------------------------------- |
-| `develop` | Integrated work, the base of every branch |
-| `main`    | Released work only                        |
-
-Every change goes through a short-lived branch off `develop` and a pull request
-back into `develop`. Nothing is committed directly to `develop` or `main`.
+An urgent fix takes the same path: a `fix/<ISSUE-ID>-<slug>` branch off
+`main`, a pull request, a squash merge. There is no shortcut.
 
 ```
 <type>/<slug>
@@ -315,7 +312,6 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 - Scope: the workspace touched (`web`, `config`, …) or `deps`, `repo`.
 - 👀 Subject: imperative, lowercase, no trailing period, in English.
 - Breaking change: `feat(api)!: …` or a `BREAKING CHANGE:` footer.
-- 👀 Reference the Linear issue in the footer: `Refs: OSM-12`.
 
 ### Hooks
 
@@ -328,11 +324,11 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 
 ## Pull requests
 
-- One issue, one branch, one pull request, targeting `develop`.
-- Squash merge into `develop`, once `pnpm validate` passes.
+- One issue, one branch, one pull request, targeting `main`.
+- Squash merge into `main`, once `pnpm validate` passes.
 - `/pull-request` in Claude Code drafts one.
 
-**Title**: commit format, in **English**. It becomes the commit on `develop`.
+**Title**: commit format, in **English**. It becomes the commit on `main`.
 
 **Description**: in **French**. Concise Markdown, drop any empty section.
 
@@ -361,23 +357,6 @@ Types: `feat`, `fix`, `chore`, `refactor`, `docs`, `test`, `ci`, `perf`,
 
 👀 Describe the change, not the commit history. List only the checks that were
 actually run.
-
-### Release
-
-A release is a pull request from `develop` into `main`.
-
-- **Merge commit**, never squash: each commit on `main` keeps its own message
-  and Linear issue.
-- **Title**: `chore(release): <short summary>`, in English.
-- **Description**: in French, the list of shipped issues, one closing keyword
-  per issue so Linear can move them to Done:
-
-```markdown
-## Contenu
-
-- Fixes OSM-6 — Initialiser l'app Flex Playground
-- Fixes OSM-7 — Initialiser l'app Grid Playground
-```
 
 ## Tickets
 

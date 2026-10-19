@@ -16,7 +16,7 @@ Never run a git command that changes state. When a branch is needed, give the co
 
 1. If an issue ID is given, `get_issue` through the Linear MCP and keep its acceptance criteria. If it is not found, or does not match the team prefix, say so and propose the closest one (`OMS-6` → `OSM-6`). Wait for confirmation.
 2. `git branch --show-current`:
-   - `develop` or `main`: stop and give the command to create the branch.
+   - `main`: stop and give the command to create the branch.
    - a branch naming another issue than the given one: stop. The app would land in that issue's pull request.
    - a branch with no issue while an issue is given: flag it and wait for confirmation.
 3. `git status --short`. If there are uncommitted changes, stop: they belong to another piece of work. Ask the user to commit them first.

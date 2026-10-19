@@ -14,7 +14,7 @@ Read `docs/conventions.md` first, especially "The 👀 list". If the diff touche
 
 ## 1. Collect the change
 
-`git branch --show-current`. Base: `main` if the branch is `develop`, otherwise `develop`. Stop on `main`.
+`git branch --show-current`. Stop on `main`. The base is `main`.
 
 1. `git fetch origin --quiet`, then:
    - `git log --oneline origin/<base>..HEAD`
@@ -25,7 +25,7 @@ Read `docs/conventions.md` first, especially "The 👀 list". If the diff touche
 
 ## 2. Find the Linear issue
 
-Extract the issue ID from the branch name or the commit footers (`Refs: OSM-12`), then `get_issue` through the Linear MCP for its acceptance criteria. If none, flag it.
+Extract the issue ID from the branch name (`<type>/<ISSUE-ID>-<slug>`), then `get_issue` through the Linear MCP for its acceptance criteria. If none, flag it.
 
 ## 3. Review
 
@@ -36,7 +36,7 @@ Check the diff against each of these, and only these:
 3. **Scope**: changes that serve no criterion of the issue.
 4. **Tests**: each touched `.ts` file has its `.test.ts`; tests check behavior; a bug fix comes with a test that fails without it.
 5. **Docs**: a change of behavior, command, convention or structure without the matching update in `docs/` or a `CLAUDE.md`.
-6. **Commits and PR**: Conventional Commits, English subjects, issue in the footer.
+6. **Commits and PR**: Conventional Commits, English subjects.
 
 Do not report what `pnpm validate` already enforces (🔒 rules), style preferences outside the conventions, or anything you cannot point to in the diff. If a rule is ambiguous for a case, say so instead of deciding.
 
@@ -52,7 +52,7 @@ Each suggestion still needs a `path:line` and a concrete reason. "Could be clean
 ## 4. Report
 
 ```
-**Base** : <develop | main> · **Ticket** : <ID or —>
+**Ticket** : <ID or —>
 
 ### Bloquant
 - `path:line` — <what is wrong> (<rule or criterion>)
@@ -70,7 +70,7 @@ Each suggestion still needs a `path:line` and a concrete reason. "Could be clean
 **Verdict** : <prête | à corriger | bloquée>
 ```
 
-- **Bloquant**: breaks a convention or a criterion in a way that must not reach `develop`.
+- **Bloquant**: breaks a convention or a criterion in a way that must not reach `main`.
 - **À corriger**: a 👀 rule broken, cheap to fix.
 - **Suggestion**: optional, never a rule. Every finding of the "Beyond the conventions" pass lands here.
 

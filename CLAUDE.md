@@ -16,8 +16,8 @@ below: they are the single source of truth, do not restate them here.
 
 ## Rules for Claude
 
-- Never commit to `develop` or `main`. Create a branch off `develop` per the
-  conventions first.
+- Never commit to `main`. Create a branch off `main` per the conventions
+  first.
 - Never bypass hooks (`--no-verify`), disable a lint rule, skip a test or lower
   the coverage threshold to make a check green.
 - Every `.ts` file you create or touch has its `.test.ts`. If unsure whether a

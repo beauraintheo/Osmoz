@@ -44,14 +44,18 @@ listed wins.
 
 ## Roadmap
 
-| Version | Delivers                                    |
-| ------- | ------------------------------------------- |
-| v1      | Playground: experiment and check a behavior |
-| v1.1    | Generated code as Tailwind classes, as well |
-| v2      | Docs: one readable section per property     |
-| v3      | Exercises: reproduce a target layout        |
+| Milestone  | Delivers                                    |
+| ---------- | ------------------------------------------- |
+| Playground | Experiment and check a behavior             |
+| Tailwind   | Generated code as Tailwind classes, as well |
+| Docs       | One readable section per property           |
+| Exercises  | Reproduce a target layout                   |
 
-Each version is a mode of the same app, on the same three-column frame:
+Milestones are not version numbers: versions follow strict SemVer, and a new
+mode adds features without breaking anything. Playground ships as `1.0.0`.
+
+Playground, Docs and Exercises are modes of the same app, on the same
+three-column frame:
 
 | Mode       | Route             | Left          | Center                   | Right              |
 | ---------- | ----------------- | ------------- | ------------------------ | ------------------ |
@@ -59,7 +63,7 @@ Each version is a mode of the same app, on the same three-column frame:
 | Docs       | `/docs/$property` | Property list | Article, static diagrams | Table of contents  |
 | Exercises  | `/exercises/$id`  | Controls      | Canvas: target and yours | Brief, hint, check |
 
-Constraints from v1, so later versions plug in without rework:
+Constraints from Playground, so later milestones plug in without rework:
 
 - Each property is described once (name, values, default, target,
   explanation, MDN link, diagram). The playground, the docs and the exercises
@@ -68,15 +72,18 @@ Constraints from v1, so later versions plug in without rework:
   docs' "Try it" passes it to the playground, and an exercise describes its
   target with it.
 
-## v1 — Playground
+## Playground
+
+Mockups: the OSM-13 canvas. Anything marked **proposed** is not settled: see
+[Open questions](#open-questions).
 
 ### Screen
 
 Three columns under a thin top bar:
 
-- **Top bar**: logo and name, the command palette trigger, undo, redo, help.
-  Reset and theme are in the command palette; settings and about are in the
-  help dialog.
+- **Top bar**: the app name, the command palette trigger, undo, redo, help,
+  and the Osmoz signature (`docs/brand.md`). Reset and theme are in the
+  command palette; settings and about are in the help dialog.
 - **Controls** (left): two tabs, _Container_ and _Item_. Each property is a
   collapsible row.
 - **Canvas** (center): the flex container and its items, with one status line
@@ -93,19 +100,25 @@ tabs of a panel below.
 
 ### Container
 
-| Property          | Values                                                                                                   |
-| ----------------- | -------------------------------------------------------------------------------------------------------- |
-| `display`         | `flex`, `inline-flex`                                                                                    |
-| `flex-direction`  | `row`, `row-reverse`, `column`, `column-reverse`                                                         |
-| `flex-wrap`       | `nowrap`, `wrap`, `wrap-reverse`                                                                         |
-| `justify-content` | `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `start`, `end`      |
-| `align-items`     | `stretch`, `flex-start`, `flex-end`, `center`, `baseline`, `start`, `end`                                |
-| `align-content`   | `normal`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `stretch` |
-| `row-gap`         | length                                                                                                   |
-| `column-gap`      | length                                                                                                   |
+| Property          | Values                                                                                                        | Default  |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- | -------- |
+| `display`         | `flex`, `inline-flex`                                                                                         | `flex`   |
+| `flex-direction`  | `row`, `row-reverse`, `column`, `column-reverse`                                                              | `row`    |
+| `flex-wrap`       | `nowrap`, `wrap`, `wrap-reverse`                                                                              | `nowrap` |
+| `justify-content` | `normal`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `start`, `end` | `normal` |
+| `align-items`     | `normal`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline`, `start`, `end`                           | `normal` |
+| `align-content`   | `normal`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `stretch`      | `normal` |
+| `row-gap`         | length, 0 to 48 px (proposed)                                                                                 | `0`      |
+| `column-gap`      | length, 0 to 48 px (proposed)                                                                                 | `0`      |
 
-The container's width and height can be changed by dragging its edge or by
-typing a value, to reproduce wrapping and shrinking.
+`normal` is the browser's real default: it behaves as `flex-start` for
+`justify-content` and as `stretch` for the two others. It is listed so the
+default is a visible, selectable value.
+
+The container's width and height can be changed by dragging its edge, with
+the arrow keys on the resize handle (16 px per press), or by typing a value,
+to reproduce wrapping and shrinking. Width 120 to 1200 px, height 80 to
+900 px. The size never appears in the generated code.
 
 ### Items
 
@@ -113,18 +126,22 @@ typing a value, to reproduce wrapping and shrinking.
   one.
 - Select an item by clicking it or with the keyboard, then edit it in the
   _Item_ tab.
+- 1 to 12 items (proposed). Item ids are never reused within a session.
 
-| Property      | Values                                                            |
-| ------------- | ----------------------------------------------------------------- |
-| `order`       | integer                                                           |
-| `flex-grow`   | number ≥ 0                                                        |
-| `flex-shrink` | number ≥ 0                                                        |
-| `flex-basis`  | `auto`, `content`, length or percentage                           |
-| `align-self`  | `auto`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline` |
-| `width`       | `auto`, length                                                    |
-| `height`      | `auto`, length                                                    |
-| Content       | text, to test content sizing                                      |
-| Font size     | length, to test `baseline` alignment                              |
+| Property      | Values                                                            | Default |
+| ------------- | ----------------------------------------------------------------- | ------- |
+| `order`       | integer, -99 to 99 (proposed)                                     | `0`     |
+| `flex-grow`   | number ≥ 0, up to 99 (proposed)                                   | `0`     |
+| `flex-shrink` | number ≥ 0, up to 99 (proposed)                                   | `1`     |
+| `flex-basis`  | `auto`, `content`, length or percentage                           | `auto`  |
+| `align-self`  | `auto`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline` | `auto`  |
+| `width`       | `auto`, length                                                    | `auto`  |
+| `height`      | `auto`, length                                                    | `auto`  |
+| Content       | text, to test content sizing, 0 to 40 characters (proposed)       | empty   |
+| Font size     | length, to test `baseline` alignment                              | inherit |
+
+A length is a number followed by `px`, `%`, `rem`, `em`, `ch`, `vw` or `vh`,
+or `0`. Keywords are matched after trimming.
 
 Each item shows its index, so `order` and `*-reverse` are readable.
 
@@ -137,7 +154,9 @@ Each item shows its index, so `order` and `*-reverse` are readable.
 - Hovering or focusing a value previews it on the canvas without applying it,
   and shows its one-sentence explanation in the status line.
 - A property's reset and its MDN link show when its row is hovered or
-  focused.
+  focused. A property changed from its default is marked as such.
+- `align-content` while `flex-wrap` is `nowrap`, and `justify-content` while
+  an item grows, stay editable with a "no visible effect" note.
 
 ### Axes
 
@@ -147,16 +166,23 @@ The main axis and the cross axis are drawn on the container. They follow
 ### Generated code
 
 - CSS and HTML of the current layout, with default values omitted.
+- **CSS**: `.container` always gets `display: flex`, then its changed
+  properties. Each changed item gets an `.item-<index>` block; unchanged items
+  get none. Class names are proposed.
 - A switch between longhand (`flex-grow: 1`) and shorthand (`flex: 1`,
-  `flex-flow`, `gap`).
-- A copy button that confirms the copy.
+  `flex-flow`, `gap`). In shorthand, `flex-flow` holds only the changed parts,
+  and `flex` writes grow, shrink and basis as soon as one of them changed.
+- **HTML**: one `.container`, one `.item-<index>` per item with its content.
+- A copy button that confirms the copy, or says it failed and leaves the code
+  selectable.
 
 ### History and persistence
 
 - Undo and redo every change, with buttons and with `Ctrl`/`Cmd` + `Z` and
-  `Shift` + `Ctrl`/`Cmd` + `Z`.
+  `Shift` + `Ctrl`/`Cmd` + `Z`. In a text field, these keys belong to the
+  field.
 - Reset one property to its default, or the whole layout. Both can be undone.
-- The state is saved in the browser. No sharing by URL in v1.
+- The state is saved in the browser. No sharing by URL in Playground.
 
 ### Command palette and shortcuts
 
@@ -198,7 +224,55 @@ make the first use self-explanatory.
 - English only, but every string goes through the i18n mechanism so other
   languages can be added without touching components.
 
-## v2 — Docs
+### Errors and edge cases
+
+| Case                                           | Behavior                                                                                     |
+| ---------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Invalid `flex-basis`, `width`, `height`        | Field marked invalid; canvas and code keep the last valid value; a message says what to type |
+| Field left invalid, then another item selected | The invalid text is dropped; the field shows the last valid value                            |
+| Stepper at its bound                           | The button past the bound is disabled                                                        |
+| Container size typed out of range              | Clamped to the bound when the field loses focus                                              |
+| Items bigger than the container                | They overflow the dashed frame, as in CSS; nothing is clipped                                |
+| Last item removed                              | Empty state with an add button; the code keeps `.container` alone                            |
+| Item limit reached                             | Add and duplicate disabled, with the reason                                                  |
+| Selected item removed                          | Selection cleared, the Container tab opens                                                   |
+| Undo brings back a removed item                | It comes back unselected                                                                     |
+| Nothing to undo or redo                        | The button is disabled                                                                       |
+| Clipboard refused or unavailable               | The copy button says it failed; the code stays selectable                                    |
+| Browser storage unavailable                    | Works without saving, no message                                                             |
+| Saved state fails validation                   | Starts from the initial state                                                                |
+| Saved state from an older schema               | Migrated if possible, else the initial state                                                 |
+| Web fonts not loaded                           | System fallback stacks; nothing shifts                                                       |
+| Reduced motion                                 | No transition                                                                                |
+
+### Flows
+
+1. **First visit.** Three items, Container tab, the code shows
+   `display: flex` alone. Hover or focus a value: the canvas previews it and
+   the status line explains it. Pick it: canvas and code change, undo becomes
+   available, the property is marked as changed.
+2. **Check a behavior.** Pick the values, read the canvas and the axes, copy
+   the code.
+3. **Edit an item.** Click it, or press its number: the Item tab opens.
+   Change a stepper, type a `flex-basis`; an invalid entry shows its message
+   until fixed.
+4. **Undo a mistake.** Undo and redo, reset one property, or reset the layout
+   from the palette (undoable too).
+5. **Empty container.** Remove every item: empty state, then add one.
+6. **Resize.** Drag the handle, use the arrow keys on it, or type the size;
+   items reflow live.
+7. **Copy.** CSS or HTML, shorthand on or off, copy, confirmation.
+8. **Keyboard power use.** `Cmd`/`Ctrl` + `K` to jump to a property or run
+   an action; single keys for frequent actions; `?` for help.
+9. **Come back later.** The last state is restored.
+10. **Theme.** Follows the system until switched from the palette; the
+    choice is remembered.
+11. **Mobile.** Canvas on top, then Container, Item and Code tabs. The same
+    properties in the same order.
+12. **Keyboard only.** Top bar, controls, canvas items, resize handle, code;
+    every action reachable, focus always visible.
+
+## Docs
 
 - One section per property: what it does, each value with a static diagram,
   common pitfalls.
@@ -206,16 +280,16 @@ make the first use self-explanatory.
   back to the section.
 - The docs pages are meant to be indexed (see OSM-25).
 
-## v3 — Exercises
+## Exercises
 
 Reproduce a target layout with the controls; the result is checked against
-the target. Scoped when v2 ships.
+the target. Scoped when Docs ships.
 
 ## Out of scope
 
-- Sharing a layout by URL (v1).
-- Generated code as Tailwind classes (v1.1).
-- Languages other than English (v1).
+- Sharing a layout by URL (Playground).
+- Generated code as Tailwind classes (Tailwind milestone).
+- Languages other than English (Playground).
 - CSS Grid: it has its own app.
 
 ## Non-functional
@@ -226,11 +300,15 @@ the target. Scoped when v2 ships.
 
 ## Open questions
 
-- Maximum number of items.
+- Bounds marked proposed: 12 items, `order` ±99, grow and shrink up to 99,
+  gaps up to 48 px, 40-character content.
+- Should `flex-grow` and `flex-shrink` accept decimals?
 - Values beyond the lists above: `left`, `right`, `safe`, `unsafe`,
-  `first baseline`, `last baseline`.
+  `first baseline`, `last baseline`, `self-start`, `self-end`; `min-content`,
+  `max-content`, `fit-content` for sizes.
 - Class names in the generated code (`.container`, `.item-1`…).
+- On touch screens, how a value's explanation and preview show without hover.
+- Layout between mobile and desktop (tablets, narrow windows).
 - Lighthouse targets, once OSM-25 gives a public URL.
-- How Flux shows its link to Osmoz and its author, set by OSM-23.
 - Command palette, shortcuts, i18n and theme switching are wanted in every
   app: their approach is decided for the monorepo, their code starts here.

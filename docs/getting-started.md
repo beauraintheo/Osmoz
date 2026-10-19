@@ -134,8 +134,13 @@ What the app adds to the base, and why, goes in its `CLAUDE.md`
 7. **Review.** `/self-review` reports no blocking finding, ideally run in a
    fresh Claude Code session. A PR touching code also goes through
    `/code-review`. Every finding gets a change or a reply.
-8. **Merge.** Squash merge into `main` once `pnpm validate` passes, delete the
-   branch.
+8. **Merge.** Squash merge into `main` once the `validate` check passes, delete
+   the branch.
+
+Every pull request runs `pnpm validate` in GitHub Actions
+(`.github/workflows/validate.yml`), with the Node version of `.node-version`
+and the pnpm version of `package.json`. The `main` ruleset requires its
+`validate` check: a red check blocks the merge.
 
 > [!IMPORTANT]
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to

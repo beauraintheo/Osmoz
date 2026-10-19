@@ -20,6 +20,7 @@ graphify-out/
 !.vscode/launch.json
 !.vscode/extensions.json
 .idea
+.claude/settings.local.json
 *.swp
 *.swo
 *~

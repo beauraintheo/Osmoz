@@ -24,6 +24,9 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
+  "json.schemaDownload.trustedDomains": {
+    "https://raw.githubusercontent.com/googleapis/release-please/": true
+  },
   "files.associations": {
     "*.css": "tailwindcss"
   },

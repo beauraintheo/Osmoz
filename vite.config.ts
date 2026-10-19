@@ -5,6 +5,7 @@ const ignorePatterns = [
   "**/dist/**",
   "**/coverage/**",
   "**/*.gen.ts",
+  "**/CHANGELOG.md",
   "**/.claude/settings.local.json",
   ".claude/skills/**",
   ".claude/agents/**",

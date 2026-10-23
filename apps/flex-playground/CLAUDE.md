@@ -25,6 +25,9 @@ src/
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
   theme.css     the app's theme
+  theme-options.ts
+                the app's themes for @osmoz/theme, read by vite.config.ts
+                and main.tsx
 public/         static files served as is: favicon.svg and
                 apple-touch-icon.png, derived from the Osmoz mark
                 (docs/brand.md)
@@ -64,9 +67,10 @@ data.
 ## Theme
 
 - File: `src/theme.css`
-- Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas. A script in
-  `index.html` sets `data-theme` from `prefers-color-scheme` before the first
-  paint and follows its changes; without JavaScript, `light` applies.
+- Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas, declared in
+  `src/theme-options.ts` and stored under `flux:theme`. `vite.config.ts`
+  injects the first-paint script of `@osmoz/theme`, `main.tsx` creates the
+  theme store; without JavaScript, `light` applies. No theme switcher yet.
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
   is `muted`, `ring` is `primary`.

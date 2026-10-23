@@ -1,4 +1,12 @@
 import { defineAppConfig } from "@osmoz/config/define-app-config";
+import { firstPaintScript } from "@osmoz/theme/first-paint-script";
 import { defineConfig } from "vite-plus";
 
-export default defineConfig(defineAppConfig({ root: import.meta.dirname }));
+import { THEME_OPTIONS } from "./src/theme-options";
+
+export default defineConfig(
+  defineAppConfig({
+    root: import.meta.dirname,
+    headScripts: [firstPaintScript(THEME_OPTIONS)],
+  }),
+);

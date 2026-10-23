@@ -6,14 +6,17 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react, { reactCompilerPreset } from "@vitejs/plugin-react";
 import type { ViteUserConfig } from "vite-plus";
 
+import { headScriptsPlugin } from "./head-scripts-plugin.ts";
 import { testConfig } from "./test-config.ts";
 
 export interface AppConfigOptions {
   root: string;
+  headScripts?: readonly string[];
 }
 
-export const defineAppConfig = ({ root }: AppConfigOptions): ViteUserConfig => ({
+export const defineAppConfig = ({ root, headScripts = [] }: AppConfigOptions): ViteUserConfig => ({
   plugins: [
+    headScriptsPlugin(headScripts),
     tanstackRouter({
       target: "react",
       autoCodeSplitting: true,

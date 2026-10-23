@@ -95,9 +95,30 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
 
 ```ts
 import { defineAppConfig } from "@osmoz/config/define-app-config";
+import { firstPaintScript } from "@osmoz/theme/first-paint-script";
 import { defineConfig } from "vite-plus";
 
-export default defineConfig(defineAppConfig({ root: import.meta.dirname }));
+import { THEME_OPTIONS } from "./src/theme-options";
+
+export default defineConfig(
+  defineAppConfig({
+    root: import.meta.dirname,
+    headScripts: [firstPaintScript(THEME_OPTIONS)],
+  }),
+);
+```
+
+`src/theme-options.ts` declares the app's themes, and `src/main.tsx` calls
+`createThemeStore(THEME_OPTIONS)` before rendering:
+
+```ts
+import { defineThemeOptions } from "@osmoz/theme/theme-options";
+
+export const THEME_OPTIONS = defineThemeOptions({
+  app: "<app>",
+  themes: ["light", "dark"],
+  system: { light: "light", dark: "dark" },
+});
 ```
 
 `tsconfig.json`:

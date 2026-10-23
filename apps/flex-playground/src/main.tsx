@@ -4,6 +4,9 @@ import { createRoot } from "react-dom/client";
 
 import { routeTree } from "@/route-tree.gen";
 
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist-mono";
+
 import "@/theme.css";
 
 const router = createRouter({ routeTree });

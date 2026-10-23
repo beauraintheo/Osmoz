@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 4 66 54" role="img" aria-label="Osmoz">
-<style>.o{fill:#D9638F}.cloud{stroke:#8463C4}@media (prefers-color-scheme: dark){.o{fill:#FF8FB8}.cloud{stroke:#9C8CFF}}</style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="2 4 66 54" role="img" aria-label="Flux">
+<style>.o{fill:#00778D}.cloud{stroke:#8463C4}@media (prefers-color-scheme: dark){.o{fill:#56D2DF}.cloud{stroke:#9C8CFF}}</style>
 <mask id="gap" maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="70"><rect width="80" height="70" fill="#fff"/><path d="M42 51 A60 60 0 0 1 16 51 A10 10 0 0 1 14 31.2 A15 15 0 0 1 42 29 A11 11 0 0 1 42 51 Z" fill="none" stroke="#000" stroke-width="10" stroke-linejoin="round"/></mask><circle class="o" cx="45" cy="30" r="11.5" mask="url(#gap)"/><path class="cloud" d="M42 51 A60 60 0 0 1 16 51 A10 10 0 0 1 14 31.2 A15 15 0 0 1 42 29 A11 11 0 0 1 42 51 Z" fill="none" stroke-width="5" stroke-linejoin="round"/>
 </svg>

@@ -5,6 +5,8 @@ and why is in [spec.md](spec.md).
 
 ## Stack
 
+- Fontsource (Geist, Geist Mono): bundles the fonts with the app, no
+  third-party request.
 - Zod (planned): validates the layout state at its boundaries (browser
   storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
   needs it.
@@ -24,7 +26,8 @@ src/
   lib/          pure utilities with no domain knowledge
   theme.css     the app's theme
 public/         static files served as is: favicon.svg and
-                apple-touch-icon.png, copied from docs/brand/
+                apple-touch-icon.png, derived from the Osmoz mark
+                (docs/brand.md)
 ```
 
 `features/`, `domain/`, `components/` and `lib/` are created by their first
@@ -61,8 +64,17 @@ data.
 ## Theme
 
 - File: `src/theme.css`
-- Themes: `light`, `dark`. Without `data-theme`, `prefers-color-scheme`
-  picks one. The values are neutral placeholders until the design (OSM-13).
+- Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas. A script in
+  `index.html` sets `data-theme` from `prefers-color-scheme` before the first
+  paint and follows its changes; without JavaScript, `light` applies.
+- Aliases shared by both themes: `card-foreground`, `popover-foreground` and
+  `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
+  is `muted`, `ring` is `primary`.
+- Roles beyond the contract: `item`, `item-foreground`, `item-border`,
+  `axis-cross`, `code-keyword`, `code-value`.
+- Fonts: Geist for the interface, Geist Mono for code, both bundled through
+  Fontsource and imported in `main.tsx`, with system fallback stacks. Only
+  `--font-sans` and `--font-mono` change in `@theme`.
 
 ## Commands
 

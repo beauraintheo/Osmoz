@@ -87,9 +87,15 @@ family and still tell apart.
 The app's accent must keep the O at 3:1 or more on both reference grounds. An
 app without a settled accent uses `osmoz-symbol.svg` until it has one.
 
+The app's `favicon.svg` is `osmoz-symbol.svg` with the O fills changed, and
+its `apple-touch-icon.png` is `osmoz-app-icon.svg` with the light O fill
+changed, rendered at 180 px.
+
+| App  | O light   | O dark    | Contrast on its ground |
+| ---- | --------- | --------- | ---------------------- |
+| Flux | `#00778D` | `#56D2DF` | 4.84:1 · 9.73:1        |
+
 ## Not done yet
 
 - The wordmark outlined to paths.
 - The `.ico` 32 px fallback, for browsers without SVG favicons.
-- Flux's derived favicon: it ships the plain Osmoz symbol until OSM-13 settles
-  its accent.

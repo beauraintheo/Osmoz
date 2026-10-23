@@ -198,8 +198,12 @@ variant.
 
 A project can ship any number of themes, not only light and dark.
 
-- A theme is a `[data-theme="<name>"]` block that redefines the whole contract,
+- A theme is a `[data-theme="<name>"]` block that defines the whole contract,
   and sets `color-scheme` (`light` or `dark`) for native controls.
+- A token that equals another one in every theme, like `--popover` and
+  `--card`, is an alias: declared once, as `var(--card)`, in a
+  `:root, [data-theme]` block placed before the themes. A theme can still
+  override it.
 - 👀 **No `dark:` variant**, nor any per-theme class in a component: a third
   theme would break it. Only tokens change between themes.
 - The default theme follows `prefers-color-scheme`; a manual choice is

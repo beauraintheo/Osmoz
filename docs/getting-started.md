@@ -108,8 +108,10 @@ export default defineConfig(
 );
 ```
 
-`src/theme-options.ts` declares the app's themes, and `src/main.tsx` calls
-`createThemeStore(THEME_OPTIONS)` before rendering:
+`src/theme-options.ts` declares the app's themes. A module of the app exports
+its single store, `createThemeStore(THEME_OPTIONS)`: `src/main.tsx` imports it
+before rendering, and the app's switcher reads it with `useTheme`. Where these
+files go is up to the app's `CLAUDE.md`.
 
 ```ts
 import { defineThemeOptions } from "@osmoz/theme/theme-options";

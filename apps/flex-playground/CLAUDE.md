@@ -24,10 +24,8 @@ src/
                 layout state, CSS and HTML generation; plain TypeScript
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
-  theme.css     the app's theme
-  theme-options.ts
-                the app's themes for @osmoz/theme, read by vite.config.ts
-                and main.tsx
+  theme/        the app's theme: theme.css, its themes for @osmoz/theme
+                (theme-options.ts) and the theme store (theme-store.ts)
 public/         static files served as is: favicon.svg and
                 apple-touch-icon.png, derived from the Osmoz mark
                 (docs/brand.md)
@@ -45,6 +43,8 @@ file.
 - `domain` may import `lib`, never React nor any other folder of the app.
 - `components` may import `lib`, never `features`, `domain` nor `routes`.
 - `lib` imports nothing from the app.
+- `theme` imports nothing from the app. `routes`, `features` and
+  `components` may import `theme/theme-store` to read or change the theme.
 
 ## Where a file goes
 
@@ -66,11 +66,13 @@ data.
 
 ## Theme
 
-- File: `src/theme.css`
+- File: `src/theme/theme.css`
 - Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas, declared in
-  `src/theme-options.ts` and stored under `flux:theme`. `vite.config.ts`
-  injects the first-paint script of `@osmoz/theme`, `main.tsx` creates the
-  theme store; without JavaScript, `light` applies. No theme switcher yet.
+  `src/theme/theme-options.ts` and stored under `flux:theme`. `vite.config.ts`
+  injects the first-paint script of `@osmoz/theme`; `src/theme/theme-store.ts`
+  creates the app's single theme store, imported by `main.tsx` before
+  rendering and read with `useTheme`. Without JavaScript, `light` applies. No
+  theme switcher yet.
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
   is `muted`, `ring` is `primary`.

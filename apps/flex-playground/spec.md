@@ -242,7 +242,7 @@ make the first use self-explanatory.
 | Browser storage unavailable                    | Works without saving, no message                                                             |
 | Saved state fails validation                   | Starts from the initial state                                                                |
 | Saved state from an older schema               | Migrated if possible, else the initial state                                                 |
-| Web fonts not loaded                           | Fallbacks sized to Geist's metrics; no layout shift once the fonts load                      |
+| Web fonts not loaded                           | System fallback stacks for the whole visit; text never reflows when the fonts arrive         |
 | Reduced motion                                 | No transition                                                                                |
 
 ### Flows

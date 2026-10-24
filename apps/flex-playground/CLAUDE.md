@@ -24,7 +24,7 @@ src/
                 layout state, CSS and HTML generation; plain TypeScript
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
-  theme/        the app's theme: theme.css, its fallback fonts (fonts.css),
+  theme/        the app's theme: theme.css, its font faces (fonts.css),
                 its themes for @osmoz/theme (theme-options.ts) and the
                 theme store (theme-store.ts)
 public/         static files served as is: favicon.svg and
@@ -79,17 +79,16 @@ data.
   is `muted`, `ring` is `primary`.
 - Roles beyond the contract: `item`, `item-foreground`, `item-border`,
   `axis-cross`, `code-keyword`, `code-value`.
-- Fonts: Geist for the interface, Geist Mono for code, both bundled through
-  Fontsource and imported in `main.tsx`, with system fallback stacks. Only
-  `--font-sans` and `--font-mono` change in `@theme`.
-- Font loading: `index.html` preloads the latin file of Geist from
-  Fontsource; Vite rewrites the link to the hashed file the CSS requests.
-  `fonts.css`, imported by `theme.css`, declares `Geist Fallback` (Arial, Liberation Sans) and
-  `Geist Mono Fallback` (Courier New, Liberation Mono), sized to Geist's
-  metrics so the swap does not shift the layout: `size-adjust` is the width
-  ratio of Geist to the fallback measured on French text, the other
-  overrides are Geist's ascender, descender and line gap divided by it.
-  Recompute them when Geist is updated.
+- Fonts: Geist for the interface, Geist Mono for code, with system fallback
+  stacks. Only `--font-sans` and `--font-mono` change in `@theme`.
+- Font loading: `fonts.css`, imported by `theme.css`, declares the latin and
+  latin-ext faces of both fonts from Fontsource's files, with
+  `font-display: optional`: a font is used only if it is ready for the first
+  paint, otherwise the system stack stays for the visit, so text never
+  reflows. Fontsource's own CSS is not imported, since it forces `swap`; its
+  `unicode-range` values are copied and must be checked when Fontsource is
+  updated. `index.html` preloads both latin files so they are usually ready;
+  Vite rewrites the links to the hashed files the CSS requests.
 
 ## Commands
 

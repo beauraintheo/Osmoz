@@ -1,0 +1,17 @@
+@font-face {
+  font-family: "Geist Fallback";
+  src: local("Arial"), local("Liberation Sans");
+  size-adjust: 102%;
+  ascent-override: 98.53%;
+  descent-override: 28.92%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Geist Mono Fallback";
+  src: local("Courier New"), local("Liberation Mono");
+  size-adjust: 99.98%;
+  ascent-override: 100.52%;
+  descent-override: 29.5%;
+  line-gap-override: 0%;
+}

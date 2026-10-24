@@ -24,8 +24,9 @@ src/
                 layout state, CSS and HTML generation; plain TypeScript
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
-  theme/        the app's theme: theme.css, its themes for @osmoz/theme
-                (theme-options.ts) and the theme store (theme-store.ts)
+  theme/        the app's theme: theme.css, its fallback fonts (fonts.css),
+                its themes for @osmoz/theme (theme-options.ts) and the
+                theme store (theme-store.ts)
 public/         static files served as is: favicon.svg and
                 apple-touch-icon.png, derived from the Osmoz mark
                 (docs/brand.md)
@@ -81,6 +82,14 @@ data.
 - Fonts: Geist for the interface, Geist Mono for code, both bundled through
   Fontsource and imported in `main.tsx`, with system fallback stacks. Only
   `--font-sans` and `--font-mono` change in `@theme`.
+- Font loading: `index.html` preloads the latin file of Geist from
+  Fontsource; Vite rewrites the link to the hashed file the CSS requests.
+  `fonts.css`, imported by `theme.css`, declares `Geist Fallback` (Arial, Liberation Sans) and
+  `Geist Mono Fallback` (Courier New, Liberation Mono), sized to Geist's
+  metrics so the swap does not shift the layout: `size-adjust` is the width
+  ratio of Geist to the fallback measured on French text, the other
+  overrides are Geist's ascender, descender and line gap divided by it.
+  Recompute them when Geist is updated.
 
 ## Commands
 

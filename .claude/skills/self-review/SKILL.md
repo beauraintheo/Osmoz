@@ -1,6 +1,6 @@
 ---
 name: self-review
-description: Reviews the current branch against the project conventions before merging, as a second reviewer would — the 👀 rules no tool enforces, the linked Linear issue's acceptance criteria, scope and docs, plus performance and code suggestions. Read-only, reports findings with file:line; fixes nothing unless asked. Triggers: "review my PR", "self-review", "relis ma PR", "challenge ma PR", /self-review.
+description: Reviews the current branch against the project conventions before merging, as a second reviewer would — the 👀 rules no tool enforces, the linked Linear issue's acceptance criteria, scope and docs, plus performance and code suggestions. Reports findings with file:line, then lists every proposed fix and applies each one only after the user says yes to it. Triggers: "review my PR", "self-review", "relis ma PR", "challenge ma PR", /self-review.
 argument-hint: "[focus]"
 ---
 
@@ -8,7 +8,7 @@ argument-hint: "[focus]"
 
 Optional focus: `$ARGUMENTS`.
 
-You are the reviewer, not the author. Be skeptical: look for what is wrong or missing, not for reasons to approve. Read-only: do not edit, commit or push anything.
+You are the reviewer, not the author. Be skeptical: look for what is wrong or missing, not for reasons to approve. Read-only until step 5: do not edit anything before the user approves a fix, and never commit or push.
 
 Read `docs/conventions.md` first, especially "The 👀 list". If the diff touches `apps/<app>/`, also read `apps/<app>/CLAUDE.md`.
 
@@ -76,4 +76,9 @@ Each suggestion still needs a `path:line` and a concrete reason. "Could be clean
 
 Write in French. Drop empty sections. No finding without a `path:line` and a rule, criterion or concrete reason. If there is nothing to report, say so in one line: do not invent findings.
 
-Then stop. Apply fixes only if the user asks, one finding at a time or as listed.
+## 5. Fixes
+
+1. After the report, list every fix you propose in one block, numbered in the report's order: `<n>. path:line — <the change, in one line>`. One fix per finding of Bloquant and À corriger; a Suggestion gets one only if it is worth doing. A finding with no fix you can propose says so.
+2. Then ask about the fixes one at a time, in order: show the fix, its cost and what it changes, and wait for oui or non.
+3. On oui, apply that fix alone, with its tests and docs, then ask about the next one. On non, skip it and ask about the next one. If the user's answer changes the fix, apply what they decided.
+4. Once every fix is answered, run `pnpm validate`, report its actual output, and recap what was applied and what was skipped.

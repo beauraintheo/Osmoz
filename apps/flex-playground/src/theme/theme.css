@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@osmoz/theme/base.css";
+@import "./fonts.css";
 
 @theme {
   --font-sans:

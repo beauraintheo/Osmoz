@@ -24,8 +24,8 @@ in `packages/*`. Move it there when a second app needs it, not before.
 
 A package exposes `src/` through `exports` patterns in its `package.json`, one
 per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
-`"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` next to code for
-JSON configs. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
+`"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
+`"./*.css": "./src/*.css"` next to code for JSON configs or stylesheets. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
 
 ## Naming
 
@@ -207,7 +207,12 @@ A project can ship any number of themes, not only light and dark.
 - 👀 **No `dark:` variant**, nor any per-theme class in a component: a third
   theme would break it. Only tokens change between themes.
 - The default theme follows `prefers-color-scheme`; a manual choice is
-  remembered.
+  remembered, per app, under `<app>:theme`.
+- 👀 **Theme logic comes from `@osmoz/theme`**, never rewritten in an app. The
+  app declares its themes with `defineThemeOptions`, injects
+  `firstPaintScript` through `headScripts` in `vite.config.ts`, creates its
+  store with `createThemeStore` and reads it with `useTheme`. Each app builds
+  its own switcher on top.
 - Every theme meets the accessibility rules below on its own.
 
 ```css

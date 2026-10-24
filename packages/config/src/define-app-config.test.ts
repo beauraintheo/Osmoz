@@ -2,9 +2,11 @@ import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { describe, expect, it, vi } from "vite-plus/test";
 
 import { defineAppConfig } from "./define-app-config.ts";
+import { headScriptsPlugin } from "./head-scripts-plugin.ts";
 import { testConfig } from "./test-config.ts";
 
 vi.mock("@tanstack/router-plugin/vite", { spy: true });
+vi.mock("./head-scripts-plugin.ts", { spy: true });
 
 const root = "/workspace/apps/demo";
 
@@ -51,6 +53,18 @@ describe("defineAppConfig", () => {
     defineAppConfig({ root });
 
     expect(tanstackRouter).toHaveBeenCalledWith(expect.objectContaining({ indexToken: "home" }));
+  });
+
+  it("injects the app's head scripts", () => {
+    defineAppConfig({ root, headScripts: ["setTheme()"] });
+
+    expect(headScriptsPlugin).toHaveBeenLastCalledWith(["setTheme()"]);
+  });
+
+  it("injects no head script by default", () => {
+    defineAppConfig({ root });
+
+    expect(headScriptsPlugin).toHaveBeenLastCalledWith([]);
   });
 
   it("uses the shared test config", () => {

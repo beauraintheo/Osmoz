@@ -7,7 +7,9 @@ import { routeTree } from "@/route-tree.gen";
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist-mono";
 
-import "@/theme.css";
+import "@/theme/theme-store";
+
+import "@/theme/theme.css";
 
 const router = createRouter({ routeTree });
 

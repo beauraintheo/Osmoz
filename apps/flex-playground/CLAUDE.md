@@ -10,8 +10,11 @@ and why is in [spec.md](spec.md).
 - Zod (planned): validates the layout state at its boundaries (browser
   storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
   needs it.
-- shadcn/ui (planned): set up with its first component (`components.json`,
-  `lib/cn.ts`), not before.
+- `@osmoz/ui`: interface components without style; Flux styles each one it
+  uses in `components/`.
+- shadcn/ui (planned): starting point for components, split between
+  `@osmoz/ui` and `components/` (conventions.md). `components.json` is set up
+  with the first one.
 
 ## Structure
 
@@ -22,8 +25,9 @@ src/
                 exercises/
   domain/       Flexbox knowledge shared by every mode: property descriptions,
                 layout state, CSS and HTML generation; plain TypeScript
-  components/   shared UI with no domain knowledge
-  lib/          pure utilities with no domain knowledge
+  components/   shared UI with no domain knowledge: Flux's styled versions of
+                @osmoz/ui components, and its own generic components
+  lib/          pure utilities with no domain knowledge, cn.ts included
   theme/        the app's theme: theme.css, its font faces (fonts.css),
                 its themes for @osmoz/theme (theme-options.ts) and the
                 theme store (theme-store.ts)
@@ -42,23 +46,27 @@ file.
   nor another feature. Code two features need moves to `domain`,
   `components` or `lib`.
 - `domain` may import `lib`, never React nor any other folder of the app.
-- `components` may import `lib`, never `features`, `domain` nor `routes`.
+- `components` may import `lib` and `@osmoz/ui`, never `features`, `domain`
+  nor `routes`.
+- `routes` and `features` use the styled components of `components/`, never
+  `@osmoz/ui` directly.
 - `lib` imports nothing from the app.
 - `theme` imports nothing from the app. `routes`, `features` and
   `components` may import `theme/theme-store` to read or change the theme.
 
 ## Where a file goes
 
-| Kind of file                | Folder                | Example                   |
-| --------------------------- | --------------------- | ------------------------- |
-| Page                        | `routes/`             | `home.tsx`                |
-| Mode component              | `features/<feature>/` | `flex-container-view.tsx` |
-| Mode logic or state         | `features/<feature>/` | `use-history.ts`          |
-| Property descriptions       | `domain/`             | `container-properties.ts` |
-| Layout state and its schema | `domain/`             | `layout-state.ts`         |
-| Code generation             | `domain/`             | `to-css.ts`               |
-| Shared UI component         | `components/`         | `button.tsx`              |
-| Pure utility                | `lib/`                | `cn.ts`                   |
+| Kind of file                 | Folder                | Example                   |
+| ---------------------------- | --------------------- | ------------------------- |
+| Page                         | `routes/`             | `home.tsx`                |
+| Mode component               | `features/<feature>/` | `flex-container-view.tsx` |
+| Mode logic or state          | `features/<feature>/` | `use-history.ts`          |
+| Property descriptions        | `domain/`             | `container-properties.ts` |
+| Layout state and its schema  | `domain/`             | `layout-state.ts`         |
+| Code generation              | `domain/`             | `to-css.ts`               |
+| Styled `@osmoz/ui` component | `components/`         | `button.tsx`              |
+| Other shared UI component    | `components/`         | `osmoz-signature.tsx`     |
+| Pure utility                 | `lib/`                | `cn.ts`                   |
 
 Properties are described in lists, one file per target (container, item). A
 property gets a file of its own only when it has logic of its own

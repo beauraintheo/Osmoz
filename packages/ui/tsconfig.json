@@ -1,0 +1,3 @@
+{
+  "extends": "@osmoz/config/tsconfig.react.json"
+}

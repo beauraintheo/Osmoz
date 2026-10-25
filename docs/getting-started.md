@@ -73,6 +73,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
     "validate": "vp run check-types && vp run test:coverage"
   },
   "dependencies": {
+    "@osmoz/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
@@ -139,6 +140,10 @@ The index route of a folder is `home.tsx`, not `index.tsx`: `routes/home.tsx`
 is `/`, `routes/posts/home.tsx` is `/posts/`. A route file exports `Route`, and
 the linter forbids named exports from an `index` file.
 
+Interface components come from `@osmoz/ui`, without style: the app wraps each
+one it uses in its own `components/`, with its classes, and its `cn` helper
+lives in `src/lib/cn.ts` ([conventions.md](conventions.md#architecture)).
+
 What the app adds to the base, and why, goes in its `CLAUDE.md`
 ([app-spec.md](app-spec.md)).
 
@@ -154,9 +159,9 @@ What the app adds to the base, and why, goes in its `CLAUDE.md`
    checks Conventional Commits.
 6. **Run `pnpm validate`**, then push and open the pull request into `main`.
    `/pull-request` drafts it.
-7. **Review.** `/self-review` reports no blocking finding, ideally run in a
-   fresh Claude Code session. A PR touching code also goes through
-   `/code-review`. Every finding gets a change or a reply.
+7. **Review.** `/review` reports no blocking finding, ideally run in a
+   fresh Claude Code session. When the PR touches code, it also runs
+   `/code-review` and reports its bugs. Every finding gets a change or a reply.
 8. **Merge.** Squash merge into `main` once the `validate` check passes, delete
    the branch.
 

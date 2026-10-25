@@ -22,9 +22,21 @@ template are in [app-spec.md](app-spec.md).
 👀 **Code used by one app stays in that app.** Code used by several apps lives
 in `packages/*`. Move it there when a second app needs it, not before.
 
+👀 **Interface components are split in two.** `@osmoz/ui` holds them without
+style: behavior, accessibility and API (`variant`, `size`, states exposed as
+`data-*` and ARIA attributes), never a class name. Each app styles them in its
+own `components/`, by wrapping the `@osmoz/ui` component with its classes, so
+apps with different identities share the same behavior. A component goes to
+`@osmoz/ui` from its first use: the second-app rule above does not apply to it.
+
+👀 **Native elements first.** An `@osmoz/ui` component builds on the native
+element (`<button>`, `<dialog>`). A headless library comes in only where no
+native element fits, chosen with the first component that needs it.
+
 A package exposes `src/` through `exports` patterns in its `package.json`, one
 per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
-`"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
+`"./*": "./src/*.tsx"` for components (`@osmoz/ui`, whose `.ts` logic stays
+internal), `"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
 `"./*.css": "./src/*.css"` next to code for JSON configs or stylesheets. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
 
 ## Naming
@@ -225,11 +237,14 @@ A project can ship any number of themes, not only light and dark.
 
 ### shadcn/ui
 
-👀 **A generated component is a template.** Before it is committed, it follows
-every convention of this page: arrow function with a return type, tokens only,
-no `dark:` variant, tests.
+shadcn/ui is a starting point, not a dependency.
 
-👀 The `cn` helper lives in `lib/cn.ts`, not `lib/utils.ts`: set
+👀 **A generated component is split before it is committed.** Its behavior and
+API go to `@osmoz/ui`, without classes; its classes go to the app's styled
+component. Both follow every convention of this page: arrow function with a
+return type, tokens only, no `dark:` variant, and tests on the `.ts` logic.
+
+👀 The `cn` helper lives in each app's `lib/cn.ts`, not `lib/utils.ts`: set
 `"utils": "@/lib/cn"` in `components.json`.
 
 ### Accessibility
@@ -242,8 +257,9 @@ focus indicators. Checked on the mockups, before any code.
 👀 **Focus is always visible**: `:focus-visible` styled with an outline of at
 least 2px. Never `outline: none` without a replacement.
 
-👀 **Motion is opt-in**: animations live inside
-`@media (prefers-reduced-motion: no-preference)`.
+👀 **Motion is opt-in**: anything that moves, resizes or scales lives inside
+`@media (prefers-reduced-motion: no-preference)`. Color and opacity fades
+may stay with reduced motion.
 
 👀 **Targets** are at least 24×24px.
 
@@ -370,7 +386,7 @@ actually run.
 ### Release
 
 Each app has its own SemVer version, tags, changelog and GitHub Releases. The
-shared packages `config` and `theme` are versioned the same way; the root and
+shared packages `config`, `theme` and `ui` are versioned the same way; the root and
 `scripts` are not. Nothing is released by hand: release-please computes it
 from the commits on `main` (`.github/workflows/release.yml`,
 `release-please-config.json`).
@@ -391,7 +407,7 @@ bump:
 | `!` or `BREAKING CHANGE:`     | minor       | major        |
 | `chore`, `ci`, `docs`, others | none        | none         |
 
-- A release of `config` or `theme` bumps every app that depends on it with a
+- A release of `config`, `theme` or `ui` bumps every app that depends on it with a
   patch. When the change is a feature of the app, the pull request touches the
   app too, and its `feat` title bumps the app with a minor.
 - 👀 To force a version, like `1.0.0`, add a `Release-As: 1.0.0` footer to the
@@ -446,12 +462,14 @@ created by the project owner.
 
 ## The 👀 list
 
-Nothing will catch these. `/self-review` checks them, and so does any human
+Nothing will catch these. `/review` checks them, and so does any human
 reviewer:
 
 - The app's architecture is documented in `apps/<app>/CLAUDE.md`, and followed.
 - Code used by one app stays in it; shared code moves to `packages/*` on the
   second use, not before.
+- Interface components: behavior without classes in `@osmoz/ui`, classes in the
+  app's `components/`; native elements before a headless library.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
 - Every `.ts` file has its `.test.ts`; every bug fix has a failing test first.
@@ -460,7 +478,8 @@ reviewer:
 - No `useEffect` to derive state, no mutation of shared state, no `delete`.
 - Semantic colors only, Tailwind scales for sizes, no arbitrary value, no
   `dark:` variant.
-- shadcn components adapted to these conventions before commit.
+- shadcn components split between `@osmoz/ui` and the app, and adapted to
+  these conventions, before commit.
 - WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets, semantic
   HTML, labels and `alt`, keyboard access.
 - No noise comments.

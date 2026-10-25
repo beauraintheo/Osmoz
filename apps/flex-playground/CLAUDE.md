@@ -24,8 +24,9 @@ src/
                 layout state, CSS and HTML generation; plain TypeScript
   components/   shared UI with no domain knowledge
   lib/          pure utilities with no domain knowledge
-  theme/        the app's theme: theme.css, its themes for @osmoz/theme
-                (theme-options.ts) and the theme store (theme-store.ts)
+  theme/        the app's theme: theme.css, its font faces (fonts.css),
+                its themes for @osmoz/theme (theme-options.ts) and the
+                theme store (theme-store.ts)
 public/         static files served as is: favicon.svg and
                 apple-touch-icon.png, derived from the Osmoz mark
                 (docs/brand.md)
@@ -78,9 +79,16 @@ data.
   is `muted`, `ring` is `primary`.
 - Roles beyond the contract: `item`, `item-foreground`, `item-border`,
   `axis-cross`, `code-keyword`, `code-value`.
-- Fonts: Geist for the interface, Geist Mono for code, both bundled through
-  Fontsource and imported in `main.tsx`, with system fallback stacks. Only
-  `--font-sans` and `--font-mono` change in `@theme`.
+- Fonts: Geist for the interface, Geist Mono for code, with system fallback
+  stacks. Only `--font-sans` and `--font-mono` change in `@theme`.
+- Font loading: `fonts.css`, imported by `theme.css`, declares the latin and
+  latin-ext faces of both fonts from Fontsource's files, with
+  `font-display: optional`: a font is used only if it is ready for the first
+  paint, otherwise the system stack stays for the visit, so text never
+  reflows. Fontsource's own CSS is not imported, since it forces `swap`; its
+  `unicode-range` values are copied and must be checked when Fontsource is
+  updated. `index.html` preloads both latin files so they are usually ready;
+  Vite rewrites the links to the hashed files the CSS requests.
 
 ## Commands
 

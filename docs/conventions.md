@@ -257,8 +257,9 @@ focus indicators. Checked on the mockups, before any code.
 👀 **Focus is always visible**: `:focus-visible` styled with an outline of at
 least 2px. Never `outline: none` without a replacement.
 
-👀 **Motion is opt-in**: animations live inside
-`@media (prefers-reduced-motion: no-preference)`.
+👀 **Motion is opt-in**: anything that moves, resizes or scales lives inside
+`@media (prefers-reduced-motion: no-preference)`. Color and opacity fades
+may stay with reduced motion.
 
 👀 **Targets** are at least 24×24px.
 
@@ -461,7 +462,7 @@ created by the project owner.
 
 ## The 👀 list
 
-Nothing will catch these. `/self-review` checks them, and so does any human
+Nothing will catch these. `/review` checks them, and so does any human
 reviewer:
 
 - The app's architecture is documented in `apps/<app>/CLAUDE.md`, and followed.

@@ -73,6 +73,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
     "validate": "vp run check-types && vp run test:coverage"
   },
   "dependencies": {
+    "@osmoz/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
@@ -80,7 +81,6 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
   "devDependencies": {
     "@osmoz/config": "workspace:*",
     "@osmoz/theme": "workspace:*",
-    "@osmoz/ui": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -159,9 +159,9 @@ What the app adds to the base, and why, goes in its `CLAUDE.md`
    checks Conventional Commits.
 6. **Run `pnpm validate`**, then push and open the pull request into `main`.
    `/pull-request` drafts it.
-7. **Review.** `/self-review` reports no blocking finding, ideally run in a
-   fresh Claude Code session. A PR touching code also goes through
-   `/code-review`. Every finding gets a change or a reply.
+7. **Review.** `/review` reports no blocking finding, ideally run in a
+   fresh Claude Code session. When the PR touches code, it also runs
+   `/code-review` and reports its bugs. Every finding gets a change or a reply.
 8. **Merge.** Squash merge into `main` once the `validate` check passes, delete
    the branch.
 

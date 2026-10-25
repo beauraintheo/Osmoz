@@ -1,14 +1,14 @@
 ---
-name: self-review
-description: Reviews the current branch against the project conventions before merging, as a second reviewer would — the 👀 rules no tool enforces, the linked Linear issue's acceptance criteria, scope and docs, plus performance and code suggestions. Read-only, reports findings with file:line; fixes nothing unless asked. Triggers: "review my PR", "self-review", "relis ma PR", "challenge ma PR", /self-review.
+name: review
+description: Reviews the current branch against the project conventions before merging, as a second reviewer would — the 👀 rules no tool enforces, the linked Linear issue's acceptance criteria, scope and docs, plus performance suggestions, and runs /code-review for bugs when the diff changes code. Reports findings with file:line, then lists every proposed fix and applies each one only after the user says yes to it. Triggers: "review my PR", "review", "relis ma PR", "challenge ma PR", /review.
 argument-hint: "[focus]"
 ---
 
-# Self-review
+# Review
 
 Optional focus: `$ARGUMENTS`.
 
-You are the reviewer, not the author. Be skeptical: look for what is wrong or missing, not for reasons to approve. Read-only: do not edit, commit or push anything.
+You are the reviewer, not the author. Be skeptical: look for what is wrong or missing, not for reasons to approve. Read-only until step 6: do not edit anything before the user approves a fix, and never commit or push.
 
 Read `docs/conventions.md` first, especially "The 👀 list". If the diff touches `apps/<app>/`, also read `apps/<app>/CLAUDE.md`.
 
@@ -42,20 +42,26 @@ Do not report what `pnpm validate` already enforces (🔒 rules), style preferen
 
 ### Beyond the conventions
 
-Then one more pass on the same diff. It only produces **suggestions**, never a blocking finding or one to fix:
+Then one more pass on the same diff, for performance. It only produces **suggestions**, never a blocking finding or one to fix: a dependency added and its weight, a re-render that can be avoided by moving state, requests made one after another that could run in parallel, an unoptimized image or asset.
 
-- **Performance**: a dependency added and its weight, a re-render that can be avoided by moving state, requests made one after another that could run in parallel, an unoptimized image or asset.
-- **Code**: logic that duplicates existing code in the repo (search for it), a clearly simpler approach, dead code left in the diff, a name that hides what the code does.
+Each suggestion still needs a `path:line` and a concrete reason. Bugs belong to step 4. Duplication, simpler approaches and dead code are out of scope: recommend `/simplify` when the diff changes code.
 
-Each suggestion still needs a `path:line` and a concrete reason. "Could be cleaner" is not a reason. For a large code change, recommend `/simplify` and `/code-review` instead of going deeper here.
+## 4. Bugs
 
-## 4. Report
+If the diff adds or changes a `.ts` or `.tsx` file, invoke the `code-review` skill with the Skill tool, args `medium <current branch>`. Never pass `--fix` or `--comment`: fixes go through step 6, and nothing is posted. Otherwise skip this step and say so in the report.
+
+Keep every finding it reports, with its `path:line`, for the Bugs section. If it fails or cannot run, say so in the report instead of hunting bugs yourself.
+
+## 5. Report
 
 ```
 **Ticket** : <ID or —>
 
 ### Bloquant
 - `path:line` — <what is wrong> (<rule or criterion>)
+
+### Bugs
+- `path:line` — <what is wrong> (<failure scenario>)
 
 ### À corriger
 - `path:line` — <what is wrong> (<rule or criterion>)
@@ -71,9 +77,15 @@ Each suggestion still needs a `path:line` and a concrete reason. "Could be clean
 ```
 
 - **Bloquant**: breaks a convention or a criterion in a way that must not reach `main`.
+- **Bugs**: every finding of step 4, as `code-review` reported it.
 - **À corriger**: a 👀 rule broken, cheap to fix.
 - **Suggestion**: optional, never a rule. Every finding of the "Beyond the conventions" pass lands here.
 
 Write in French. Drop empty sections. No finding without a `path:line` and a rule, criterion or concrete reason. If there is nothing to report, say so in one line: do not invent findings.
 
-Then stop. Apply fixes only if the user asks, one finding at a time or as listed.
+## 6. Fixes
+
+1. After the report, list every fix you propose in one block, numbered in the report's order: `<n>. path:line — <the change, in one line>`. One fix per finding of Bloquant, Bugs and À corriger; a Suggestion gets one only if it is worth doing. A finding with no fix you can propose says so.
+2. Then ask about the fixes one at a time, in order: show the fix, its cost and what it changes, and wait for oui or non.
+3. On oui, apply that fix alone, with its tests and docs, then ask about the next one. On non, skip it and ask about the next one. If the user's answer changes the fix, apply what they decided.
+4. Once every fix is answered, run `pnpm validate`, report its actual output, and recap what was applied and what was skipped.

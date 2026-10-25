@@ -82,8 +82,9 @@ Mockups: the OSM-13 canvas. Anything marked **proposed** is not settled: see
 Three columns under a thin top bar:
 
 - **Top bar**: the app name, the command palette trigger, undo, redo, help,
-  and the Osmoz signature (`docs/brand.md`). Reset is in the command
-  palette; settings, about and the legal links are in the help dialog.
+  and the Osmoz signature (`docs/brand.md`). Reset and theme are in
+  the command palette; settings, theme included, about and the legal links
+  are in the help dialog.
 - **Controls** (left): two tabs, _Container_ and _Item_. Each property is a
   collapsible row.
 - **Canvas** (center): the flex container and its items, with one status line
@@ -215,7 +216,8 @@ The main axis and the cross axis are drawn on the container. They follow
 - settings: the theme (system, light or dark) and the single-key shortcuts
   switch;
 - about: the author, links to Osmoz and the source code;
-- links to the legal notice and the privacy note, on their own page.
+- links to the legal notice and the privacy note, which live on a page of
+  their own, outside the dialog.
 
 No separate page for help, so the playground keeps the whole screen. On
 desktop the dialog is centered over the playground; on mobile it takes the
@@ -241,9 +243,9 @@ Motion shows what a value does; it never delays the result.
 | Moment                             | Motion                                                    | Duration           |
 | ---------------------------------- | --------------------------------------------------------- | ------------------ |
 | A property changes, undo, redo     | Items move and resize to their new box                    | 200 ms             |
-| An item is added or removed        | It fades and scales in or out; the others move as above   | 150 ms             |
+| An item is added or removed        | It fades in or out; the others move as above              | 150 ms             |
 | The container is resized           | None: it follows the pointer, the keys or the typed value | —                  |
-| `flex-direction` flips the axes    | The axes cross-fade                                       | 80 ms out, 120 in  |
+| `flex-direction` flips the axes    | The axes cross-fade                                       | 120 ms in, 80 out  |
 | The help dialog opens or closes    | Fade, on desktop and mobile                               | 150 ms in, 100 out |
 | Hover, pressed and selected states | Colors only                                               | 120 ms             |
 | The generated code changes         | Each new or changed line lights up, then fades            | 700 ms             |
@@ -280,7 +282,7 @@ Motion shows what a value does; it never delays the result.
 | Browser storage unavailable                    | Works without saving, no message                                                             |
 | Saved state fails validation                   | Starts from the initial state                                                                |
 | Saved state from an older schema               | Migrated if possible, else the initial state                                                 |
-| Web fonts not loaded                           | System fallback stacks; text may reflow once the fonts load                                  |
+| Web fonts not loaded                           | System fallback stacks for the whole visit; text never reflows when the fonts arrive         |
 | Reduced motion                                 | No movement or resizing; color and opacity fades stay (see Motion)                           |
 
 ### Flows

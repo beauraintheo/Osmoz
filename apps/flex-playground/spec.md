@@ -82,8 +82,8 @@ Mockups: the OSM-13 canvas. Anything marked **proposed** is not settled: see
 Three columns under a thin top bar:
 
 - **Top bar**: the app name, the command palette trigger, undo, redo, help,
-  and the Osmoz signature (`docs/brand.md`). Reset and theme are in the
-  command palette; settings and about are in the help dialog.
+  and the Osmoz signature (`docs/brand.md`). Reset is in the command
+  palette; settings, about and the legal links are in the help dialog.
 - **Controls** (left): two tabs, _Container_ and _Item_. Each property is a
   collapsible row.
 - **Canvas** (center): the flex container and its items, with one status line
@@ -201,16 +201,25 @@ The main axis and the cross axis are drawn on the container. They follow
 | `C`         | Copy the CSS            |
 | `?`         | Open help and shortcuts |
 
-- Single-key shortcuts are on by default and can be turned off in the
-  palette (WCAG 2.1.4). They never fire while typing in a field.
+- Single-key shortcuts are on by default and can be turned off in the help
+  dialog's settings (WCAG 2.1.4). They never fire while typing in a field.
 - Every action also has a visible control: a shortcut is a faster path, never
   the only one.
 
 ### Help and about
 
-`?` or the palette opens one dialog: what Flux is for, the shortcuts, the
-author, links to Osmoz and the source code. No separate page, so the
-playground keeps the whole screen.
+`?`, the top bar's help button or the palette opens one dialog:
+
+- what Flux is for, in one sentence;
+- the shortcuts, the single-key ones shown as off when turned off;
+- settings: the theme (system, light or dark) and the single-key shortcuts
+  switch;
+- about: the author, links to Osmoz and the source code;
+- links to the legal notice and the privacy note, on their own page.
+
+No separate page for help, so the playground keeps the whole screen. On
+desktop the dialog is centered over the playground; on mobile it takes the
+whole screen, with the same content.
 
 ### Onboarding
 
@@ -219,10 +228,39 @@ make the first use self-explanatory.
 
 ### Themes and language
 
-- Light and dark. The system preference is followed until the user picks one;
-  the choice is remembered.
+- Light and dark. The system preference is followed until the user picks one
+  in the help dialog or the palette; the choice is remembered, and picking
+  "system" follows it again.
 - English only, but every string goes through the i18n mechanism so other
   languages can be added without touching components.
+
+### Motion
+
+Motion shows what a value does; it never delays the result.
+
+| Moment                             | Motion                                                    | Duration           |
+| ---------------------------------- | --------------------------------------------------------- | ------------------ |
+| A property changes, undo, redo     | Items move and resize to their new box                    | 200 ms             |
+| An item is added or removed        | It fades and scales in or out; the others move as above   | 150 ms             |
+| The container is resized           | None: it follows the pointer, the keys or the typed value | —                  |
+| `flex-direction` flips the axes    | The axes cross-fade                                       | 80 ms out, 120 in  |
+| The help dialog opens or closes    | Fade, on desktop and mobile                               | 150 ms in, 100 out |
+| Hover, pressed and selected states | Colors only                                               | 120 ms             |
+| The generated code changes         | Each new or changed line lights up, then fades            | 700 ms             |
+
+- Items animate their real size, not a scale, so their text stays sharp.
+- A new change interrupts the running one and starts from where the items
+  are shown, never from where the previous change would have ended. The
+  canvas never lags behind the controls and the code.
+- Code lines light up when the generated code changes: a property, undo,
+  redo, a reset, an item added or removed, an item's text, or the shorthand
+  switch. Only new or changed lines light up, in the CSS or the HTML tab,
+  whichever is shown. Selecting an item or switching tabs lights nothing.
+  Changing the same line again restarts its fade.
+- The theme switches instantly.
+- With reduced motion, nothing moves or resizes: items jump to their new box
+  and added or removed items only fade. Color and opacity fades stay,
+  including the code lines.
 
 ### Errors and edge cases
 
@@ -243,7 +281,7 @@ make the first use self-explanatory.
 | Saved state fails validation                   | Starts from the initial state                                                                |
 | Saved state from an older schema               | Migrated if possible, else the initial state                                                 |
 | Web fonts not loaded                           | System fallback stacks; text may reflow once the fonts load                                  |
-| Reduced motion                                 | No transition                                                                                |
+| Reduced motion                                 | No movement or resizing; color and opacity fades stay (see Motion)                           |
 
 ### Flows
 
@@ -265,8 +303,8 @@ make the first use self-explanatory.
 8. **Keyboard power use.** `Cmd`/`Ctrl` + `K` to jump to a property or run
    an action; single keys for frequent actions; `?` for help.
 9. **Come back later.** The last state is restored.
-10. **Theme.** Follows the system until switched from the palette; the
-    choice is remembered.
+10. **Theme.** Follows the system until switched from the help dialog or
+    the palette; the choice is remembered.
 11. **Mobile.** Canvas on top, then Container, Item and Code tabs. The same
     properties in the same order.
 12. **Keyboard only.** Top bar, controls, canvas items, resize handle, code;

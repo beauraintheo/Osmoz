@@ -80,6 +80,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
   "devDependencies": {
     "@osmoz/config": "workspace:*",
     "@osmoz/theme": "workspace:*",
+    "@osmoz/ui": "workspace:*",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
@@ -138,6 +139,10 @@ code, ignored by lint, format and coverage. `@/` points to the app's `src/`.
 The index route of a folder is `home.tsx`, not `index.tsx`: `routes/home.tsx`
 is `/`, `routes/posts/home.tsx` is `/posts/`. A route file exports `Route`, and
 the linter forbids named exports from an `index` file.
+
+Interface components come from `@osmoz/ui`, without style: the app wraps each
+one it uses in its own `components/`, with its classes, and its `cn` helper
+lives in `src/lib/cn.ts` ([conventions.md](conventions.md#architecture)).
 
 What the app adds to the base, and why, goes in its `CLAUDE.md`
 ([app-spec.md](app-spec.md)).

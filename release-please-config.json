@@ -8,6 +8,7 @@
   "packages": {
     "apps/flex-playground": {},
     "packages/config": {},
-    "packages/theme": {}
+    "packages/theme": {},
+    "packages/ui": {}
   }
 }

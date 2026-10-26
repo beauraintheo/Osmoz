@@ -21,6 +21,16 @@ into the O where they cross.
 The gap is a mask, not a background-colored stroke: every file is transparent
 and sits on any ground.
 
+These files are the source of the mark: the design reference, and what an
+app's favicon and icon are derived from. Inside an app's interface, the mark
+comes from `@osmoz/brand` instead, as a component drawn without color
+(`@osmoz/brand/osmoz-symbol`) that reads `--osmoz-o` and `--osmoz-cloud` from
+the app's theme and falls back to `currentColor`. A file moves into the package
+only when code imports it.
+
+The symbol's paths exist twice, in `osmoz-symbol.svg` and in the component:
+change both together.
+
 ## Layout
 
 - **Desktop**: the lockup, symbol and wordmark.
@@ -29,7 +39,9 @@ and sits on any ground.
 
 ## Colors
 
-The mark's colors are fixed. They do not follow an app's theme tokens.
+The mark's colors are fixed when it stands for Osmoz itself: the files above,
+the portfolio. Inside an app, the O takes the app's accent instead (see the
+signature and the favicon below); the cloud and the wordmark never change.
 
 | Role     | Light     | Dark      | Contrast on its ground |
 | -------- | --------- | --------- | ---------------------- |
@@ -56,7 +68,7 @@ One author, many identities: an app shares the signature, nothing else.
 
 | Shared by every app                                 | Free in each app         |
 | --------------------------------------------------- | ------------------------ |
-| The Osmoz mark and its colors                       | Palette and themes       |
+| The Osmoz mark, its cloud and wordmark colors       | Palette and themes       |
 | The signature in the header (below)                 | Fonts and type scale     |
 | A favicon derived from the mark (below)             | Radius, spacing values   |
 | The token contract and WCAG 2.2 AA, per conventions | Layout and composition   |
@@ -74,15 +86,18 @@ screen:
 - **Mobile**: the symbol alone, with `aria-label="par Osmoz"`.
 - It is a link to [github.com/beauraintheo](https://github.com/beauraintheo)
   until the portfolio exists, then to the portfolio.
-- The symbol keeps its fixed colors; the text takes the app's muted foreground
-  token.
+- The O takes the app's accent and the cloud the Osmoz cloud color, through
+  the theme tokens `--osmoz-o` and `--osmoz-cloud`, with the values of the
+  table below; the text takes the app's muted foreground token.
+- The signature is a component of each app (`components/osmoz-signature.tsx`):
+  the `@osmoz/ui` link around the `@osmoz/brand` symbol, styled by the app.
 - The symbol is at least 16 px high and the link target at least 24 × 24 px.
 
 ## Derived favicon
 
-Each app's favicon is the Osmoz symbol with the O in the app's accent color.
-The cloud keeps the Osmoz cloud color, so the tabs of every app read as one
-family and still tell apart.
+Each app's favicon is the Osmoz symbol with the O in the app's accent color,
+the same as in its signature. The cloud keeps the Osmoz cloud color, so the
+tabs of every app read as one family and still tell apart.
 
 The app's accent must keep the O at 3:1 or more on both reference grounds. An
 app without a settled accent uses `osmoz-symbol.svg` until it has one.
@@ -99,3 +114,5 @@ changed, rendered at 180 px.
 
 - The wordmark outlined to paths.
 - The `.ico` 32 px fallback, for browsers without SVG favicons.
+- An app's favicon generated from `osmoz-symbol.svg` and its accent, instead of
+  derived by hand.

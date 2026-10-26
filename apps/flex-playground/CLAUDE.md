@@ -10,6 +10,8 @@ and why is in [spec.md](spec.md).
 - Zod (planned): validates the layout state at its boundaries (browser
   storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
   needs it.
+- `@osmoz/brand`: the Osmoz mark, for the signature; its O takes Flux's
+  accent through `--osmoz-o` (docs/brand.md).
 - `@osmoz/ui`: interface components without style; Flux styles each one it
   uses in `components/`.
 - shadcn/ui (planned): starting point for components, split between
@@ -84,9 +86,16 @@ data.
   theme switcher yet.
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
-  is `muted`, `ring` is `primary`.
+  is `muted`, `ring` and `osmoz-o` are `primary`. `osmoz-cloud` takes the
+  Osmoz cloud color of each theme (docs/brand.md).
 - Roles beyond the contract: `item`, `item-foreground`, `item-border`,
   `axis-cross`, `code-keyword`, `code-value`.
+- Typography roles, from the OSM-13 canvas: `title` (app and dialog titles,
+  with `font-mono`), `body` (running text), `control` (buttons, fields,
+  property names), `label` (field and group labels, with `font-mono`),
+  `overline` (section titles, with `uppercase`), `code` (generated code),
+  `canvas` (item text), `tile` (value tile labels). Their sizes are in
+  `theme.css` and on boards C-01 and C-02.
 - Fonts: Geist for the interface, Geist Mono for code, with system fallback
   stacks. Only `--font-sans` and `--font-mono` change in `@theme`.
 - Font loading: `fonts.css`, imported by `theme.css`, declares the latin and

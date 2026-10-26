@@ -9,6 +9,35 @@
   --font-mono:
     "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
+
+  --text-title: 1.125rem;
+  --text-title--line-height: 1.5rem;
+  --text-title--letter-spacing: -0.02em;
+  --text-title--font-weight: 600;
+
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.3125rem;
+
+  --text-control: 0.8125rem;
+  --text-control--line-height: 1.25rem;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1rem;
+
+  --text-overline: 0.75rem;
+  --text-overline--line-height: 1rem;
+  --text-overline--letter-spacing: 0.06em;
+  --text-overline--font-weight: 600;
+
+  --text-code: 0.8125rem;
+  --text-code--line-height: 1.375rem;
+
+  --text-canvas: 0.9375rem;
+  --text-canvas--line-height: 1.25rem;
+  --text-canvas--font-weight: 500;
+
+  --text-tile: 0.6875rem;
+  --text-tile--line-height: 0.875rem;
 }
 
 @theme inline {
@@ -28,6 +57,7 @@
   --secondary: var(--muted);
   --secondary-foreground: var(--foreground);
   --ring: var(--primary);
+  --osmoz-o: var(--primary);
 }
 
 :root,
@@ -52,6 +82,7 @@
   --axis-cross: oklch(0.58 0.15 355);
   --code-keyword: oklch(0.5 0.14 300);
   --code-value: oklch(0.48 0.1 175);
+  --osmoz-cloud: oklch(0.577 0.146 297.3);
 }
 
 [data-theme="dark"] {
@@ -75,4 +106,5 @@
   --axis-cross: oklch(0.78 0.13 355);
   --code-keyword: oklch(0.78 0.12 305);
   --code-value: oklch(0.82 0.1 170);
+  --osmoz-cloud: oklch(0.704 0.164 287.8);
 }

@@ -1,5 +1,19 @@
 import { defineConfig } from "vite-plus";
 
+import { APPS_DIR, listApps } from "./packages/scripts/src/list-apps.ts";
+
+const APP_THEME_FILE = "src/theme/theme.css";
+
+const appClassSorting = listApps(APPS_DIR).map((app) => ({
+  files: [`apps/${app}/**`],
+  options: {
+    sortTailwindcss: {
+      stylesheet: `./apps/${app}/${APP_THEME_FILE}`,
+      functions: ["cn"],
+    },
+  },
+}));
+
 const ignorePatterns = [
   "**/node_modules/**",
   "**/dist/**",
@@ -78,6 +92,10 @@ export default defineConfig({
       internalPattern: ["@/"],
       newlinesBetween: true,
     },
+    sortTailwindcss: {
+      functions: ["cn"],
+    },
+    overrides: appClassSorting,
   },
   staged: {
     "*.{js,ts,jsx,tsx,json,jsonc,css,md}": "vp check --fix",

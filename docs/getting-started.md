@@ -22,16 +22,16 @@ pnpm dev
 
 ## 2. Everyday commands
 
-| Command               | What it does                                                  |
-| --------------------- | ------------------------------------------------------------- |
-| `pnpm dev [app]`      | Run every workspace in dev mode, or only `<app>`              |
-| `pnpm validate [app]` | `check`, then types and tests at 100% coverage (see below)    |
-| `pnpm build [app]`    | `validate`, then build. Stops if validation fails             |
-| `pnpm check`          | Format and lint (oxfmt + type-aware oxlint), without writing  |
-| `pnpm check:fix`      | Same, with fixes: formatting, import order, autofixable rules |
-| `pnpm check-types`    | TypeScript, in every workspace                                |
-| `pnpm test`           | Unit tests of every workspace, once                           |
-| `pnpm test:coverage`  | Same, with the 100% coverage threshold                        |
+| Command               | What it does                                                            |
+| --------------------- | ----------------------------------------------------------------------- |
+| `pnpm dev [app]`      | Run every workspace in dev mode, or only `<app>`                        |
+| `pnpm validate [app]` | `check`, then types and tests at 100% coverage (see below)              |
+| `pnpm build [app]`    | `validate`, then build. Stops if validation fails                       |
+| `pnpm check`          | Format and lint (oxfmt + type-aware oxlint), without writing            |
+| `pnpm check:fix`      | Same, with fixes: formatting, import and class order, autofixable rules |
+| `pnpm check-types`    | TypeScript, in every workspace                                          |
+| `pnpm test`           | Unit tests of every workspace, once                                     |
+| `pnpm test:coverage`  | Same, with the 100% coverage threshold                                  |
 
 `[app]` is a folder name of `apps/`, like `pnpm build flex-playground`. An
 unknown name fails and lists the apps.
@@ -73,6 +73,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
     "validate": "vp run check-types && vp run test:coverage"
   },
   "dependencies": {
+    "@osmoz/brand": "workspace:*",
     "@osmoz/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",
@@ -144,10 +145,52 @@ Interface components come from `@osmoz/ui`, without style: the app wraps each
 one it uses in its own `components/`, with its classes, and its `cn` helper
 lives in `src/lib/cn.ts` ([conventions.md](conventions.md#architecture)).
 
+The theme file is always `src/theme/theme.css`: the root `vite.config.ts`
+finds it there to sort the app's Tailwind classes against its own tokens.
+Nothing to declare. Each of its themes also sets `--osmoz-o` and
+`--osmoz-cloud`, which color the Osmoz mark of `@osmoz/brand` in the
+signature ([brand.md](brand.md)).
+
 What the app adds to the base, and why, goes in its `CLAUDE.md`
 ([app-spec.md](app-spec.md)).
 
-## 4. From a ticket to a pull request
+## 4. Create a component
+
+An interface component lives in two places: its behavior in `@osmoz/ui`,
+shared, and its look in the app ([conventions.md](conventions.md#architecture)).
+
+1. **Design it.** On the app's mockups, in the screen that uses it, then on the
+   components boards with every state, in every theme. Tokens and typography
+   roles only.
+2. **Write its behavior** in `packages/ui/src/<component>.tsx`: the native
+   element first, never a class name. Its API is `variant` and `size`, its
+   states are `data-*` and ARIA attributes, and its props extend
+   `ComponentProps<"<element>">`. Logic beyond wiring goes to a `.ts` file next
+   to it, with its `.test.ts`. From shadcn, keep the behavior here and move the
+   classes to step 3.
+3. **Style it** in `apps/<app>/src/components/<component>.tsx`: wrap the
+   `@osmoz/ui` component and give it the app's classes with `cn`. Every state
+   of the boards has its class: `hover:`, `focus-visible:`, `disabled:`,
+   `aria-busy:`…
+4. **Use it.** Routes and features import the styled component from
+   `components/`, never `@osmoz/ui` directly.
+5. **Check it.** The rendered states match the boards, every action works with
+   the keyboard, and `pnpm validate` passes. A state found along the way goes
+   back to the boards.
+
+```tsx
+// packages/ui/src/button.tsx: behavior, no class
+export const Button = ({ type = "button", ...props }: ButtonProps): ReactElement => (
+  <button {...props} type={type} />
+);
+
+// apps/<app>/src/components/button.tsx: the app's look
+export const Button = ({ className, ...props }: ButtonProps): ReactElement => (
+  <BaseButton {...props} className={cn("bg-primary text-control h-8 rounded-md px-3", className)} />
+);
+```
+
+## 5. From a ticket to a pull request
 
 1. **Ticket.** Every change starts from a Linear issue. `/linear-ticket` drafts
    one.
@@ -175,7 +218,7 @@ behind `main`, blocks the merge.
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to
 > make a check green: fix the code, or say what fails in the PR.
 
-## 5. What surprises people
+## 6. What surprises people
 
 - **`pnpm check` proves little.** It formats and lints, but runs no typecheck and
   no tests. Only `pnpm validate` tells you the work is done.
@@ -183,13 +226,17 @@ behind `main`, blocks the merge.
 - **`console.log`, `any`, `as` casts, `!` and default exports are rejected** by
   the linter. `console.warn` and `console.error` pass.
 - **Function declarations are rejected.** Write `const f = (): T => …`.
-- **`pnpm check:fix` reorders your imports.** That is expected.
+- **`pnpm check:fix` reorders your imports and your Tailwind classes.** That is
+  expected. In VS Code, saving a file does the same: install the recommended
+  Oxc extension, which runs Vite+'s formatter and linter with the root
+  `vite.config.ts`. After changing that config, run **Oxc: Restart oxfmt
+  Server**.
 - **Only `.ts` files are unit tested.** `.tsx` files render, and coverage
   ignores them.
 - **`@osmoz/config` imports its own files with the `.ts` extension.** Node
   loads it as is when Vite reads an app's `vite.config.ts`, and Node requires
   the extension.
 
-## 6. Next
+## 7. Next
 
 Read [conventions.md](conventions.md). What to work on lives in Linear.

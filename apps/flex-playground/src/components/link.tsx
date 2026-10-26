@@ -22,7 +22,7 @@ const StyledLink = ({
 }: StyledLinkProps): ReactElement => (
   <BaseLink
     {...props}
-    newTabHint={newTabLabel ? <span className="sr-only"> ({newTabLabel})</span> : undefined}
+    newTabHint={newTabLabel ? <span className="sr-only"> {newTabLabel}</span> : undefined}
     className={cn(
       "rounded-xs underline underline-offset-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
       VARIANT_CLASSES[variant],

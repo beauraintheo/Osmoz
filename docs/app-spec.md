@@ -15,6 +15,7 @@ never repeated: link to it, or leave it out.
 | Layers            | Which folder may import which. What is forbidden.           |
 | Where a file goes | For each kind of file, its folder and an example name.      |
 | Theme             | Which themes ship, and the app's own tokens and roles.      |
+| Languages         | Which catalogs ship, the source one and the fallback.       |
 | Commands          | Commands specific to the app. Root commands are not listed. |
 
 A section that does not apply says so in one line rather than disappearing:
@@ -55,6 +56,10 @@ src/
 
 - File: `src/theme/theme.css`
 - Themes: `<name>`, …
+
+## Languages
+
+- Catalogs: `<locale>`, … in `src/i18n/`, source and fallback `<locale>`.
 
 ## Commands
 

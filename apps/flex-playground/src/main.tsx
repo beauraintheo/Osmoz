@@ -3,7 +3,8 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { routeTree } from "@/route-tree.gen";
-import "@/theme/theme-store";
+import "@/i18n/use-locale-store";
+import "@/theme/use-theme-store";
 
 import "@/theme/theme.css";
 

@@ -233,8 +233,13 @@ make the first use self-explanatory.
 - Light and dark. The system preference is followed until the user picks one
   in the help dialog or the palette; the choice is remembered, and picking
   "system" follows it again.
-- English only, but every string goes through the i18n mechanism so other
-  languages can be added without touching components.
+- French and English. French until the user picks a language, whatever the
+  browser's; the choice is remembered and applies at once, without a reload.
+  Every string goes through the i18n mechanism, so other languages can be
+  added without touching components.
+- Language switcher (**proposed**): a menu in the desktop header, a select in
+  the help dialog's settings on mobile, each language named in itself, no
+  flags.
 
 ### Motion
 
@@ -329,7 +334,7 @@ the target. Scoped when Docs ships.
 
 - Sharing a layout by URL (Playground).
 - Generated code as Tailwind classes (Tailwind milestone).
-- Languages other than English (Playground).
+- Languages other than French and English (Playground).
 - CSS Grid: it has its own app.
 
 ## Non-functional

@@ -59,12 +59,22 @@ image used by one app stays in that app.
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
 prop, with no default, so each app passes its own wording and language.
 
+👀 **The visitor's preferences live in `@osmoz/preferences`**: one folder per
+preference, `theme/` and `i18n/`, each with its zustand store, and `persist/`
+for what they share: the storage that never throws, the persisted field and
+the sync with other tabs. A new preference gets its folder there and builds
+on `persist/`, never on its own storage code. `@osmoz/theme` holds only the
+design contract, `base.css`.
+
 A package exposes `src/` through `exports` patterns in its `package.json`, one
 per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
 `"./*": "./src/*.tsx"` for components, `"./*": "./src/*/*.tsx"` for
 components in their own folder (`@osmoz/ui`, whose `.ts` logic stays
 internal), `"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
 `"./*.css": "./src/*.css"` next to code for JSON configs or stylesheets. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
+The `*` of a pattern spans folders too: `"./*": "./src/*.ts"` serves
+`@osmoz/preferences/theme/create-theme-store` from
+`src/theme/create-theme-store.ts`.
 
 ## Naming
 
@@ -190,6 +200,53 @@ Add one only for a measured problem, with the measurement in the PR.
 👀 **No `useEffect` to derive state.** Compute it during render. An effect is for
 syncing with something outside React.
 
+## Texts and languages
+
+Every text an app shows comes from its message catalog, so a language can be
+added without touching a component. The `i18n/` folder of
+`@osmoz/preferences` holds the mechanism, each app holds its catalogs in
+`src/i18n/`.
+
+🔒 **No text written in JSX.** A text child, or a string in `aria-label`,
+`aria-description`, `alt`, `title`, `placeholder` or `label`, fails the
+linter (`react/jsx-no-literals`). Read it from the catalog instead:
+
+```tsx
+<h1 className="text-title">{messages.app.name}</h1>
+```
+
+A text built outside JSX, like a string passed to a function, is not caught:
+👀 it goes through the catalog all the same.
+
+🔒 **A key that does not exist fails the typecheck**, and so does a
+translation that misses or adds a key, since it is written
+`satisfies typeof <source>`.
+
+- **The source catalog** is the app's default language: `src/i18n/<locale>.ts`
+  exports a plain object named after its locale, nested by screen or feature.
+  A message is a string, or a function when it takes parameters:
+  `itemCount: (count: number): string => …`. Plurals use `Intl.PluralRules`
+  inside that function.
+- **Another language** is one file, `src/i18n/<locale>.ts`, typed
+  `satisfies typeof <source>`, added to the `catalogs` of
+  `src/i18n/use-locale-store.ts`. Each catalog has a test:
+  `emptyMessages(<catalog>)` is `[]`, so no message is left empty. It checks
+  only string messages: 👀 a message that is a function is checked on review.
+- **The language is a zustand store.** `createLocaleStore` starts on the
+  visitor's stored choice, kept under `<app>:locale` by zustand's `persist`,
+  else on the fallback: the browser's language is not followed. A blocked
+  storage never throws. The store sets `<html lang>`, follows a choice made in
+  another tab, and `setLocale` switches every text at once, without a reload.
+  `index.html` declares the fallback for the first paint.
+- **`createLocaleStore` returns a zustand hook**, which the app exports as
+  `useLocaleStore`. Components read their texts with a selector, never from a
+  catalog: `const messages = useLocaleStore((state) => state.messages)`. A
+  language switcher reads `locales` and `locale`, and calls `setLocale`.
+- 👀 **Shared components take their texts as props**
+  ([Architecture](#architecture)): the app passes them from its catalog.
+  Punctuation belongs to the message too: `"(new tab)"`, not `({label})` in
+  the component.
+
 ## Design
 
 Each project has its own visual identity. These principles hold in all of them.
@@ -269,11 +326,14 @@ A project can ship any number of themes, not only light and dark.
   theme would break it. Only tokens change between themes.
 - The default theme follows `prefers-color-scheme`; a manual choice is
   remembered, per app, under `<app>:theme`.
-- 👀 **Theme logic comes from `@osmoz/theme`**, never rewritten in an app. The
+- 👀 **Theme logic comes from the `theme/` folder of `@osmoz/preferences`**,
+  never rewritten in an app. The
   app declares its themes with `defineThemeOptions`, injects
   `firstPaintScript` through `headScripts` in `vite.config.ts`, creates its
-  store with `createThemeStore` and reads it with `useTheme`. Each app builds
-  its own switcher on top.
+  store with `createThemeStore`, which returns a zustand hook, and reads it
+  with a selector. The choice is kept under `<app>:theme` by zustand's
+  `persist`; the first-paint script reads that same entry before any
+  JavaScript of the app. Each app builds its own switcher on top.
 - Every theme meets the accessibility rules below on its own.
 
 ```css
@@ -435,7 +495,7 @@ actually run.
 ### Release
 
 Each app has its own SemVer version, tags, changelog and GitHub Releases. The
-shared packages `brand`, `config`, `theme` and `ui` are versioned the same way; the root and
+shared packages `brand`, `config`, `preferences`, `theme` and `ui` are versioned the same way; the root and
 `scripts` are not. Nothing is released by hand: release-please computes it
 from the commits on `main` (`.github/workflows/release.yml`,
 `release-please-config.json`).
@@ -456,7 +516,7 @@ bump:
 | `!` or `BREAKING CHANGE:`     | minor       | major        |
 | `chore`, `ci`, `docs`, others | none        | none         |
 
-- A release of `brand`, `config`, `theme` or `ui` bumps every app that depends on it with a
+- A release of `brand`, `config`, `preferences`, `theme` or `ui` bumps every app that depends on it with a
   patch. When the change is a feature of the app, the pull request touches the
   app too, and its `feat` title bumps the app with a minor.
 - 👀 To force a version, like `1.0.0`, add a `Release-As: 1.0.0` footer to the

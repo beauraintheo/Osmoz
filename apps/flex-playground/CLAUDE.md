@@ -13,6 +13,9 @@ and why is in [spec.md](spec.md).
 - `@osmoz/brand`: the Osmoz mark, for the signature; its O takes Flux's
   accent through `--osmoz-o` (docs/brand.md). `theme.css` imports
   `@osmoz/brand/brand.css` so Tailwind generates its classes.
+- zustand: the app's state library. `@osmoz/preferences` builds the theme
+  and language stores with it; the layout state and its history will use it
+  too.
 - `@osmoz/ui`: interface components without style; Flux styles each one it
   uses in `components/`.
 - shadcn/ui (planned): starting point for components, split between
@@ -32,8 +35,10 @@ src/
                 @osmoz/ui components, and its own generic components
   lib/          pure utilities with no domain knowledge, cn.ts included
   theme/        the app's theme: theme.css, its font faces (fonts.css),
-                its themes for @osmoz/theme (theme-options.ts) and the
-                theme store (theme-store.ts)
+                its themes (theme-options.ts) and the theme store
+                (use-theme-store.ts), from @osmoz/preferences
+  i18n/         the message catalogs (fr.ts, en.ts) and the language
+                store (use-locale-store.ts), from @osmoz/preferences
 public/         static files served as is: favicon.svg and
                 apple-touch-icon.png, derived from the Osmoz mark
                 (docs/brand.md)
@@ -55,7 +60,10 @@ file.
   `@osmoz/ui` directly.
 - `lib` imports nothing from the app.
 - `theme` imports nothing from the app. `routes`, `features` and
-  `components` may import `theme/theme-store` to read or change the theme.
+  `components` may import `theme/use-theme-store` to read or change the theme.
+- `i18n` imports nothing from the app. `routes`, `features` and `components`
+  may import `i18n/use-locale-store` to read the texts or change the language,
+  never a catalog.
 
 ## Where a file goes
 
@@ -70,6 +78,7 @@ file.
 | Styled `@osmoz/ui` component | `components/`         | `button.tsx`              |
 | Other shared UI component    | `components/`         | `header.tsx`              |
 | Pure utility                 | `lib/`                | `cn.ts`                   |
+| Message catalog              | `i18n/`               | `fr.ts`                   |
 
 Properties are described in lists, one file per target (container, item). A
 property gets a file of its own only when it has logic of its own
@@ -81,10 +90,10 @@ data.
 - File: `src/theme/theme.css`
 - Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas, declared in
   `src/theme/theme-options.ts` and stored under `flux:theme`. `vite.config.ts`
-  injects the first-paint script of `@osmoz/theme`; `src/theme/theme-store.ts`
-  creates the app's single theme store, imported by `main.tsx` before
-  rendering and read with `useTheme`. Without JavaScript, `light` applies. No
-  theme switcher yet.
+  injects the first-paint script of `@osmoz/preferences`;
+  `src/theme/use-theme-store.ts` creates the app's single theme store, a
+  zustand hook imported by `main.tsx` before rendering. Without JavaScript,
+  `light` applies. No theme switcher yet.
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
   is `muted`, `ring` and `osmoz-o` are `primary`. `osmoz-cloud` takes the
@@ -107,6 +116,17 @@ data.
   `unicode-range` values are copied and must be checked when Fontsource is
   updated. `index.html` preloads both latin files so they are usually ready;
   Vite rewrites the links to the hashed files the CSS requests.
+
+## Languages
+
+- Catalogs: `fr`, the source and the fallback, and `en`, in `src/i18n/`.
+  `src/i18n/use-locale-store.ts` creates the app's single language store, a
+  zustand hook imported by `main.tsx` before rendering. Until the visitor
+  picks a language, Flux is in French, whatever the browser's language; the
+  choice is stored under `flux:locale`. `index.html` declares `lang="fr"`.
+- Switcher (proposed, OSM-13 canvas): a language menu in the desktop header
+  (D-06), a select in Help › Settings on mobile (M-05). Each language is named
+  in itself. Not built yet.
 
 ## Commands
 

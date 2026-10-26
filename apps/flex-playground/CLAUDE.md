@@ -17,10 +17,10 @@ and why is in [spec.md](spec.md).
   and language stores with it; the layout state and its history will use it
   too.
 - `@osmoz/ui`: interface components without style; Flux styles each one it
-  uses in `components/`.
-- shadcn/ui (planned): starting point for components, split between
-  `@osmoz/ui` and `components/` (conventions.md). `components.json` is set up
-  with the first one.
+  uses in `components/ui/`.
+- Remix Icon (`@remixicon/react`): the app's icons, line style, passed to
+  components through their `icon` prop. Free for apps and design systems; its
+  license only forbids selling the icons on their own.
 
 ## Structure
 
@@ -31,8 +31,10 @@ src/
                 exercises/
   domain/       Flexbox knowledge shared by every mode: property descriptions,
                 layout state, CSS and HTML generation; plain TypeScript
-  components/   shared UI with no domain knowledge: Flux's styled versions of
-                @osmoz/ui components, and its own generic components
+  components/   shared UI with no domain knowledge, built from components/ui:
+                header, language and theme toggles
+    ui/         Flux's design system: one styled version per @osmoz/ui
+                component, and nothing that knows the app
   lib/          pure utilities with no domain knowledge, cn.ts included
   theme/        the app's theme: theme.css, its font faces (fonts.css),
                 its themes (theme-options.ts) and the theme store
@@ -54,10 +56,12 @@ file.
   nor another feature. Code two features need moves to `domain`,
   `components` or `lib`.
 - `domain` may import `lib`, never React nor any other folder of the app.
-- `components` may import `lib`, `@osmoz/ui` and `@osmoz/brand`, never
+- `components` may import `components/ui`, `lib` and `@osmoz/brand`, never
   `features`, `domain` nor `routes`.
-- `routes` and `features` use the styled components of `components/`, never
-  `@osmoz/ui` directly.
+- `components/ui` may import `lib` and `@osmoz/ui` only: no store, no
+  catalog, no other component of the app. Its texts come in as props.
+- `routes`, `features` and `components` use the styled components of
+  `components/ui/`, never `@osmoz/ui` directly.
 - `lib` imports nothing from the app.
 - `theme` imports nothing from the app. `routes`, `features` and
   `components` may import `theme/use-theme-store` to read or change the theme.
@@ -75,8 +79,8 @@ file.
 | Property descriptions        | `domain/`             | `container-properties.ts` |
 | Layout state and its schema  | `domain/`             | `layout-state.ts`         |
 | Code generation              | `domain/`             | `to-css.ts`               |
-| Styled `@osmoz/ui` component | `components/`         | `button.tsx`              |
-| Other shared UI component    | `components/`         | `header.tsx`              |
+| Styled `@osmoz/ui` component | `components/ui/`      | `button.tsx`              |
+| Other shared UI component    | `components/`         | `lang-toggle.tsx`         |
 | Pure utility                 | `lib/`                | `cn.ts`                   |
 | Message catalog              | `i18n/`               | `fr.ts`                   |
 
@@ -105,7 +109,15 @@ data.
   property names), `label` (field and group labels, with `font-mono`),
   `overline` (section titles, with `uppercase`), `code` (generated code),
   `canvas` (item text), `tile` (value tile labels). Their sizes are in
-  `theme.css` and on boards C-01 and C-02.
+  `theme.css` and on boards C-01 and C-02. A role keeps the same size on
+  every screen.
+- 4 px grid: spacing, sizes (heights, widths, icons) and line heights are
+  multiples of 4 px, so no half step of the Tailwind scale (`gap-1.5`,
+  `px-2.5`). Font sizes and radii stay outside the grid.
+- Touch sizes follow the pointer, not the screen width: every interactive
+  component is sized for the mouse (32 px controls, 24 px small ones) and
+  grows with `pointer-coarse:` (44 px, 36 px small). The `lg:` breakpoint
+  only changes the layout.
 - Fonts: Geist for the interface, Geist Mono for code, with system fallback
   stacks. Only `--font-sans` and `--font-mono` change in `@theme`.
 - Font loading: `fonts.css`, imported by `theme.css`, declares the latin and
@@ -124,9 +136,11 @@ data.
   zustand hook imported by `main.tsx` before rendering. Until the visitor
   picks a language, Flux is in French, whatever the browser's language; the
   choice is stored under `flux:locale`. `index.html` declares `lang="fr"`.
-- Switcher (proposed, OSM-13 canvas): a language menu in the desktop header
-  (D-06), a select in Help › Settings on mobile (M-05). Each language is named
-  in itself. Not built yet.
+- Switcher (OSM-13 canvas): a Français / English choice group in Help ›
+  Settings, the same on desktop and mobile (D-05, M-05), and a FR/EN toggle
+  in the header on desktop only (D-01). Each language is named in itself.
+  The header toggle is built (`components/lang-toggle.tsx`); the Help ›
+  Settings group waits for the help dialog (OSM-42).
 
 ## Commands
 

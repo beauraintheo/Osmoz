@@ -12,8 +12,8 @@ type ThemePreference<Theme extends string> = Theme | "system";
 interface ThemeState<Theme extends string> {
   preference: ThemePreference<Theme>;
   resolved: Theme;
-  themes: readonly Theme[];
   setPreference: (preference: ThemePreference<Theme>) => void;
+  themes: readonly Theme[];
 }
 
 export type ThemeStore<Theme extends string> = UseBoundStore<StoreApi<ThemeState<Theme>>>;
@@ -22,8 +22,8 @@ const SYSTEM_DARK_QUERY = "(prefers-color-scheme: dark)";
 
 export const createThemeStore = <Theme extends string>({
   app,
-  themes,
   system,
+  themes,
 }: ThemeOptions<Theme>): ThemeStore<Theme> => {
   const key = themeStorageKey(app);
   const media = matchMedia(SYSTEM_DARK_QUERY);
@@ -54,11 +54,11 @@ export const createThemeStore = <Theme extends string>({
           commit(get().preference);
         });
 
-        return { ...select("system"), themes, setPreference: commit };
+        return { ...select("system"), setPreference: commit, themes };
       },
       persistPreference({
-        name: key,
         field: "preference",
+        name: key,
         restore: (stored) => select(isTheme(stored) ? stored : "system"),
       }),
     ),

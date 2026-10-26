@@ -8,16 +8,16 @@ export const safeStorage: StateStorage = {
       return null;
     }
   },
-  setItem: (name, value) => {
+  removeItem: (name) => {
     try {
-      window.localStorage.setItem(name, value);
+      window.localStorage.removeItem(name);
     } catch {
       return;
     }
   },
-  removeItem: (name) => {
+  setItem: (name, value) => {
     try {
-      window.localStorage.removeItem(name);
+      window.localStorage.setItem(name, value);
     } catch {
       return;
     }

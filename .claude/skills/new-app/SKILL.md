@@ -65,7 +65,7 @@ End with: "Je crée l'app ? (ou indique les modifications)". Create nothing with
 
 - Take the reference app's config files and replace its name. Keep its structure, drop its features: `src/` holds only the entry point and a minimal root component.
 - Import the shared packages by subpath, as the reference app does. Declare in the app only what is its own (`@theme` values, theme file).
-- `@osmoz/ui` goes in `dependencies`. Each component the app uses is wrapped in its `components/`, and `src/lib/cn.ts` comes with the first one, as `docs/getting-started.md` describes.
+- `@osmoz/ui` goes in `dependencies`. Each component the app uses is wrapped in its `components/ui/`, and `src/lib/cn.ts` comes with the first one, as `docs/getting-started.md` describes.
 - Write `apps/<app-name>/CLAUDE.md` from the template of `docs/app-spec.md`, every section filled with the approved choices.
 - Every `.ts` file gets its test; `.tsx` files get none. No comments.
 

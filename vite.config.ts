@@ -13,8 +13,8 @@ const appClassSorting = listApps(APPS_DIR)
     files: [`apps/${app}/**`],
     options: {
       sortTailwindcss: {
-        stylesheet: `./apps/${app}/${APP_THEME_FILE}`,
         functions: ["cn"],
+        stylesheet: `./apps/${app}/${APP_THEME_FILE}`,
       },
     },
   }));
@@ -31,9 +31,33 @@ const ignorePatterns = [
   ".impeccable/**",
 ];
 
+const SORT_OPTIONS = { partitionByNewLine: true, type: "alphabetical" } as const;
+
 export default defineConfig({
+  fmt: {
+    ignorePatterns,
+    overrides: appClassSorting,
+    printWidth: 100,
+    semi: true,
+    singleQuote: false,
+    sortImports: {
+      groups: [
+        "builtin",
+        "external",
+        "internal",
+        ["parent", "sibling", "index"],
+        "style",
+        "unknown",
+      ],
+      internalPattern: ["@/"],
+      newlinesBetween: true,
+    },
+    sortPackageJson: true,
+    sortTailwindcss: {
+      functions: ["cn"],
+    },
+  },
   lint: {
-    plugins: ["typescript", "unicorn", "oxc", "import", "promise", "react"],
     categories: {
       correctness: "error",
     },
@@ -41,44 +65,10 @@ export default defineConfig({
       builtin: true,
     },
     ignorePatterns,
+    jsPlugins: ["eslint-plugin-perfectionist"],
     options: {
       typeAware: true,
       typeCheck: false,
-    },
-    rules: {
-      "typescript/no-explicit-any": "error",
-      "typescript/no-non-null-assertion": "error",
-      "typescript/consistent-type-assertions": ["error", { assertionStyle: "never" }],
-      "typescript/explicit-function-return-type": "error",
-      "typescript/consistent-type-imports": "error",
-      "typescript/no-floating-promises": "error",
-      "typescript/switch-exhaustiveness-check": "error",
-      "typescript/prefer-nullish-coalescing": "error",
-      "import/no-default-export": "error",
-      "import/no-cycle": "error",
-      "oxc/no-barrel-file": ["error", { threshold: 0 }],
-      "unicorn/filename-case": ["error", { case: "kebabCase" }],
-      "unicorn/no-array-for-each": "error",
-      "func-style": ["error", "expression"],
-      "prefer-const": "error",
-      "no-var": "error",
-      "no-param-reassign": ["error", { props: true }],
-      "no-console": ["error", { allow: ["warn", "error"] }],
-      "react/jsx-no-literals": [
-        "error",
-        {
-          noStrings: true,
-          ignoreProps: true,
-          restrictedAttributes: [
-            "aria-label",
-            "aria-description",
-            "alt",
-            "title",
-            "placeholder",
-            "label",
-          ],
-        },
-      ],
     },
     overrides: [
       {
@@ -94,28 +84,52 @@ export default defineConfig({
         },
       },
     ],
-  },
-  fmt: {
-    ignorePatterns,
-    singleQuote: false,
-    semi: true,
-    sortPackageJson: true,
-    sortImports: {
-      groups: [
-        "builtin",
-        "external",
-        "internal",
-        ["parent", "sibling", "index"],
-        "style",
-        "unknown",
+    plugins: ["typescript", "unicorn", "oxc", "import", "promise", "react"],
+    rules: {
+      "typescript/consistent-type-assertions": ["error", { assertionStyle: "never" }],
+      "typescript/consistent-type-imports": "error",
+      "typescript/explicit-function-return-type": "error",
+      "typescript/no-explicit-any": "error",
+      "typescript/no-floating-promises": "error",
+      "typescript/no-non-null-assertion": "error",
+      "typescript/prefer-nullish-coalescing": "error",
+      "typescript/switch-exhaustiveness-check": "error",
+
+      "import/no-cycle": "error",
+      "import/no-default-export": "error",
+      "oxc/no-barrel-file": ["error", { threshold: 0 }],
+
+      "func-style": ["error", "expression"],
+      "no-param-reassign": ["error", { props: true }],
+      "no-var": "error",
+      "prefer-const": "error",
+      "unicorn/no-array-for-each": "error",
+
+      "react/jsx-no-literals": [
+        "error",
+        {
+          ignoreProps: true,
+          noStrings: true,
+          restrictedAttributes: [
+            "aria-label",
+            "aria-description",
+            "alt",
+            "title",
+            "placeholder",
+            "label",
+          ],
+        },
       ],
-      internalPattern: ["@/"],
-      newlinesBetween: true,
+
+      "no-console": ["error", { allow: ["warn", "error"] }],
+      "unicorn/filename-case": ["error", { case: "kebabCase" }],
+
+      "perfectionist/sort-enums": ["error", SORT_OPTIONS],
+      "perfectionist/sort-interfaces": ["error", SORT_OPTIONS],
+      "perfectionist/sort-jsx-props": ["error", SORT_OPTIONS],
+      "perfectionist/sort-object-types": ["error", SORT_OPTIONS],
+      "perfectionist/sort-objects": ["error", SORT_OPTIONS],
     },
-    sortTailwindcss: {
-      functions: ["cn"],
-    },
-    overrides: appClassSorting,
   },
   staged: {
     "*.{js,ts,jsx,tsx,json,jsonc,css,md}": "vp check --fix",

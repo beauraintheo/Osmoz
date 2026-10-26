@@ -6,8 +6,8 @@ describe("THEME_OPTIONS", () => {
   it("declares the light and dark themes, matched to the system schemes", () => {
     expect(THEME_OPTIONS).toEqual({
       app: "flux",
+      system: { dark: "dark", light: "light" },
       themes: ["light", "dark"],
-      system: { light: "light", dark: "dark" },
     });
   });
 });

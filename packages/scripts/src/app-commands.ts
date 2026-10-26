@@ -3,25 +3,25 @@ export const APP_ACTIONS = ["dev", "build", "validate"] as const;
 export type AppAction = (typeof APP_ACTIONS)[number];
 
 export interface Command {
-  command: string;
   args: readonly string[];
+  command: string;
 }
 
 const WORKSPACES = "!osmoz";
 
 const vpRun = (filter: string, script: string): Command => ({
-  command: "vp",
   args: ["run", "-F", filter, script],
+  command: "vp",
 });
 
 const validateCommands = (app: string | undefined): Command[] =>
   app === undefined
     ? [
-        { command: "vp", args: ["check"] },
-        { command: "tsc", args: ["--noEmit"] },
+        { args: ["check"], command: "vp" },
+        { args: ["--noEmit"], command: "tsc" },
         vpRun(WORKSPACES, "validate"),
       ]
-    : [{ command: "vp", args: ["check"] }, vpRun(`@osmoz/${app}...`, "validate")];
+    : [{ args: ["check"], command: "vp" }, vpRun(`@osmoz/${app}...`, "validate")];
 
 export const appCommands = (action: AppAction, app?: string): Command[] => {
   const target = app === undefined ? WORKSPACES : `@osmoz/${app}`;

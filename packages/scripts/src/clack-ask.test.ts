@@ -9,7 +9,7 @@ vi.mock("@clack/prompts", async (importOriginal) => ({
   select: vi.fn(),
 }));
 
-const options = [{ value: "flex", label: "flex" }];
+const options = [{ label: "flex", value: "flex" }];
 
 describe("clackAsk", () => {
   it("asks the question with the options and returns the answer", async () => {

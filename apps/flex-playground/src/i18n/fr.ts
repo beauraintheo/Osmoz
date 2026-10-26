@@ -3,15 +3,25 @@ export const fr = {
     name: "Flux",
     tagline: "Flexbox, en direct",
   },
-  signature: {
-    label: "par Osmoz",
+  language: {
+    short: {
+      en: "EN",
+      fr: "FR",
+    },
+    switchTo: {
+      en: "Passer en anglais (EN)",
+      fr: "Passer en français (FR)",
+    },
   },
   link: {
     newTab: "(nouvel onglet)",
   },
   playground: {
-    controls: "Contrôles",
     canvas: "Canvas",
     code: "Code généré",
+    controls: "Contrôles",
+  },
+  signature: {
+    label: "par Osmoz",
   },
 };

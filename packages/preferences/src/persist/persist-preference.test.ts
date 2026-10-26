@@ -19,10 +19,10 @@ const restore = (stored: string | null): Partial<State> => ({
 });
 
 interface Setup {
+  name: string;
   store: Pick<StoreApi<State>, "getState" | "setState" | "subscribe"> & {
     persist: { rehydrate: () => Promise<void> | void };
   };
-  name: string;
 }
 
 const setup = ({ stored }: { stored?: string } = {}): Setup => {
@@ -35,11 +35,11 @@ const setup = ({ stored }: { stored?: string } = {}): Setup => {
   const store = create<State>()(
     persist(
       () => ({ locale: FALLBACK, other: 1 }),
-      persistPreference({ name, field: "locale", restore }),
+      persistPreference({ field: "locale", name, restore }),
     ),
   );
 
-  return { store, name };
+  return { name, store };
 };
 
 describe("persistPreference", () => {
@@ -68,7 +68,7 @@ describe("persistPreference", () => {
   });
 
   it("stores only its field", () => {
-    const { store, name } = setup();
+    const { name, store } = setup();
 
     store.setState({ locale: "en", other: 2 });
 
@@ -88,7 +88,7 @@ describe("persistPreference", () => {
   });
 
   it("notifies when it reloads a new value", async () => {
-    const { store, name } = setup();
+    const { name, store } = setup();
     const listener = vi.fn();
     store.subscribe(listener);
 

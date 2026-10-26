@@ -25,7 +25,7 @@ in `packages/*`. Move it there when a second app needs it, not before.
 👀 **Interface components are split in two.** `@osmoz/ui` holds them without
 style: behavior, accessibility and API (`variant`, `size`, states exposed as
 `data-*` and ARIA attributes), never a class name. Each app styles them in its
-own `components/`, by wrapping the `@osmoz/ui` component with its classes, so
+own `components/ui/`, by wrapping the `@osmoz/ui` component with its classes, so
 apps with different identities share the same behavior. A component goes to
 `@osmoz/ui` from its first use: the second-app rule above does not apply to it.
 
@@ -34,11 +34,13 @@ element (`<button>`, `<dialog>`). A headless library comes in only where no
 native element fits, chosen with the first component that needs it.
 
 👀 **One folder per `@osmoz/ui` component**, named after it, holding the
-component, its logic and its tests (`link/link.tsx`, `link/link-behavior.ts`).
+component and, when it has logic beyond wiring, that logic and its tests
+(`button/button.tsx`, `button/button-behavior.ts`).
 The `"./*": "./src/*/*.tsx"` export keeps the import short: `@osmoz/ui/link`.
 
-👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor that
-completes `rel` and announces a new tab through its `newTabHint`. Each app
+👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor. It
+opens a new tab only through its `newTab` prop, which then requires a
+`newTabHint` to announce it. Each app
 styles it, gives the hint its own text, then turns it into a router link with
 TanStack Router's `createLink`, so `to` stays typed against its routes.
 
@@ -143,6 +145,24 @@ import { OrderStatusBadge } from "./order-status-badge";
 
 🔒 **Type-only imports use `import type`.** 🔒 **No circular dependency.**
 
+## Ordering
+
+🔒 **Keys and members are sorted alphabetically**: object keys, interface and
+object type members, enum members and JSX props. `pnpm check:fix` sorts
+them for you (eslint-plugin-perfectionist, run by oxlint).
+
+- A blank line starts a new group: each group is sorted on its own, and the
+  groups keep their order. Use it for a real grouping, like the lint rules of
+  `vite.config.ts` by theme, not to escape the rule.
+- A spread stays where it is: keys are sorted on each side of it.
+- Arrays are never sorted, so an order that matters goes in an array, like
+  the `locales` of `createLocaleStore`.
+- Union members are not sorted: write them in their natural order
+  (`"sm" | "md" | "lg"`, `string | null`).
+
+🔒 **Lines stop at 100 characters**, enforced by the formatter (`printWidth`).
+It never splits a string: a long list of classes may go past it.
+
 ## TypeScript
 
 🔒 Strict mode, with `noUncheckedIndexedAccess`: indexing an array gives
@@ -229,7 +249,8 @@ translation that misses or adds a key, since it is written
   inside that function.
 - **Another language** is one file, `src/i18n/<locale>.ts`, typed
   `satisfies typeof <source>`, added to the `catalogs` of
-  `src/i18n/use-locale-store.ts`. Each catalog has a test:
+  `src/i18n/use-locale-store.ts` and to its `locales`, which set the order
+  the languages are offered in. Each catalog has a test:
   `emptyMessages(<catalog>)` is `[]`, so no message is left empty. It checks
   only string messages: 👀 a message that is a function is checked on review.
 - **The language is a zustand store.** `createLocaleStore` starts on the
@@ -257,7 +278,7 @@ Each project has its own visual identity. These principles hold in all of them.
 value. No palette token (`--blue-500`, `--gray-100`): the value goes straight
 into the semantic token.
 
-👀 **The color contract is shadcn's.** Every theme defines these tokens, and a
+👀 **One color contract for every app.** Every theme defines these tokens, and a
 project may add its own roles on top:
 
 | Role                  | Tokens                                                                       |
@@ -343,18 +364,6 @@ A project can ship any number of themes, not only light and dark.
   --foreground: oklch(0.88 0.17 150);
 }
 ```
-
-### shadcn/ui
-
-shadcn/ui is a starting point, not a dependency.
-
-👀 **A generated component is split before it is committed.** Its behavior and
-API go to `@osmoz/ui`, without classes; its classes go to the app's styled
-component. Both follow every convention of this page: arrow function with a
-return type, tokens only, no `dark:` variant, and tests on the `.ts` logic.
-
-👀 The `cn` helper lives in each app's `lib/cn.ts`, not `lib/utils.ts`: set
-`"utils": "@/lib/cn"` in `components.json`.
 
 ### Accessibility
 
@@ -578,7 +587,7 @@ reviewer:
 - Code used by one app stays in it; shared code moves to `packages/*` on the
   second use, not before.
 - Interface components: behavior without classes in `@osmoz/ui`, classes in the
-  app's `components/`; native elements before a headless library; one folder
+  app's `components/ui/`; native elements before a headless library; one folder
   per `@osmoz/ui` component.
 - The Osmoz mark in `@osmoz/brand`, colored by the app's `--osmoz-o` and
   `--osmoz-cloud`; no router in `@osmoz/ui`.
@@ -592,8 +601,6 @@ reviewer:
 - No `useEffect` to derive state, no mutation of shared state, no `delete`.
 - Semantic colors only, Tailwind scales for sizes, no arbitrary value, no
   `dark:` variant.
-- shadcn components split between `@osmoz/ui` and the app, and adapted to
-  these conventions, before commit.
 - WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets, semantic
   HTML, labels and `alt`, keyboard access.
 - No noise comments.

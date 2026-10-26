@@ -1,7 +1,7 @@
 export interface ThemeOptions<Theme extends string> {
   app: string;
+  system: { dark: Theme; light: Theme };
   themes: readonly Theme[];
-  system: { light: Theme; dark: Theme };
 }
 
 export const defineThemeOptions = <const Theme extends string>(

@@ -6,9 +6,9 @@ const toScriptLiteral = (value: string | readonly string[]): string =>
 
 export const firstPaintScript = ({
   app,
-  themes,
   system,
-}: Pick<ThemeOptions<string>, "app" | "themes" | "system">): string => {
+  themes,
+}: Pick<ThemeOptions<string>, "app" | "system" | "themes">): string => {
   const key = toScriptLiteral(themeStorageKey(app));
   const known = toScriptLiteral(themes);
   const light = toScriptLiteral(system.light);

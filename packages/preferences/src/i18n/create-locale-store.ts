@@ -15,12 +15,13 @@ interface LocaleOptions<Locale extends string, Catalog extends Messages> {
   app: string;
   catalogs: Readonly<Record<Locale, Catalog>>;
   fallback: NoInfer<Locale>;
+  locales: readonly NoInfer<Locale>[];
 }
 
 interface LocaleState<Locale extends string, Catalog extends Messages> {
   locale: Locale;
-  messages: Catalog;
   locales: readonly Locale[];
+  messages: Catalog;
   setLocale: (locale: Locale) => void;
 }
 
@@ -32,6 +33,7 @@ export const createLocaleStore = <Locale extends string, Catalog extends Message
   app,
   catalogs,
   fallback,
+  locales,
 }: LocaleOptions<Locale, Catalog>): LocaleStore<Locale, Catalog> => {
   const key = `${app}:locale`;
 
@@ -47,7 +49,7 @@ export const createLocaleStore = <Locale extends string, Catalog extends Message
     persist(
       (set, get) => ({
         ...select(fallback),
-        locales: Object.keys(catalogs).filter(isLocale),
+        locales,
         setLocale: (locale): void => {
           if (locale !== get().locale) {
             set(select(locale));
@@ -55,8 +57,8 @@ export const createLocaleStore = <Locale extends string, Catalog extends Message
         },
       }),
       persistPreference({
-        name: key,
         field: "locale",
+        name: key,
         restore: (stored) => select(isLocale(stored) ? stored : fallback),
       }),
     ),

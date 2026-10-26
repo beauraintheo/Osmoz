@@ -10,19 +10,19 @@ import { headScriptsPlugin } from "./head-scripts-plugin.ts";
 import { testConfig } from "./test-config.ts";
 
 export interface AppConfigOptions {
-  root: string;
   headScripts?: readonly string[];
+  root: string;
 }
 
-export const defineAppConfig = ({ root, headScripts = [] }: AppConfigOptions): ViteUserConfig => ({
+export const defineAppConfig = ({ headScripts = [], root }: AppConfigOptions): ViteUserConfig => ({
   plugins: [
     headScriptsPlugin(headScripts),
     tanstackRouter({
-      target: "react",
       autoCodeSplitting: true,
+      generatedRouteTree: resolve(root, "src/route-tree.gen.ts"),
       indexToken: "home",
       routesDirectory: resolve(root, "src/routes"),
-      generatedRouteTree: resolve(root, "src/route-tree.gen.ts"),
+      target: "react",
     }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),

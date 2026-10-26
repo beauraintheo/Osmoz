@@ -19,6 +19,7 @@ catalog:
   "@clack/prompts": ^1.8.1
   "@fontsource-variable/geist": ^5.3.0
   "@fontsource-variable/geist-mono": ^5.3.0
+  "@remixicon/react": ^4.9.0
   "@rolldown/plugin-babel": ^0.2.4
   "@tailwindcss/vite": ^4.3.3
   "@tanstack/react-router": 1.170.44

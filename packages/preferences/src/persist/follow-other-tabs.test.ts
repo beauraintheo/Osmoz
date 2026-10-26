@@ -3,8 +3,8 @@ import { describe, expect, it, vi } from "vite-plus/test";
 import { followOtherTabs } from "./follow-other-tabs.ts";
 
 interface Setup {
-  rehydrate: () => void;
   name: string;
+  rehydrate: () => void;
 }
 
 const setup = (): Setup => {
@@ -12,7 +12,7 @@ const setup = (): Setup => {
   const name = `${crypto.randomUUID()}:locale`;
   followOtherTabs({ persist: { rehydrate } }, name);
 
-  return { rehydrate, name };
+  return { name, rehydrate };
 };
 
 const storageEvent = (key: string | null): void => {
@@ -21,7 +21,7 @@ const storageEvent = (key: string | null): void => {
 
 describe("followOtherTabs", () => {
   it("reloads the store when another tab changes its entry", () => {
-    const { rehydrate, name } = setup();
+    const { name, rehydrate } = setup();
 
     storageEvent(name);
 

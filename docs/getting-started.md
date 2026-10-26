@@ -156,13 +156,14 @@ import { fr } from "./fr";
 
 export const useLocaleStore = createLocaleStore({
   app: "<app>",
-  catalogs: { fr, en },
+  catalogs: { en, fr },
   fallback: "fr",
+  locales: ["fr", "en"],
 });
 ```
 
 Interface components come from `@osmoz/ui`, without style: the app wraps each
-one it uses in its own `components/`, with its classes, and its `cn` helper
+one it uses in its own `components/ui/`, with its classes, and its `cn` helper
 lives in `src/lib/cn.ts` ([conventions.md](conventions.md#architecture)).
 
 The theme file is always `src/theme/theme.css`: the root `vite.config.ts`
@@ -193,14 +194,13 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    the native element first, never a class name. Its API is `variant` and
    `size`, its states are `data-*` and ARIA attributes, and its props extend
    `ComponentProps<"<element>">`. Logic beyond wiring goes to a `.ts` file next
-   to it, with its `.test.ts`. Its texts come from the app, as props. From
-   shadcn, keep the behavior here and move the classes to step 3.
-3. **Style it** in `apps/<app>/src/components/<component>.tsx`: wrap the
+   to it, with its `.test.ts`. Its texts come from the app, as props.
+3. **Style it** in `apps/<app>/src/components/ui/<component>.tsx`: wrap the
    `@osmoz/ui` component and give it the app's classes with `cn`. Every state
    of the boards has its class: `hover:`, `focus-visible:`, `disabled:`,
    `aria-busy:`…
-4. **Use it.** Routes and features import the styled component from
-   `components/`, never `@osmoz/ui` directly.
+4. **Use it.** Routes, features and the app's own components import the
+   styled component from `components/ui/`, never `@osmoz/ui` directly.
 5. **Check it.** The rendered states match the boards, every action works with
    the keyboard, and `pnpm validate` passes. A state found along the way goes
    back to the boards.
@@ -214,7 +214,7 @@ export const Button = ({ type = "button", ...props }: ButtonProps): ReactElement
   <button {...props} type={type} />
 );
 
-// apps/<app>/src/components/button.tsx: the app's look
+// apps/<app>/src/components/ui/button.tsx: the app's look
 export const Button = ({ className, ...props }: ButtonProps): ReactElement => (
   <BaseButton {...props} className={cn("bg-primary text-control h-8 rounded-md px-3", className)} />
 );
@@ -258,8 +258,9 @@ behind `main`, blocks the merge.
 - **Function declarations are rejected.** Write `const f = (): T => …`.
 - **Text written in JSX is rejected**, `aria-label` included. It comes from the
   app's catalog, read with the app's `useLocaleStore`: `{messages.app.name}`.
-- **`pnpm check:fix` reorders your imports and your Tailwind classes.** That is
-  expected. In VS Code, saving a file does the same: install the recommended
+- **`pnpm check:fix` reorders your imports, your Tailwind classes, and your
+  keys and props** ([conventions.md](conventions.md#ordering)).
+  That is expected; a blank line keeps a group apart. In VS Code, saving a file does the same: install the recommended
   Oxc extension, which runs Vite+'s formatter and linter with the root
   `vite.config.ts`. After changing that config, run **Oxc: Restart oxfmt
   Server**.

@@ -5,6 +5,7 @@ import { fr } from "./fr";
 
 export const useLocaleStore = createLocaleStore({
   app: "flux",
-  catalogs: { fr, en },
+  catalogs: { en, fr },
   fallback: "fr",
+  locales: ["fr", "en"],
 });

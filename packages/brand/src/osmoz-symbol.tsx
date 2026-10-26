@@ -10,30 +10,30 @@ export const OsmozSymbol = (props: ComponentProps<"svg">): ReactElement => {
 
   return (
     <svg
-      viewBox="3.5 17.85 53 37.1"
-      role={labelled ? "img" : undefined}
       aria-hidden={labelled ? undefined : true}
       focusable="false"
+      role={labelled ? "img" : undefined}
+      viewBox="3.5 17.85 53 37.1"
       {...props}
     >
-      <mask id={gapId} maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="70">
-        <rect width="80" height="70" fill="white" />
-        <path d={CLOUD} fill="none" stroke="black" strokeWidth="10" strokeLinejoin="round" />
+      <mask height="70" id={gapId} maskUnits="userSpaceOnUse" width="80" x="0" y="0">
+        <rect fill="white" height="70" width="80" />
+        <path d={CLOUD} fill="none" stroke="black" strokeLinejoin="round" strokeWidth="10" />
       </mask>
 
       <circle
         cx="45"
         cy="30"
-        r="11.5"
         mask={`url(#${gapId})`}
+        r="11.5"
         style={{ fill: "var(--osmoz-o, currentColor)" }}
       />
 
       <path
         d={CLOUD}
         fill="none"
-        strokeWidth="5"
         strokeLinejoin="round"
+        strokeWidth="5"
         style={{ stroke: "var(--osmoz-cloud, currentColor)" }}
       />
     </svg>

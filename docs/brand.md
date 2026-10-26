@@ -23,14 +23,16 @@ and sits on any ground.
 
 These files are the source of the mark: the design reference, and what an
 app's favicon and icon are derived from. Inside an app's interface, the mark
-comes from `@osmoz/brand` instead, as a component drawn without color
-(`@osmoz/brand/osmoz-symbol`) that reads `--osmoz-o` and `--osmoz-cloud` from
-the app's theme and falls back to `currentColor`. It is decorative by default;
-given an `aria-label`, it is announced as an image. A file moves into the package
+comes from `@osmoz/brand` instead. The symbol is a component drawn without
+color (`@osmoz/brand/osmoz-symbol`): it reads `--osmoz-o` and `--osmoz-cloud`
+from the app's theme and falls back to `currentColor`. It is decorative by
+default; given an `aria-label`, it is announced as an image. The signature
+(`@osmoz/brand/osmoz-signature`) is built on it. A file moves into the package
 only when code imports it.
 
 The symbol's paths exist twice, in `osmoz-symbol.svg` and in the component:
-change both together.
+change both together. The component's `viewBox` fits the drawing tightly, so
+it centers in any box; the files keep their own framing, made for favicons.
 
 ## Layout
 
@@ -84,14 +86,18 @@ The Osmoz signature sits in the header, next to the app name, on every
 screen:
 
 - **Desktop**: the symbol followed by "par Osmoz".
-- **Mobile**: the symbol alone, with `aria-label="par Osmoz"`.
+- **Mobile**: the symbol alone; "par Osmoz" stays, visually hidden, as the
+  link's name.
 - It is a link to [github.com/beauraintheo](https://github.com/beauraintheo)
-  until the portfolio exists, then to the portfolio.
+  until the portfolio exists, then to the portfolio. It opens in a new tab,
+  announced to screen readers.
 - The O takes the app's accent and the cloud the Osmoz cloud color, through
   the theme tokens `--osmoz-o` and `--osmoz-cloud`, with the values of the
   table below; the text takes the app's muted foreground token.
-- The signature is a component of each app (`components/osmoz-signature.tsx`):
-  the `@osmoz/ui` link around the `@osmoz/brand` symbol, styled by the app.
+- The signature is one component for every app,
+  `@osmoz/brand/osmoz-signature`: the `@osmoz/ui` link around the symbol, with
+  its look fixed here. The app passes its texts (`label`, `newTabLabel`) and,
+  through `className`, only its placement.
 - The symbol is at least 16 px high and the link target at least 24 × 24 px.
 
 ## Derived favicon

@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./*": "./src/*.tsx"
+    "./*": "./src/*/*.tsx"
   },
   "scripts": {
     "check-types": "tsc --noEmit",

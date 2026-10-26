@@ -11,7 +11,8 @@ and why is in [spec.md](spec.md).
   storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
   needs it.
 - `@osmoz/brand`: the Osmoz mark, for the signature; its O takes Flux's
-  accent through `--osmoz-o` (docs/brand.md).
+  accent through `--osmoz-o` (docs/brand.md). `theme.css` imports
+  `@osmoz/brand/brand.css` so Tailwind generates its classes.
 - `@osmoz/ui`: interface components without style; Flux styles each one it
   uses in `components/`.
 - shadcn/ui (planned): starting point for components, split between
@@ -67,7 +68,7 @@ file.
 | Layout state and its schema  | `domain/`             | `layout-state.ts`         |
 | Code generation              | `domain/`             | `to-css.ts`               |
 | Styled `@osmoz/ui` component | `components/`         | `button.tsx`              |
-| Other shared UI component    | `components/`         | `osmoz-signature.tsx`     |
+| Other shared UI component    | `components/`         | `header.tsx`              |
 | Pure utility                 | `lib/`                | `cn.ts`                   |
 
 Properties are described in lists, one file per target (container, item). A

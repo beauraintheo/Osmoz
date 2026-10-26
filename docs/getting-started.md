@@ -149,7 +149,14 @@ The theme file is always `src/theme/theme.css`: the root `vite.config.ts`
 finds it there to sort the app's Tailwind classes against its own tokens.
 Nothing to declare. Each of its themes also sets `--osmoz-o` and
 `--osmoz-cloud`, which color the Osmoz mark of `@osmoz/brand` in the
-signature ([brand.md](brand.md)).
+signature ([brand.md](brand.md)). It imports `@osmoz/brand/brand.css` right
+after `@osmoz/theme/base.css`, so Tailwind generates the mark's classes:
+
+```css
+@import "tailwindcss";
+@import "@osmoz/theme/base.css";
+@import "@osmoz/brand/brand.css";
+```
 
 What the app adds to the base, and why, goes in its `CLAUDE.md`
 ([app-spec.md](app-spec.md)).
@@ -162,12 +169,12 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
 1. **Design it.** On the app's mockups, in the screen that uses it, then on the
    components boards with every state, in every theme. Tokens and typography
    roles only.
-2. **Write its behavior** in `packages/ui/src/<component>.tsx`: the native
-   element first, never a class name. Its API is `variant` and `size`, its
-   states are `data-*` and ARIA attributes, and its props extend
+2. **Write its behavior** in `packages/ui/src/<component>/<component>.tsx`:
+   the native element first, never a class name. Its API is `variant` and
+   `size`, its states are `data-*` and ARIA attributes, and its props extend
    `ComponentProps<"<element>">`. Logic beyond wiring goes to a `.ts` file next
-   to it, with its `.test.ts`. From shadcn, keep the behavior here and move the
-   classes to step 3.
+   to it, with its `.test.ts`. Its texts come from the app, as props. From
+   shadcn, keep the behavior here and move the classes to step 3.
 3. **Style it** in `apps/<app>/src/components/<component>.tsx`: wrap the
    `@osmoz/ui` component and give it the app's classes with `cn`. Every state
    of the boards has its class: `hover:`, `focus-visible:`, `disabled:`,
@@ -182,7 +189,7 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
 its own in `theme.css` ([conventions.md](conventions.md#tokens)).
 
 ```tsx
-// packages/ui/src/button.tsx: behavior, no class
+// packages/ui/src/button/button.tsx: behavior, no class
 export const Button = ({ type = "button", ...props }: ButtonProps): ReactElement => (
   <button {...props} type={type} />
 );

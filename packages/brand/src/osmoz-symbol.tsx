@@ -10,7 +10,7 @@ export const OsmozSymbol = (props: ComponentProps<"svg">): ReactElement => {
 
   return (
     <svg
-      viewBox="2 4 66 54"
+      viewBox="3.5 17.85 53 37.1"
       role={labelled ? "img" : undefined}
       aria-hidden={labelled ? undefined : true}
       focusable="false"

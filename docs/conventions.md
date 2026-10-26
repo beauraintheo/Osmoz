@@ -33,21 +33,36 @@ apps with different identities share the same behavior. A component goes to
 element (`<button>`, `<dialog>`). A headless library comes in only where no
 native element fits, chosen with the first component that needs it.
 
-👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor with the
-shared behavior. Each app styles it, then turns it into a router link with
+👀 **One folder per `@osmoz/ui` component**, named after it, holding the
+component, its logic and its tests (`link/link.tsx`, `link/link-behavior.ts`).
+The `"./*": "./src/*/*.tsx"` export keeps the import short: `@osmoz/ui/link`.
+
+👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor that
+completes `rel` and announces a new tab through its `newTabHint`. Each app
+styles it, gives the hint its own text, then turns it into a router link with
 TanStack Router's `createLink`, so `to` stays typed against its routes.
 
 👀 **The Osmoz mark lives in `@osmoz/brand`, from the start.** It ships there
-as components drawn without a color: they read `--osmoz-o` and
-`--osmoz-cloud` from the app's theme. It is not part of `@osmoz/ui`, and the
-second-app rule does not apply to it: the mark is shared by nature
-([brand.md](brand.md)). The mark's source files stay in `docs/brand/`, and a
-file enters the package only when code imports it. An image used by one app
-stays in that app.
+as components that look the same in every app: the symbol and the signature.
+They take their colors from the app's theme (`--osmoz-o`, `--osmoz-cloud` and
+the contract tokens), and their classes use only those tokens and Tailwind's
+default scales, never a token or role of one app. `@osmoz/brand/brand.css`
+declares their `@source`: an app that uses the mark imports it in its
+`theme.css`, right after `@osmoz/theme/base.css`, so its Tailwind generates
+them. It is not
+part of `@osmoz/ui`, and the second-app rule does not apply to it: the mark is
+shared by nature ([brand.md](brand.md)). The mark's source files stay in
+`docs/brand/`, and a file enters the package only when code imports it. An
+image used by one app stays in that app.
+
+👀 **A shared component gets its text from the app.** A component of
+`@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
+prop, with no default, so each app passes its own wording and language.
 
 A package exposes `src/` through `exports` patterns in its `package.json`, one
 per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
-`"./*": "./src/*.tsx"` for components (`@osmoz/ui`, whose `.ts` logic stays
+`"./*": "./src/*.tsx"` for components, `"./*": "./src/*/*.tsx"` for
+components in their own folder (`@osmoz/ui`, whose `.ts` logic stays
 internal), `"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
 `"./*.css": "./src/*.css"` next to code for JSON configs or stylesheets. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
 
@@ -503,9 +518,12 @@ reviewer:
 - Code used by one app stays in it; shared code moves to `packages/*` on the
   second use, not before.
 - Interface components: behavior without classes in `@osmoz/ui`, classes in the
-  app's `components/`; native elements before a headless library.
+  app's `components/`; native elements before a headless library; one folder
+  per `@osmoz/ui` component.
 - The Osmoz mark in `@osmoz/brand`, colored by the app's `--osmoz-o` and
   `--osmoz-cloud`; no router in `@osmoz/ui`.
+- Components of `@osmoz/ui` and `@osmoz/brand` write no user-facing text: the
+  app passes it as props, without defaults.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
 - Every `.ts` file has its `.test.ts`; every bug fix has a failing test first.

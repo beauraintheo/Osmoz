@@ -319,6 +319,10 @@ importers:
         version: 1.1.0(@types/node@26.6.5)(@vitest/coverage-v8@5.0.3)(@vitest/ui@5.0.3)(happy-dom@20.14.6)(jiti@2.7.0)(jsdom@30.1.2)(typescript@7.0.2)(yaml@2.9.1)
 
   packages/brand:
+    dependencies:
+      '@osmoz/ui':
+        specifier: workspace:*
+        version: link:../ui
     devDependencies:
       '@osmoz/config':
         specifier: workspace:*

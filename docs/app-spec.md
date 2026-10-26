@@ -14,7 +14,7 @@ never repeated: link to it, or leave it out.
 | Structure         | What each folder of `src/` holds, one line each.            |
 | Layers            | Which folder may import which. What is forbidden.           |
 | Where a file goes | For each kind of file, its folder and an example name.      |
-| Theme             | Where the theme file is, which themes ship.                 |
+| Theme             | Which themes ship, and the app's own tokens and roles.      |
 | Commands          | Commands specific to the app. Root commands are not listed. |
 
 A section that does not apply says so in one line rather than disappearing:
@@ -53,7 +53,7 @@ src/
 
 ## Theme
 
-- File: `<path>`
+- File: `src/theme/theme.css`
 - Themes: `<name>`, …
 
 ## Commands

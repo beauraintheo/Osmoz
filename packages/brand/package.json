@@ -14,14 +14,10 @@
   },
   "devDependencies": {
     "@osmoz/config": "workspace:*",
-    "@testing-library/dom": "catalog:",
-    "@testing-library/react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@vitest/coverage-v8": "catalog:",
-    "happy-dom": "catalog:",
     "react": "catalog:",
-    "react-dom": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },

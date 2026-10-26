@@ -48,8 +48,8 @@ file.
   nor another feature. Code two features need moves to `domain`,
   `components` or `lib`.
 - `domain` may import `lib`, never React nor any other folder of the app.
-- `components` may import `lib` and `@osmoz/ui`, never `features`, `domain`
-  nor `routes`.
+- `components` may import `lib`, `@osmoz/ui` and `@osmoz/brand`, never
+  `features`, `domain` nor `routes`.
 - `routes` and `features` use the styled components of `components/`, never
   `@osmoz/ui` directly.
 - `lib` imports nothing from the app.

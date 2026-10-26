@@ -25,7 +25,8 @@ These files are the source of the mark: the design reference, and what an
 app's favicon and icon are derived from. Inside an app's interface, the mark
 comes from `@osmoz/brand` instead, as a component drawn without color
 (`@osmoz/brand/osmoz-symbol`) that reads `--osmoz-o` and `--osmoz-cloud` from
-the app's theme and falls back to `currentColor`. A file moves into the package
+the app's theme and falls back to `currentColor`. It is decorative by default;
+given an `aria-label`, it is announced as an image. A file moves into the package
 only when code imports it.
 
 The symbol's paths exist twice, in `osmoz-symbol.svg` and in the component:

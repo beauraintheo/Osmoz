@@ -6,9 +6,16 @@ const CLOUD =
 
 export const OsmozSymbol = (props: ComponentProps<"svg">): ReactElement => {
   const gapId = `osmoz-gap-${useId().replace(/[^\w-]/g, "")}`;
+  const labelled = props["aria-label"] !== undefined || props["aria-labelledby"] !== undefined;
 
   return (
-    <svg viewBox="2 4 66 54" aria-hidden="true" focusable="false" {...props}>
+    <svg
+      viewBox="2 4 66 54"
+      role={labelled ? "img" : undefined}
+      aria-hidden={labelled ? undefined : true}
+      focusable="false"
+      {...props}
+    >
       <mask id={gapId} maskUnits="userSpaceOnUse" x="0" y="0" width="80" height="70">
         <rect width="80" height="70" fill="white" />
         <path d={CLOUD} fill="none" stroke="black" strokeWidth="10" strokeLinejoin="round" />

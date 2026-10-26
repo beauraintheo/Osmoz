@@ -178,6 +178,9 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    the keyboard, and `pnpm validate` passes. A state found along the way goes
    back to the boards.
 
+`text-control` below is one of the app's typography roles: each app declares
+its own in `theme.css` ([conventions.md](conventions.md#tokens)).
+
 ```tsx
 // packages/ui/src/button.tsx: behavior, no class
 export const Button = ({ type = "button", ...props }: ButtonProps): ReactElement => (

@@ -33,6 +33,18 @@ apps with different identities share the same behavior. A component goes to
 element (`<button>`, `<dialog>`). A headless library comes in only where no
 native element fits, chosen with the first component that needs it.
 
+👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor with the
+shared behavior. Each app styles it, then turns it into a router link with
+TanStack Router's `createLink`, so `to` stays typed against its routes.
+
+👀 **The Osmoz mark lives in `@osmoz/brand`, from the start.** It ships there
+as components drawn without a color: they read `--osmoz-o` and
+`--osmoz-cloud` from the app's theme. It is not part of `@osmoz/ui`, and the
+second-app rule does not apply to it: the mark is shared by nature
+([brand.md](brand.md)). The mark's source files stay in `docs/brand/`, and a
+file enters the package only when code imports it. An image used by one app
+stays in that app.
+
 A package exposes `src/` through `exports` patterns in its `package.json`, one
 per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
 `"./*": "./src/*.tsx"` for components (`@osmoz/ui`, whose `.ts` logic stays
@@ -184,6 +196,10 @@ project may add its own roles on top:
 | Quiet and highlighted | `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`           |
 | Danger                | `--destructive`, `--destructive-foreground`                                  |
 | Lines and focus       | `--border`, `--input`, `--ring`                                              |
+| Osmoz mark            | `--osmoz-o` (the app's accent), `--osmoz-cloud` (the Osmoz cloud color)      |
+
+The mark's tokens color the `@osmoz/brand` components; their values are set
+in [brand.md](brand.md).
 
 👀 **The Tailwind palette is removed.** `@osmoz/theme/base.css` resets
 `--color-*` and maps the contract to utilities, so `bg-primary` exists and
@@ -199,12 +215,30 @@ breakpoints. An app gives them its identity by changing their values in its
 `@theme` block (`--radius-md: 0`, `--font-sans: …`), not by adding names. A new
 name is allowed only for a real role, like `--font-display`.
 
+👀 **Typography roles are tokens.** Text that repeats a style (a title, a
+label, code) gets a named role in the app's `@theme`: `--text-<role>` with its
+`--line-height`, and its `--letter-spacing` and `--font-weight` when the role
+sets them. A component writes `text-title`, never a raw `text-lg font-semibold
+tracking-tight` combination for a role. The font family stays its own class
+(`font-mono`), and a role name never repeats a color name, so `text-<role>`
+stays a size. No `@apply`, no class constants in JS: a component for a role
+only when it also carries an element and behavior, like a `<Label>` tied to
+its field.
+
 👀 **No arbitrary value** in a component: no `p-[13px]`, no `bg-[#fff]`.
+
+🔒 **Tailwind classes are sorted**, in `className`, `class` and `cn(…)`, in
+Tailwind's own order, without extra spaces or duplicates. `pnpm check:fix`
+and format on save do it for you. Each app's classes are sorted against its own
+theme file, so its own tokens sort in place: the root `vite.config.ts` finds
+every app of `apps/` and its `src/theme/theme.css` by itself.
 
 👀 **Colors in OKLCH.** OKLCH keeps contrast predictable when deriving a
 variant.
 
-👀 **One theme file per app.** Its location is set in `apps/<app>/CLAUDE.md`.
+👀 **One theme file per app, at `src/theme/theme.css`.** The Tailwind class
+sorting reads it there: elsewhere, the app's own tokens sort as unknown
+classes.
 
 ### Themes
 
@@ -386,7 +420,7 @@ actually run.
 ### Release
 
 Each app has its own SemVer version, tags, changelog and GitHub Releases. The
-shared packages `config`, `theme` and `ui` are versioned the same way; the root and
+shared packages `brand`, `config`, `theme` and `ui` are versioned the same way; the root and
 `scripts` are not. Nothing is released by hand: release-please computes it
 from the commits on `main` (`.github/workflows/release.yml`,
 `release-please-config.json`).
@@ -407,7 +441,7 @@ bump:
 | `!` or `BREAKING CHANGE:`     | minor       | major        |
 | `chore`, `ci`, `docs`, others | none        | none         |
 
-- A release of `config`, `theme` or `ui` bumps every app that depends on it with a
+- A release of `brand`, `config`, `theme` or `ui` bumps every app that depends on it with a
   patch. When the change is a feature of the app, the pull request touches the
   app too, and its `feat` title bumps the app with a minor.
 - 👀 To force a version, like `1.0.0`, add a `Release-As: 1.0.0` footer to the
@@ -470,6 +504,8 @@ reviewer:
   second use, not before.
 - Interface components: behavior without classes in `@osmoz/ui`, classes in the
   app's `components/`; native elements before a headless library.
+- The Osmoz mark in `@osmoz/brand`, colored by the app's `--osmoz-o` and
+  `--osmoz-cloud`; no router in `@osmoz/ui`.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
 - Every `.ts` file has its `.test.ts`; every bug fix has a failing test first.

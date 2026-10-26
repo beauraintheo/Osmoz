@@ -6,7 +6,7 @@ below: they are the single source of truth, do not restate them here.
 
 | Topic                                                       | Full page                 |
 | ----------------------------------------------------------- | ------------------------- |
-| Setup, commands, ticket to PR flow                          | `docs/getting-started.md` |
+| Setup, commands, new app or component, ticket to PR flow    | `docs/getting-started.md` |
 | Naming, TypeScript, React, design, tests, git, PRs, tickets | `docs/conventions.md`     |
 | Template of an app's `CLAUDE.md`                            | `docs/app-spec.md`        |
 | Osmoz brand: logo, colors, what every app shares            | `docs/brand.md`           |

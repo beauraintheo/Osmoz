@@ -1,4 +1,23 @@
+import { existsSync } from "node:fs";
+import { join } from "node:path";
+
 import { defineConfig } from "vite-plus";
+
+import { APPS_DIR, listApps } from "./packages/scripts/src/list-apps.ts";
+
+const APP_THEME_FILE = "src/theme/theme.css";
+
+const appClassSorting = listApps(APPS_DIR)
+  .filter((app) => existsSync(join(APPS_DIR, app, APP_THEME_FILE)))
+  .map((app) => ({
+    files: [`apps/${app}/**`],
+    options: {
+      sortTailwindcss: {
+        stylesheet: `./apps/${app}/${APP_THEME_FILE}`,
+        functions: ["cn"],
+      },
+    },
+  }));
 
 const ignorePatterns = [
   "**/node_modules/**",
@@ -78,6 +97,10 @@ export default defineConfig({
       internalPattern: ["@/"],
       newlinesBetween: true,
     },
+    sortTailwindcss: {
+      functions: ["cn"],
+    },
+    overrides: appClassSorting,
   },
   staged: {
     "*.{js,ts,jsx,tsx,json,jsonc,css,md}": "vp check --fix",

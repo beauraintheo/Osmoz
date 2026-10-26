@@ -32,6 +32,8 @@ The base is what already exists, never what this skill imagines.
 
 A front app never redeclares what `@osmoz/config` holds: its `vite.config.ts` calls `defineAppConfig`, its `tsconfig.json` extends `@osmoz/config/tsconfig.react.json`, and every dependency version comes from the pnpm catalog.
 
+The theme file is `src/theme/theme.css`, never elsewhere: the root `vite.config.ts` finds it there to sort the app's Tailwind classes.
+
 ## 3. Ask what is specific
 
 One grouped question, only for what the issue, the reference app and `docs/` do not answer:

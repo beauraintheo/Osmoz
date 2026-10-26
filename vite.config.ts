@@ -33,7 +33,7 @@ const ignorePatterns = [
 
 export default defineConfig({
   lint: {
-    plugins: ["typescript", "unicorn", "oxc", "import", "promise"],
+    plugins: ["typescript", "unicorn", "oxc", "import", "promise", "react"],
     categories: {
       correctness: "error",
     },
@@ -64,6 +64,21 @@ export default defineConfig({
       "no-var": "error",
       "no-param-reassign": ["error", { props: true }],
       "no-console": ["error", { allow: ["warn", "error"] }],
+      "react/jsx-no-literals": [
+        "error",
+        {
+          noStrings: true,
+          ignoreProps: true,
+          restrictedAttributes: [
+            "aria-label",
+            "aria-description",
+            "alt",
+            "title",
+            "placeholder",
+            "label",
+          ],
+        },
+      ],
     },
     overrides: [
       {

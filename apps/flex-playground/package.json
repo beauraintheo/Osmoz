@@ -15,6 +15,7 @@
     "@fontsource-variable/geist": "catalog:",
     "@fontsource-variable/geist-mono": "catalog:",
     "@osmoz/brand": "workspace:*",
+    "@osmoz/preferences": "workspace:*",
     "@osmoz/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",

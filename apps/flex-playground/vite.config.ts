@@ -1,5 +1,5 @@
 import { defineAppConfig } from "@osmoz/config/define-app-config";
-import { firstPaintScript } from "@osmoz/theme/first-paint-script";
+import { firstPaintScript } from "@osmoz/preferences/theme/first-paint-script";
 import { defineConfig } from "vite-plus";
 
 import { THEME_OPTIONS } from "./src/theme/theme-options";

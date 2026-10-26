@@ -74,6 +74,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
   },
   "dependencies": {
     "@osmoz/brand": "workspace:*",
+    "@osmoz/preferences": "workspace:*",
     "@osmoz/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",
@@ -97,7 +98,7 @@ from the pnpm catalog (`pnpm-workspace.yaml`), never written in the app.
 
 ```ts
 import { defineAppConfig } from "@osmoz/config/define-app-config";
-import { firstPaintScript } from "@osmoz/theme/first-paint-script";
+import { firstPaintScript } from "@osmoz/preferences/theme/first-paint-script";
 import { defineConfig } from "vite-plus";
 
 import { THEME_OPTIONS } from "./src/theme-options";
@@ -111,12 +112,13 @@ export default defineConfig(
 ```
 
 `src/theme-options.ts` declares the app's themes. A module of the app exports
-its single store, `createThemeStore(THEME_OPTIONS)`: `src/main.tsx` imports it
-before rendering, and the app's switcher reads it with `useTheme`. Where these
+its single store, `useThemeStore = createThemeStore(THEME_OPTIONS)`: a zustand
+hook, which `src/main.tsx` imports before rendering and the app's switcher
+calls with a selector, `useThemeStore((state) => state.resolved)`. Where these
 files go is up to the app's `CLAUDE.md`.
 
 ```ts
-import { defineThemeOptions } from "@osmoz/theme/theme-options";
+import { defineThemeOptions } from "@osmoz/preferences/theme/theme-options";
 
 export const THEME_OPTIONS = defineThemeOptions({
   app: "<app>",
@@ -140,6 +142,24 @@ code, ignored by lint, format and coverage. `@/` points to the app's `src/`.
 The index route of a folder is `home.tsx`, not `index.tsx`: `routes/home.tsx`
 is `/`, `routes/posts/home.tsx` is `/posts/`. A route file exports `Route`, and
 the linter forbids named exports from an `index` file.
+
+Texts come from the app's catalogs, in `src/i18n/`: one file per language,
+and `use-locale-store.ts`, which creates the app's single language store, a
+zustand hook. `src/main.tsx` imports it before rendering, and components read
+their texts with it ([conventions.md](conventions.md#texts-and-languages)).
+
+```ts
+import { createLocaleStore } from "@osmoz/preferences/i18n/create-locale-store";
+
+import { en } from "./en";
+import { fr } from "./fr";
+
+export const useLocaleStore = createLocaleStore({
+  app: "<app>",
+  catalogs: { fr, en },
+  fallback: "fr",
+});
+```
 
 Interface components come from `@osmoz/ui`, without style: the app wraps each
 one it uses in its own `components/`, with its classes, and its `cn` helper
@@ -236,6 +256,8 @@ behind `main`, blocks the merge.
 - **`console.log`, `any`, `as` casts, `!` and default exports are rejected** by
   the linter. `console.warn` and `console.error` pass.
 - **Function declarations are rejected.** Write `const f = (): T => …`.
+- **Text written in JSX is rejected**, `aria-label` included. It comes from the
+  app's catalog, read with the app's `useLocaleStore`: `{messages.app.name}`.
 - **`pnpm check:fix` reorders your imports and your Tailwind classes.** That is
   expected. In VS Code, saving a file does the same: install the recommended
   Oxc extension, which runs Vite+'s formatter and linter with the root

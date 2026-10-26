@@ -1,4 +1,4 @@
-import { defineThemeOptions } from "@osmoz/theme/theme-options";
+import { defineThemeOptions } from "@osmoz/preferences/theme/theme-options";
 
 export const THEME_OPTIONS = defineThemeOptions({
   app: "flux",

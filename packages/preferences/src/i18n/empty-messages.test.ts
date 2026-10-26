@@ -6,9 +6,9 @@ describe("emptyMessages", () => {
   it("finds nothing in a written catalog", () => {
     expect(
       emptyMessages({
-        title: "Flux",
         header: { tagline: "Flexbox, live" },
         itemCount: (count: number): string => `${count} items`,
+        title: "Flux",
       }),
     ).toEqual([]);
   });
@@ -16,9 +16,9 @@ describe("emptyMessages", () => {
   it("gives the path of every empty or blank message, nested ones included", () => {
     expect(
       emptyMessages({
+        header: { menu: { close: "" }, signature: "by Osmoz", tagline: "  " },
         title: "",
-        header: { tagline: "  ", signature: "by Osmoz", menu: { close: "" } },
       }),
-    ).toEqual(["title", "header.tagline", "header.menu.close"]);
+    ).toEqual(["header.menu.close", "header.tagline", "title"]);
   });
 });

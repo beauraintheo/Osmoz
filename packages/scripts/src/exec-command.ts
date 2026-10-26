@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 
 import type { Command } from "./app-commands.ts";
 
-export const execCommand = ({ command, args }: Command): number => {
+export const execCommand = ({ args, command }: Command): number => {
   process.stdout.write(`\n› ${[command, ...args].join(" ")}\n`);
   const result = spawnSync(command, args, { stdio: "inherit" });
 

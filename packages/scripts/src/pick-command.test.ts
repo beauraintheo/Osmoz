@@ -8,7 +8,7 @@ import type { PickCommandDeps } from "./pick-command.ts";
 
 const apps = ["flex", "tierlist"];
 
-const line = ({ command, args }: Command): string => [command, ...args].join(" ");
+const line = ({ args, command }: Command): string => [command, ...args].join(" ");
 
 interface Mocks {
   ask: Mock<Ask>;

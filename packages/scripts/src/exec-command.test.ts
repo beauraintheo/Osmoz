@@ -8,7 +8,7 @@ describe("execCommand", () => {
   it("prints the command, then returns its exit code", () => {
     const write = vi.spyOn(process.stdout, "write").mockReturnValue(true);
 
-    expect(execCommand({ command: node, args: ["-e", "process.exit(3)"] })).toBe(3);
+    expect(execCommand({ args: ["-e", "process.exit(3)"], command: node })).toBe(3);
     expect(write).toHaveBeenCalledWith(`\n› ${node} -e process.exit(3)\n`);
 
     write.mockRestore();
@@ -17,7 +17,7 @@ describe("execCommand", () => {
   it("returns 0 when the command succeeds", () => {
     const write = vi.spyOn(process.stdout, "write").mockReturnValue(true);
 
-    expect(execCommand({ command: node, args: ["-e", ""] })).toBe(0);
+    expect(execCommand({ args: ["-e", ""], command: node })).toBe(0);
 
     write.mockRestore();
   });
@@ -26,7 +26,7 @@ describe("execCommand", () => {
     const write = vi.spyOn(process.stdout, "write").mockReturnValue(true);
 
     expect(
-      execCommand({ command: node, args: ["-e", "process.kill(process.pid, 'SIGTERM')"] }),
+      execCommand({ args: ["-e", "process.kill(process.pid, 'SIGTERM')"], command: node }),
     ).toBe(1);
 
     write.mockRestore();
@@ -36,7 +36,7 @@ describe("execCommand", () => {
     const write = vi.spyOn(process.stdout, "write").mockReturnValue(true);
     const error = vi.spyOn(console, "error").mockReturnValue();
 
-    expect(execCommand({ command: "osmoz-missing-command", args: [] })).toBe(1);
+    expect(execCommand({ args: [], command: "osmoz-missing-command" })).toBe(1);
     expect(error).toHaveBeenCalledWith(
       'Cannot run "osmoz-missing-command": spawnSync osmoz-missing-command ENOENT',
     );

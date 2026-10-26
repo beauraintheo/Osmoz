@@ -6,7 +6,7 @@ import { THEME_OPTIONS } from "./src/theme/theme-options";
 
 export default defineConfig(
   defineAppConfig({
-    root: import.meta.dirname,
     headScripts: [firstPaintScript(THEME_OPTIONS)],
+    root: import.meta.dirname,
   }),
 );

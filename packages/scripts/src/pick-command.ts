@@ -5,9 +5,9 @@ import { runApp } from "./run-app.ts";
 const ALL_APPS = "*";
 
 const ACTION_OPTIONS: readonly AskOption[] = [
-  { value: "dev", label: "dev", hint: "start the dev server" },
-  { value: "validate", label: "validate", hint: "lint, types and tests" },
-  { value: "build", label: "build", hint: "validate, then build" },
+  { hint: "start the dev server", label: "dev", value: "dev" },
+  { hint: "lint, types and tests", label: "validate", value: "validate" },
+  { hint: "validate, then build", label: "build", value: "build" },
 ];
 
 export interface PickCommandDeps {
@@ -19,8 +19,8 @@ export interface PickCommandDeps {
 
 const pickArgv = async (apps: readonly string[], ask: Ask): Promise<string[] | undefined> => {
   const app = await ask("Which app?", [
-    { value: ALL_APPS, label: "all apps", hint: "the whole monorepo" },
-    ...apps.map((name) => ({ value: name, label: name })),
+    { hint: "the whole monorepo", label: "all apps", value: ALL_APPS },
+    ...apps.map((name) => ({ label: name, value: name })),
   ]);
 
   if (app === undefined) {

@@ -20,9 +20,9 @@ class SystemScheme extends EventTarget {
 }
 
 interface Setup {
-  store: ThemeStore<"paper" | "ink">;
   key: string;
   scheme: SystemScheme;
+  store: ThemeStore<"paper" | "ink">;
 }
 
 const persisted = (state: unknown): string => JSON.stringify({ state, version: 0 });
@@ -43,11 +43,11 @@ const setup = ({ dark = false, stored }: { dark?: boolean; stored?: string } = {
 
   const store = createThemeStore({
     app,
+    system: { dark: "ink", light: "paper" },
     themes: ["paper", "ink"],
-    system: { light: "paper", dark: "ink" },
   });
 
-  return { store, key, scheme };
+  return { key, scheme, store };
 };
 
 const appliedTheme = (): string | undefined => document.documentElement.dataset.theme;
@@ -110,15 +110,15 @@ describe("createThemeStore", () => {
 
     const store = createThemeStore({
       app,
+      system: { dark: "ink", light: "paper" },
       themes: ["paper", "ink"],
-      system: { light: "paper", dark: "ink" },
     });
 
     expect(store.getState()).toMatchObject({ preference: "system", resolved: "ink" });
   });
 
   it("follows a system change during the session", () => {
-    const { store, scheme } = setup();
+    const { scheme, store } = setup();
     const listener = vi.fn();
     store.subscribe(listener);
 
@@ -130,7 +130,7 @@ describe("createThemeStore", () => {
   });
 
   it("keeps a manual choice when the system changes", () => {
-    const { store, scheme } = setup({ stored: "paper" });
+    const { scheme, store } = setup({ stored: "paper" });
     const listener = vi.fn();
     store.subscribe(listener);
 
@@ -141,7 +141,7 @@ describe("createThemeStore", () => {
   });
 
   it("stores, applies and announces a manual choice", () => {
-    const { store, key } = setup();
+    const { key, store } = setup();
     const listener = vi.fn();
     store.subscribe(listener);
 
@@ -154,7 +154,7 @@ describe("createThemeStore", () => {
   });
 
   it("remembers going back to the system", () => {
-    const { store, key } = setup({ stored: "ink" });
+    const { key, store } = setup({ stored: "ink" });
 
     store.getState().setPreference("system");
 
@@ -186,7 +186,7 @@ describe("createThemeStore", () => {
   });
 
   it("picks up a choice made in another tab", () => {
-    const { store, key } = setup();
+    const { key, store } = setup();
 
     localStorage.setItem(key, persisted({ preference: "ink" }));
     storageEvent(key);
@@ -241,7 +241,7 @@ describe("createThemeStore", () => {
 
   it("picks up a choice made in another tab once the storage is available again", () => {
     const blocked = failStorage();
-    const { store, key } = setup();
+    const { key, store } = setup();
 
     blocked.mockRestore();
     localStorage.setItem(key, persisted({ preference: "ink" }));

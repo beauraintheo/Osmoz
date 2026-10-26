@@ -6,8 +6,8 @@ describe("defineThemeOptions", () => {
   it("returns the options unchanged", () => {
     const options = {
       app: "demo",
+      system: { dark: "ink", light: "paper" },
       themes: ["paper", "ink"],
-      system: { light: "paper", dark: "ink" },
     } as const;
 
     expect(defineThemeOptions(options)).toBe(options);

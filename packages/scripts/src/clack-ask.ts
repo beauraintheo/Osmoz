@@ -1,9 +1,9 @@
 import { isCancel, select } from "@clack/prompts";
 
 export interface AskOption {
-  value: string;
-  label: string;
   hint?: string;
+  label: string;
+  value: string;
 }
 
 export type Ask = (message: string, options: readonly AskOption[]) => Promise<string | undefined>;

@@ -17,6 +17,7 @@
     "@osmoz/brand": "workspace:*",
     "@osmoz/preferences": "workspace:*",
     "@osmoz/ui": "workspace:*",
+    "@remixicon/react": "catalog:",
     "@tanstack/react-router": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"

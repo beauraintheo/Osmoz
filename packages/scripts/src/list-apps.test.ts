@@ -8,7 +8,7 @@ import { APPS_DIR, listApps } from "./list-apps.ts";
 
 const makeAppsDir = (apps: readonly string[]): string => {
   const dir = mkdtempSync(join(tmpdir(), "osmoz-apps-"));
-  onTestFinished(() => rmSync(dir, { recursive: true, force: true }));
+  onTestFinished(() => rmSync(dir, { force: true, recursive: true }));
   apps.map((name) => {
     mkdirSync(join(dir, name));
     writeFileSync(join(dir, name, "package.json"), "{}");

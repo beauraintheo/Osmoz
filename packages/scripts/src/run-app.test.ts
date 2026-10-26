@@ -5,7 +5,7 @@ import { runApp } from "./run-app.ts";
 
 const apps = ["flex", "tierlist"];
 
-const line = ({ command, args }: Command): string => [command, ...args].join(" ");
+const line = ({ args, command }: Command): string => [command, ...args].join(" ");
 
 describe("runApp", () => {
   it("runs the commands of the action for the given app, in order", () => {

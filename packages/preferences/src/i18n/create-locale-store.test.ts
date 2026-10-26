@@ -15,13 +15,16 @@ const en = {
 } satisfies typeof fr;
 
 interface Setup {
-  store: LocaleStore<"fr" | "en", typeof fr>;
   key: string;
+  store: LocaleStore<"fr" | "en", typeof fr>;
 }
 
 const persisted = (state: unknown): string => JSON.stringify({ state, version: 0 });
 
-const setup = ({ stored }: { stored?: string } = {}): Setup => {
+const setup = ({
+  locales = ["fr", "en"],
+  stored,
+}: { locales?: readonly ("fr" | "en")[]; stored?: string } = {}): Setup => {
   const app = crypto.randomUUID();
   const key = `${app}:locale`;
 
@@ -29,7 +32,7 @@ const setup = ({ stored }: { stored?: string } = {}): Setup => {
     localStorage.setItem(key, stored);
   }
 
-  return { store: createLocaleStore({ app, catalogs: { fr, en }, fallback: "fr" }), key };
+  return { key, store: createLocaleStore({ app, catalogs: { en, fr }, fallback: "fr", locales }) };
 };
 
 const storageEvent = (key: string | null): void => {
@@ -43,8 +46,9 @@ describe("createLocaleStore", () => {
     document.documentElement.removeAttribute("lang");
   });
 
-  it("lists the locales of the catalogs", () => {
+  it("lists the locales in the given order, not the catalogs' order", () => {
     expect(setup().store.getState().locales).toEqual(["fr", "en"]);
+    expect(setup({ locales: ["en", "fr"] }).store.getState().locales).toEqual(["en", "fr"]);
   });
 
   it("uses the fallback when nothing is stored, whatever the browser's language", () => {
@@ -75,7 +79,7 @@ describe("createLocaleStore", () => {
   });
 
   it("stores and applies a new locale", () => {
-    const { store, key } = setup();
+    const { key, store } = setup();
     const listener = vi.fn();
     store.subscribe(listener);
 
@@ -100,7 +104,7 @@ describe("createLocaleStore", () => {
   });
 
   it("picks up a choice made in another tab", () => {
-    const { store, key } = setup();
+    const { key, store } = setup();
 
     localStorage.setItem(key, persisted({ locale: "en" }));
     storageEvent(key);
@@ -156,7 +160,7 @@ describe("createLocaleStore", () => {
     const blocked = vi.spyOn(window, "localStorage", "get").mockImplementation(() => {
       throw new DOMException("denied", "SecurityError");
     });
-    const { store, key } = setup();
+    const { key, store } = setup();
 
     blocked.mockRestore();
     localStorage.setItem(key, persisted({ locale: "en" }));

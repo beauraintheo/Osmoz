@@ -81,10 +81,12 @@ Mockups: the OSM-13 canvas. Anything marked **proposed** is not settled: see
 
 Three columns under a thin top bar:
 
-- **Top bar**: the app name, the command palette trigger, undo, redo, help,
-  and the Osmoz signature (`docs/brand.md`). Reset and theme are in
-  the command palette; settings, theme included, about and the legal links
-  are in the help dialog.
+- **Top bar**: the app name, the command palette trigger, undo, redo, a
+  FR/EN toggle, a light/dark toggle, help, and the Osmoz signature
+  (`docs/brand.md`). The language and theme toggles are desktop
+  shortcuts. Reset is a button at the bottom of the Container tab, and in the
+  command palette; settings, theme and language included, about and the legal
+  links are in the help dialog.
 - **Controls** (left): two tabs, _Container_ and _Item_. Each property is a
   collapsible row.
 - **Canvas** (center): the flex container and its items, with one status line
@@ -92,7 +94,9 @@ Three columns under a thin top bar:
 - **Code** (right): the generated CSS and HTML, always visible.
 
 On mobile, the full experience is kept: canvas on top, controls and code in
-tabs of a panel below.
+tabs of a panel below. The top bar keeps only the app name, undo, redo, help
+and the signature; reset sits at the bottom of the Container tab, as on
+desktop, and the theme and the language are in the help dialog's settings.
 
 ### Initial state
 
@@ -213,8 +217,8 @@ The main axis and the cross axis are drawn on the container. They follow
 
 - what Flux is for, in one sentence;
 - the shortcuts, the single-key ones shown as off when turned off;
-- settings: the theme (system, light or dark) and the single-key shortcuts
-  switch;
+- settings: the theme (system, light or dark), the language and the
+  single-key shortcuts switch;
 - about: the author, links to Osmoz and the source code;
 - links to the legal notice and the privacy note, which live on a page of
   their own, outside the dialog.
@@ -231,15 +235,17 @@ make the first use self-explanatory.
 ### Themes and language
 
 - Light and dark. The system preference is followed until the user picks one
-  in the help dialog or the palette; the choice is remembered, and picking
-  "system" follows it again.
+  in the help dialog, the palette or, on desktop, the top bar's toggle; the
+  choice is remembered, and picking "system" in the help dialog follows it
+  again.
 - French and English. French until the user picks a language, whatever the
   browser's; the choice is remembered and applies at once, without a reload.
   Every string goes through the i18n mechanism, so other languages can be
   added without touching components.
-- Language switcher (**proposed**): a menu in the desktop header, a select in
-  the help dialog's settings on mobile, each language named in itself, no
-  flags.
+- Language switcher: a Français / English choice group in the help dialog's
+  settings, the same on desktop and mobile, and a toggle in the top bar on
+  desktop only that shows the other language (EN or FR). Each language is
+  named in itself, no flags. A third language would turn them into a select.
 
 ### Motion
 
@@ -302,7 +308,7 @@ Motion shows what a value does; it never delays the result.
    Change a stepper, type a `flex-basis`; an invalid entry shows its message
    until fixed.
 4. **Undo a mistake.** Undo and redo, reset one property, or reset the layout
-   from the palette (undoable too).
+   from the bottom of the Container tab or the palette (undoable too).
 5. **Empty container.** Remove every item: empty state, then add one.
 6. **Resize.** Drag the handle, use the arrow keys on it, or type the size;
    items reflow live.

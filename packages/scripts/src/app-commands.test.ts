@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 import { appCommands } from "./app-commands.ts";
 
 const line = (action: Parameters<typeof appCommands>[0], app?: string): string[] =>
-  appCommands(action, app).map(({ command, args }) => [command, ...args].join(" "));
+  appCommands(action, app).map(({ args, command }) => [command, ...args].join(" "));
 
 describe("appCommands", () => {
   it("runs every workspace in dev without an app", () => {

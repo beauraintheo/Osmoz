@@ -56,7 +56,7 @@ describe("defineAppConfig", () => {
   });
 
   it("injects the app's head scripts", () => {
-    defineAppConfig({ root, headScripts: ["setTheme()"] });
+    defineAppConfig({ headScripts: ["setTheme()"], root });
 
     expect(headScriptsPlugin).toHaveBeenLastCalledWith(["setTheme()"]);
   });

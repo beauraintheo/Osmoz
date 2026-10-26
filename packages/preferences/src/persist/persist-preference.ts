@@ -4,8 +4,8 @@ import type { PersistOptions } from "zustand/middleware";
 import { safeStorage } from "./safe-storage.ts";
 
 interface PreferenceOptions<State extends object, Field extends keyof State & string> {
-  name: string;
   field: Field;
+  name: string;
   restore: (stored: string | null) => NoInfer<Partial<State>>;
 }
 
@@ -24,16 +24,16 @@ const isUnchanged = (current: object, restored: object): boolean =>
   Object.keys(restored).every((key) => Object.is(ownValue(current, key), ownValue(restored, key)));
 
 export const persistPreference = <State extends object, Field extends keyof State & string>({
-  name,
   field,
+  name,
   restore,
 }: PreferenceOptions<State, Field>): PersistOptions<State, Record<string, State[Field]>> => ({
-  name,
-  storage: createJSONStorage(() => safeStorage),
-  partialize: (state) => ({ [field]: state[field] }),
   merge: (persisted, current) => {
     const restored = restore(storedValue(persisted, field));
 
     return isUnchanged(current, restored) ? current : { ...current, ...restored };
   },
+  name,
+  partialize: (state) => ({ [field]: state[field] }),
+  storage: createJSONStorage(() => safeStorage),
 });

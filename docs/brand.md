@@ -98,7 +98,8 @@ screen:
   `@osmoz/brand/osmoz-signature`: the `@osmoz/ui` link around the symbol, with
   its look fixed here. The app passes its texts (`label`, `newTabLabel`) and,
   through `className`, only its placement.
-- The symbol is at least 16 px high and the link target at least 24 × 24 px.
+- The symbol is at least 16 px high. The link target is 32 px high with a
+  mouse and 44 px with a coarse pointer (`pointer-coarse:`).
 
 ## Derived favicon
 

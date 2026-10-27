@@ -18,8 +18,11 @@ and why is in [spec.md](spec.md).
   too.
 - `@osmoz/ui`: interface components without style; Flux styles each one it
   uses in `components/ui/`.
-- Remix Icon (`@remixicon/react`): the app's icons, line style, passed to
-  components through their `icon` prop. Free for apps and design systems; its
+- Remix Icon (`@remixicon/react`): the app's icons, line style, passed as
+  components to `components/ui/icon.tsx`, which holds their sizes
+  (`<Icon icon={RiSaveLine} />`), placed anywhere in a `Button`'s content, or
+  to `IconButton` through its `icon` prop. A pending `Button` shows its
+  spinner first and hides its icons, its text stays. Free for apps and design systems; its
   license only forbids selling the icons on their own.
 
 ## Structure
@@ -66,8 +69,8 @@ file.
 - `theme` imports nothing from the app. `routes`, `features` and
   `components` may import `theme/use-theme-store` to read or change the theme.
 - `i18n` imports nothing from the app. `routes`, `features` and `components`
-  may import `i18n/use-locale-store` to read the texts or change the language,
-  never a catalog.
+  read the texts with `i18n/use-messages` and change the language with
+  `i18n/use-locale-store`, never a catalog.
 
 ## Where a file goes
 
@@ -97,7 +100,11 @@ data.
   injects the first-paint script of `@osmoz/preferences`;
   `src/theme/use-theme-store.ts` creates the app's single theme store, a
   zustand hook imported by `main.tsx` before rendering. Without JavaScript,
-  `light` applies. No theme switcher yet.
+  `light` applies.
+- Switcher: a light/dark toggle in the header on desktop only
+  (`components/theme-toggle.tsx`). It switches from the resolved theme to
+  the other one and stores that choice instead of `system`. The system /
+  light / dark choice in Help › Settings waits for the help dialog (OSM-42).
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
   is `muted`, `ring` and `osmoz-o` are `primary`. `osmoz-cloud` takes the
@@ -133,7 +140,8 @@ data.
 
 - Catalogs: `fr`, the source and the fallback, and `en`, in `src/i18n/`.
   `src/i18n/use-locale-store.ts` creates the app's single language store, a
-  zustand hook imported by `main.tsx` before rendering. Until the visitor
+  zustand hook imported by `main.tsx` before rendering, and
+  `src/i18n/use-messages.ts` reads the current catalog from it. Until the visitor
   picks a language, Flux is in French, whatever the browser's language; the
   choice is stored under `flux:locale`. `index.html` declares `lang="fr"`.
 - Switcher (OSM-13 canvas): a Français / English choice group in Help ›

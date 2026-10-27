@@ -62,6 +62,8 @@ action runs, and assistive technologies announce it as busy.
 - `type` defaults to `"button"`, so a button inside a form never submits it by
   accident. Pass `type="submit"` on purpose.
 - The accessible name is its text content. The app passes it from its catalog.
+- Its content is free: an icon goes before or after the text, wrapped in a
+  decorative `Icon`, so it is not read as part of the name.
 - `aria-busy` and `aria-disabled` are set by the component: they are not props.
 
 ## API

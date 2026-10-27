@@ -282,9 +282,11 @@ translation that misses or adds a key, since it is written
   another tab, and `setLocale` switches every text at once, without a reload.
   `index.html` declares the fallback for the first paint.
 - **`createLocaleStore` returns a zustand hook**, which the app exports as
-  `useLocaleStore`. Components read their texts with a selector, never from a
-  catalog: `const messages = useLocaleStore((state) => state.messages)`. A
-  language switcher reads `locales` and `locale`, and calls `setLocale`.
+  `useLocaleStore`. Components read their texts with the app's `useMessages`
+  hook, never from a catalog: `const messages = useMessages()`. It lives in
+  `src/i18n/use-messages.ts`, one line over the store, written in each app
+  rather than shared. A language switcher reads `locales` and `locale` from
+  `useLocaleStore`, and calls `setLocale`.
 - 👀 **Shared components take their texts as props**
   ([Architecture](#architecture)): the app passes them from its catalog.
   Punctuation belongs to the message too: `"(new tab)"`, not `({label})` in

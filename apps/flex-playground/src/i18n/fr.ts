@@ -24,4 +24,10 @@ export const fr = {
   signature: {
     label: "par Osmoz",
   },
+  theme: {
+    switchTo: {
+      dark: "Passer au thème sombre",
+      light: "Passer au thème clair",
+    },
+  },
 };

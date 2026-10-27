@@ -15,7 +15,6 @@ export const ThemeToggle = (): ReactElement => {
 
   return (
     <IconButton
-      className="max-lg:hidden"
       icon={target === "dark" ? RiMoonLine : RiSunLine}
       label={messages.theme.switchTo[target]}
       onClick={() => setPreference(target)}

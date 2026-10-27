@@ -8,7 +8,7 @@ import { Button } from "./ui/button";
 import { Icon } from "./ui/icon";
 
 export const LangToggle = (): ReactElement | null => {
-  const { language } = useMessages();
+  const messages = useMessages();
 
   const locale = useLocaleStore((state) => state.locale);
   const locales = useLocaleStore((state) => state.locales);
@@ -21,13 +21,12 @@ export const LangToggle = (): ReactElement | null => {
 
   return (
     <Button
-      aria-label={language.switchTo[target]}
-      className="max-lg:hidden"
+      aria-label={messages.language.switchTo[target]}
       onClick={() => setLocale(target)}
       variant="ghost"
     >
       <Icon icon={RiGlobalLine} />
-      {language.short[target]}
+      {messages.language.short[target]}
     </Button>
   );
 };

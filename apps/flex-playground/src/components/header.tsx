@@ -1,10 +1,13 @@
 import { OsmozSignature } from "@osmoz/brand/osmoz-signature";
+import { RiArrowGoBackLine, RiArrowGoForwardLine, RiQuestionLine } from "@remixicon/react";
 import type { ReactElement } from "react";
 
 import { useMessages } from "@/i18n/use-messages";
 
 import { LangToggle } from "./lang-toggle";
 import { ThemeToggle } from "./theme-toggle";
+import { IconButton } from "./ui/icon-button";
+import { Separator } from "./ui/separator";
 
 export const Header = (): ReactElement => {
   const messages = useMessages();
@@ -18,14 +21,31 @@ export const Header = (): ReactElement => {
         </span>
       </div>
 
-      <LangToggle />
-      <ThemeToggle />
+      <div className="ml-auto flex gap-1">
+        <IconButton
+          disabled
+          icon={RiArrowGoBackLine}
+          label={messages.header.undo}
+          variant="ghost"
+        />
+        <IconButton
+          disabled
+          icon={RiArrowGoForwardLine}
+          label={messages.header.redo}
+          variant="ghost"
+        />
+      </div>
 
-      <OsmozSignature
-        className="ml-auto"
-        label={messages.signature.label}
-        newTabLabel={messages.link.newTab}
-      />
+      <div className="flex gap-1 max-lg:hidden">
+        <LangToggle />
+        <ThemeToggle />
+      </div>
+
+      <IconButton icon={RiQuestionLine} label={messages.header.help} variant="ghost" />
+
+      <Separator className="h-5 self-center max-lg:hidden" decorative orientation="vertical" />
+
+      <OsmozSignature label={messages.signature.label} newTabLabel={messages.link.newTab} />
     </header>
   );
 };

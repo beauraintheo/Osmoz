@@ -72,7 +72,15 @@ export default defineConfig({
     },
     overrides: [
       {
-        files: ["*.config.ts", "*.config.js", "*.config.mjs", "*.cjs"],
+        files: [
+          "*.config.ts",
+          "*.config.js",
+          "*.config.mjs",
+          "*.cjs",
+          "**/*.stories.tsx",
+          ".storybook/*.ts",
+          ".storybook/*.tsx",
+        ],
         rules: {
           "import/no-default-export": "off",
         },

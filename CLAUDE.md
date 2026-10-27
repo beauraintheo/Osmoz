@@ -29,8 +29,9 @@ below: they are the single source of truth, do not restate them here.
 - When a convention is missing or contradicts the code, flag it instead of
   inventing a rule.
 - Use `/linear-ticket` for Linear tickets, `/new-app` to create an app,
-  `/pull-request` for PR drafts and `/review` to review a branch before
-  merging.
+  `/document-component` to document a `@osmoz/ui` component in the
+  Storybook, `/pull-request` for PR drafts and `/review` to review a branch
+  before merging.
 
 ## Before you finish
 

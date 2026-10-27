@@ -11,10 +11,15 @@ import { testConfig } from "./test-config.ts";
 
 export interface AppConfigOptions {
   headScripts?: readonly string[];
+  reactCompiler?: boolean;
   root: string;
 }
 
-export const defineAppConfig = ({ headScripts = [], root }: AppConfigOptions): ViteUserConfig => ({
+export const defineAppConfig = ({
+  headScripts = [],
+  reactCompiler = true,
+  root,
+}: AppConfigOptions): ViteUserConfig => ({
   plugins: [
     headScriptsPlugin(headScripts),
     tanstackRouter({
@@ -25,7 +30,7 @@ export const defineAppConfig = ({ headScripts = [], root }: AppConfigOptions): V
       target: "react",
     }),
     react(),
-    babel({ presets: [reactCompilerPreset()] }),
+    reactCompiler ? babel({ presets: [reactCompilerPreset()] }) : null,
     tailwindcss(),
   ],
   resolve: {

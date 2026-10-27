@@ -1,0 +1,72 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as IconButtonStories from "./icon-button.stories";
+
+<Meta of={IconButtonStories} />
+
+# IconButton
+
+A `Button` whose action is shown by an icon alone. It requires a text `label`,
+which becomes its accessible name, and hides the icon from assistive
+technologies, so a screen reader announces "Undo, button" and not an unnamed
+graphic.
+
+<Canvas of={IconButtonStories.Default} />
+
+## When to use it
+
+- For a frequent action that its icon makes obvious: undo, redo, help, reset a
+  property.
+- Where space is short, like a toolbar or a row of a list.
+
+## When not to use it
+
+- When the action is not obvious without text: use `Button` with its `icon`.
+- To go to another page or URL: use `Link`.
+
+## States
+
+`IconButton` renders a `Button`, so it has every state of `Button`, including
+**disabled but focusable** (`focusableWhenDisabled`), documented on its page.
+
+| State    | Props      | DOM                                                  | Focusable | Click   |
+| -------- | ---------- | ---------------------------------------------------- | --------- | ------- |
+| Default  | —          | `aria-label="<label>"`, icon in `<span aria-hidden>` | yes       | runs    |
+| Disabled | `disabled` | `disabled`                                           | no        | blocked |
+| Pending  | `pending`  | `aria-busy="true"` `aria-disabled="true"`            | yes       | blocked |
+
+<Canvas of={IconButtonStories.Disabled} />
+
+<Canvas of={IconButtonStories.Pending} />
+
+In every state, the accessible name stays the `label`.
+
+## Keyboard
+
+| Key              | Effect                                                    |
+| ---------------- | --------------------------------------------------------- |
+| `Tab`            | Moves the focus to the button, unless it is `disabled`    |
+| `Enter`, `Space` | Runs the action, unless the button is disabled or pending |
+
+## Accessibility
+
+- The accessible name is `label`, set as `aria-label`. The app passes it from
+  its catalog.
+- `label` is required and `aria-label` and `children` are not props: the name
+  cannot be left out or overridden.
+- The icon is wrapped in `<span aria-hidden="true">`: it is never announced.
+
+## API
+
+The props of `Button`, minus `aria-label` and `children`, plus `icon` and
+`label`:
+
+<Controls of={IconButtonStories.Default} />
+
+## Styling
+
+The component has no class. Each app styles it in its own
+`components/ui/icon-button.tsx`: a square size for the button and its icon, and
+the same state classes as `Button` (`disabled:`, `aria-disabled:`,
+`aria-busy:`, `focus-visible:`). See each app's section of this Storybook for
+its look.

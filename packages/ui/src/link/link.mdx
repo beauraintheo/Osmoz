@@ -1,0 +1,75 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as LinkStories from "./link.stories";
+
+<Meta of={LinkStories} />
+
+# Link
+
+A native `<a>` that goes to another page or URL. It opens a new tab only
+through its `newTab` prop, which then requires a `newTabHint`, so a link never
+opens a tab without saying so.
+
+<Canvas of={LinkStories.Default} />
+
+## When to use it
+
+- To go to another page of the app.
+- To go to another site, like the MDN page of a CSS property.
+
+## When not to use it
+
+- To run an action on the page: use `Button`. A link that acts breaks the
+  expectation that it can be opened in a new tab, and is missing from the
+  screen reader's buttons list.
+
+## States
+
+| State   | Props                 | DOM                                            | Focusable | Click            |
+| ------- | --------------------- | ---------------------------------------------- | --------- | ---------------- |
+| Default | `href`                | `<a href>`                                     | yes       | follows the link |
+| New tab | `newTab` `newTabHint` | `target="_blank"`, `newTabHint` after the text | yes       | opens a new tab  |
+
+<Canvas of={LinkStories.NewTab} />
+
+`newTabHint` is part of the link's accessible name: "Read the docs (new tab)".
+The app decides whether it is visible.
+
+`target` is not a prop: `newTab` is the only way to open a new tab.
+
+The component sets no `rel`. Current browsers apply `noopener` to
+`target="_blank"` on their own, but not `noreferrer`: pass `rel` when the
+destination must not receive the referrer.
+
+## Keyboard
+
+| Key     | Effect                                     |
+| ------- | ------------------------------------------ |
+| `Tab`   | Moves the focus to the link                |
+| `Enter` | Follows the link, in a new tab if `newTab` |
+
+## Accessibility
+
+- The role is the native `link`, so no ARIA role is added.
+- The accessible name is its text content, plus `newTabHint` when it opens a
+  new tab. The app passes both from its catalog, punctuation included:
+  `"(new tab)"`.
+
+## API
+
+The props of a native `<a>`, minus `target`, plus `newTab` and `newTabHint`:
+
+<Controls of={LinkStories.Default} />
+
+## Styling
+
+The component has no class and knows no router. Each app, in its own
+`components/ui/link.tsx`:
+
+- styles it, with a visible `focus-visible:` outline;
+- gives `newTabHint` its look, usually inside an `sr-only` span;
+- turns it into a router link with TanStack Router's `createLink`, so `to` is
+  typed against its routes.
+
+A router link marks the link of the current page with `aria-current="page"`
+and `data-status="active"`. Flux has no class for that state yet.

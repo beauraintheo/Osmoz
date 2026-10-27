@@ -25,13 +25,15 @@ pnpm dev
 | Command               | What it does                                                            |
 | --------------------- | ----------------------------------------------------------------------- |
 | `pnpm dev [app]`      | Run every workspace in dev mode, or only `<app>`                        |
-| `pnpm validate [app]` | `check`, then types and tests at 100% coverage (see below)              |
-| `pnpm build [app]`    | `validate`, then build. Stops if validation fails                       |
+| `pnpm validate [app]` | `check`, then types and tests at 100% coverage, stories included        |
+| `pnpm build [app]`    | `validate` without the stories, then build. Stops if validation fails   |
 | `pnpm check`          | Format and lint (oxfmt + type-aware oxlint), without writing            |
 | `pnpm check:fix`      | Same, with fixes: formatting, import and class order, autofixable rules |
-| `pnpm check-types`    | TypeScript, in every workspace                                          |
+| `pnpm check-types`    | TypeScript, in every workspace and in `.storybook/`                     |
 | `pnpm test`           | Unit tests of every workspace, once                                     |
 | `pnpm test:coverage`  | Same, with the 100% coverage threshold                                  |
+| `pnpm test:stories`   | Every story's interaction test in Chromium, `.tsx` coverage at 100%     |
+| `pnpm storybook`      | The components' Storybook, on http://127.0.0.1:6006                     |
 
 `[app]` is a folder name of `apps/`, like `pnpm build flex-playground`. An
 unknown name fails and lists the apps.
@@ -46,7 +48,8 @@ then `dev`, `validate` or `build`. Arrows to move, Enter to confirm, Ctrl+C
 to cancel.
 
 `pnpm build <app>` is what a deployment runs: nothing is built until the app
-and its packages pass. Each command prints the underlying `vp` commands it
+and its packages pass. It skips the stories, which need a browser: the
+`validate` check of every pull request already ran them. Each command prints the underlying `vp` commands it
 runs. `@osmoz/scripts` holds them.
 
 ## 3. Create an app
@@ -199,9 +202,18 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    `@osmoz/ui` component and give it the app's classes with `cn`. Every state
    of the boards has its class: `hover:`, `focus-visible:`, `disabled:`,
    `aria-busy:`…
-4. **Use it.** Routes, features and the app's own components import the
+4. **Document it.** `/document-component <component>` in Claude Code drafts
+   it, or by hand, following `button/`:
+   - `packages/ui/src/<component>/<component>.stories.tsx`: one story per
+     state, each with a `play` test of its behavior: roles, ARIA attributes,
+     keyboard, clicks that run or are blocked.
+   - `packages/ui/src/<component>/<component>.mdx`: why it exists, its usage,
+     states, keyboard, accessibility and API.
+   - `apps/<app>/src/components/ui/<component>.stories.tsx`: one story per
+     variant, size and board state, with `parameters: { app: "<app>" }`.
+5. **Use it.** Routes, features and the app's own components import the
    styled component from `components/ui/`, never `@osmoz/ui` directly.
-5. **Check it.** The rendered states match the boards, every action works with
+6. **Check it.** The rendered states match the boards, every action works with
    the keyboard, and `pnpm validate` passes. A state found along the way goes
    back to the boards.
 
@@ -264,8 +276,13 @@ behind `main`, blocks the merge.
   Oxc extension, which runs Vite+'s formatter and linter with the root
   `vite.config.ts`. After changing that config, run **Oxc: Restart oxfmt
   Server**.
-- **Only `.ts` files are unit tested.** `.tsx` files render, and coverage
-  ignores them.
+- **`.ts` files have unit tests, `.tsx` components have stories.** The `.tsx`
+  of `@osmoz/ui` and of each app's `components/ui/` reach 100% coverage
+  through their stories' interaction tests. Those run without the React
+  Compiler, whose memoization adds branches no render can take. Other `.tsx`
+  files, like routes, are not covered yet.
+- **Stories run in a real Chromium.** The first time, run
+  `pnpm exec playwright install chromium-headless-shell`.
 - **`@osmoz/config` imports its own files with the `.ts` extension.** Node
   loads it as is when Vite reads an app's `vite.config.ts`, and Node requires
   the extension.

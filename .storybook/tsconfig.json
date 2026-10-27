@@ -1,0 +1,4 @@
+{
+  "extends": "@osmoz/config/tsconfig.react.json",
+  "include": ["./**/*.ts", "./**/*.tsx"]
+}

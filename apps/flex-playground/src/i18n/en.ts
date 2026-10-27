@@ -5,6 +5,11 @@ export const en = {
     name: "Flux",
     tagline: "Flexbox, live",
   },
+  header: {
+    help: "Help",
+    redo: "Redo",
+    undo: "Undo",
+  },
   language: {
     short: {
       en: "EN",

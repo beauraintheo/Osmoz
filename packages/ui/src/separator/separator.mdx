@@ -1,0 +1,84 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as SeparatorStories from "./separator.stories";
+
+<Meta of={SeparatorStories} />
+
+# Separator
+
+A native `<hr>` that separates two groups of content. It is announced as a
+separator, or hidden from assistive technologies when it is only decorative,
+and it exposes its orientation as `aria-orientation` and `data-orientation`
+so each app can draw it horizontal or vertical.
+
+<Canvas of={SeparatorStories.Default} />
+
+## Usage
+
+<Guidelines>
+<Guideline kind="do" title="Use it">
+
+- Between two parts of the same block, horizontal.
+- Between two groups of controls in a bar, vertical, and `decorative` when
+  the layout already groups them, like Flux's top bar.
+
+</Guideline>
+<Guideline kind="avoid" title="Use something else">
+
+- To space elements apart: use `gap` or `margin` in the layout.
+- To separate sections that have a title: use a heading (`h2`…) inside a
+  `<section>`, which already structures the content.
+- To outline a block: use a `border` class on its container.
+
+</Guideline>
+</Guidelines>
+
+## States
+
+| State      | Props                           | DOM                                                                     | Focusable | Announced |
+| ---------- | ------------------------------- | ----------------------------------------------------------------------- | --------- | --------- |
+| Default    | —                               | `<hr>`, `aria-orientation="horizontal"` `data-orientation="horizontal"` | no        | yes       |
+| Vertical   | `orientation="vertical"`        | `aria-orientation="vertical"` `data-orientation="vertical"`             | no        | yes       |
+| Decorative | `decorative`, any `orientation` | `role="none"` `data-orientation`, no `aria-orientation`                 | no        | no        |
+
+<Canvas of={SeparatorStories.Vertical} />
+
+<Canvas of={SeparatorStories.Decorative} />
+
+## Keyboard
+
+None: the separator is never focusable.
+
+## Accessibility
+
+- The role is the native `separator` of `<hr>`, so no ARIA role is added.
+- `aria-orientation` is always set, since `<hr>` is horizontal by default and
+  a vertical one must say so.
+- `decorative` sets `role="none"`: screen readers skip it. Use it when the
+  layout already shows the grouping, so the separator adds nothing to hear.
+- `role` and `children` are not props: the role follows `decorative`, and
+  `<hr>` has no content.
+
+## API
+
+The props of a native `<hr>`, minus `children` and `role`, plus `decorative`
+and `orientation`:
+
+<Controls of={SeparatorStories.Default} />
+
+## Styling
+
+The component has no class. Each app, in its own
+`components/ui/separator.tsx`:
+
+- gives it its line color, like `border-border`: without it, the line takes
+  `currentColor`;
+- draws the vertical orientation from its `orientation` prop. Tailwind's
+  preflight gives `<hr>` no height and a top border, so a vertical separator
+  needs `h-auto`, `self-stretch`, `border-t-0` and `border-l`.
+
+Pick those classes from the prop rather than with
+`data-[orientation=vertical]:` variants: a variant's attribute selector
+outweighs a plain class, so a caller's `className="h-5"` would lose to it. A
+fixed height also needs `self-center`, since `self-stretch` with a set height
+aligns the line to the start.

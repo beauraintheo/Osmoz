@@ -3,6 +3,11 @@ export const fr = {
     name: "Flux",
     tagline: "Flexbox, en direct",
   },
+  header: {
+    help: "Aide",
+    redo: "Rétablir",
+    undo: "Annuler",
+  },
   language: {
     short: {
       en: "EN",

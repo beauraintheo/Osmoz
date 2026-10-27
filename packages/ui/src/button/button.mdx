@@ -1,0 +1,78 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as ButtonStories from "./button.stories";
+
+<Meta of={ButtonStories} />
+
+# Button
+
+A native `<button>` that triggers an action on the page. It adds two states the
+native element lacks: **pending**, while the action runs, and **disabled but
+focusable**, so a disabled action can still be reached and explained.
+
+<Canvas of={ButtonStories.Default} />
+
+## Usage
+
+<Guidelines>
+<Guideline kind="do" title="Use it">
+
+- To run an action: submit, save, open a dialog, toggle a mode.
+- When the action has a visible text label.
+
+</Guideline>
+<Guideline kind="avoid" title="Use something else">
+
+- To go to another page or URL: use `Link`. A button that navigates breaks
+  middle-click, "open in a new tab" and the screen reader's links list.
+- When the action is shown by an icon alone: use `IconButton`, which requires
+  a text label for assistive technologies.
+
+</Guideline>
+</Guidelines>
+
+## States
+
+| State               | Props                              | DOM                                       | Focusable | Click   |
+| ------------------- | ---------------------------------- | ----------------------------------------- | --------- | ------- |
+| Default             | —                                  | `type="button"`                           | yes       | runs    |
+| Disabled            | `disabled`                         | `disabled`                                | no        | blocked |
+| Disabled, focusable | `disabled` `focusableWhenDisabled` | `aria-disabled="true"`                    | yes       | blocked |
+| Pending             | `pending`                          | `aria-busy="true"` `aria-disabled="true"` | yes       | blocked |
+
+<Canvas of={ButtonStories.Disabled} />
+
+<Canvas of={ButtonStories.FocusableWhenDisabled} />
+
+<Canvas of={ButtonStories.Pending} />
+
+A pending button stays focusable: the focus does not jump away while the
+action runs, and assistive technologies announce it as busy.
+
+## Keyboard
+
+| Key              | Effect                                                    |
+| ---------------- | --------------------------------------------------------- |
+| `Tab`            | Moves the focus to the button, unless it is `disabled`    |
+| `Enter`, `Space` | Runs the action, unless the button is disabled or pending |
+
+## Accessibility
+
+- The role is the native `button`, so no ARIA role is added.
+- `type` defaults to `"button"`, so a button inside a form never submits it by
+  accident. Pass `type="submit"` on purpose.
+- The accessible name is its text content. The app passes it from its catalog.
+- `aria-busy` and `aria-disabled` are set by the component: they are not props.
+
+## API
+
+The props of a native `<button>`, minus `aria-busy` and `aria-disabled`, plus:
+
+<Controls of={ButtonStories.Default} />
+
+## Styling
+
+The component has no class. Each app styles it in its own
+`components/ui/button.tsx`, with a class for every state above: `disabled:`,
+`aria-disabled:`, `aria-busy:`, `focus-visible:`. See each app's section of
+this Storybook for its look.

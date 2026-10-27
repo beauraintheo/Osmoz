@@ -57,6 +57,27 @@ shared by nature ([brand.md](brand.md)). The mark's source files stay in
 `docs/brand/`, and a file enters the package only when code imports it. An
 image used by one app stays in that app.
 
+👀 **Every `@osmoz/ui` component is documented in the Storybook**, from its
+first use. 🔒 Its folder holds `<component>.stories.tsx` and
+`<component>.mdx`, or `component-docs.test.ts` fails. Each app that styles it
+adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
+`/document-component` drafts all three.
+
+The Storybook lives at the root, in `.storybook/`. It shows three sections:
+Osmoz's own pages, `UI` for the contract of each `@osmoz/ui` component,
+unstyled, and one section per app for its look, titled by
+`.storybook/main.ts`. An app's stories set `parameters: { app: "<app>" }`:
+`.storybook/preview.tsx` then loads that app's `theme.css` with them, and only
+with them. The doc pages wear the Osmoz theme of `@osmoz/brand`. Blocks
+shared by the doc pages live in `.storybook/blocks/`, take their texts as
+props, and use only the contract tokens.
+
+> [!WARNING]
+> One Storybook holds one app today. It resolves the `@/` alias and builds
+> with that app's Vite config, and two apps' themes define the same
+> `[data-theme]` names. A second app means one Storybook per app, composed
+> into the root one through Storybook's `refs`.
+
 👀 **A shared component gets its text from the app.** A component of
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
 prop, with no default, so each app passes its own wording and language.
@@ -118,7 +139,8 @@ change**. A 200-line file with one reason is fine.
 ## Exports and imports
 
 🔒 **Named exports only.** Default exports are allowed only where a tool
-requires one: `*.config.ts`, `*.config.js`, `*.config.mjs`, `*.cjs`.
+requires one: `*.config.ts`, `*.config.js`, `*.config.mjs`, `*.cjs`, and
+Storybook's `*.stories.tsx` and `.storybook/*` files.
 
 **No barrel files.** Import a symbol from the file that defines it.
 
@@ -399,11 +421,19 @@ a logical order, and a dialog traps and restores focus.
 `.ts` files of each workspace's `src/`. Each workspace checks its own threshold.
 
 👀 **Every `.ts` file has its test file**: `x.test.ts` sits next to `x.ts`.
-Exceptions: `*.test.ts`, `*.d.ts`, `*.config.ts` and generated code
-(`*.gen.ts`).
+Exceptions: `*.test.ts`, `*.d.ts`, `*.config.ts`, `.storybook/main.ts`
+(Storybook's config) and generated code (`*.gen.ts`).
 
 👀 **`.tsx` files get no unit test.** They render: logic worth testing moves to
-a `.ts` file next to them. Rendering will be covered by end-to-end tests.
+a `.ts` file next to them.
+
+🔒 **Components are tested by their stories.** Each story of
+`*.stories.tsx` is a test: its `play` function checks the behavior, never a
+class. `pnpm test:stories` runs them in Chromium and holds the `.tsx` of
+`@osmoz/ui` and of every `components/ui/` at 100% coverage, without the React
+Compiler, which adds branches no render can take. An uncovered branch is a
+missing story. The same run holds the `.ts` files of `.storybook/` at 100%,
+with their `.test.ts` next to them, in Chromium too. Other `.tsx` files will be covered by end-to-end tests.
 
 👀 **Every bug fix starts with a failing test.**
 
@@ -593,6 +623,8 @@ reviewer:
   `--osmoz-cloud`; no router in `@osmoz/ui`.
 - Components of `@osmoz/ui` and `@osmoz/brand` write no user-facing text: the
   app passes it as props, without defaults.
+- Every `@osmoz/ui` component has its stories and doc page, and every app that
+  styles it has its stories; a story's `play` checks behavior, never a class.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
 - Every `.ts` file has its `.test.ts`; every bug fix has a failing test first.

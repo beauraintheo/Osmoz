@@ -1,0 +1,65 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as SpinnerStories from "./spinner.stories";
+
+<Meta of={SpinnerStories} />
+
+# Spinner
+
+Shows that something is in progress. Without a `label`, it is decorative and
+hidden from assistive technologies. With a `label`, it becomes a status region
+that screen readers announce.
+
+<Canvas of={SpinnerStories.Default} />
+
+## When to use it
+
+- Without a label, next to an element that already announces the wait, like a
+  pending `Button`.
+- With a label, for a wait no button carries, like an area that loads.
+
+## When not to use it
+
+- For a button whose action is running: use `Button` or `IconButton` with
+  `pending`. They show the spinner and set `aria-busy`.
+- For a progress that can be measured: use the native `<progress>` element.
+
+## States
+
+| State      | Props   | DOM                                                         | Announced |
+| ---------- | ------- | ----------------------------------------------------------- | --------- |
+| Decorative | —       | `<span aria-hidden="true">` around the icon                 | no        |
+| Labeled    | `label` | `role="status"`, icon in `<span aria-hidden>`, then `label` | yes       |
+
+<Canvas of={SpinnerStories.WithLabel} />
+
+## Keyboard
+
+None: the spinner is never focusable.
+
+## Accessibility
+
+- `role="status"` is a polite live region: its text is announced without
+  interrupting the reader.
+- The icon is always hidden from assistive technologies. Only `label` is read.
+- `role` and `children` are not props: the role follows `label`.
+
+A live region announces what changes after it appears. A spinner mounted with
+its label at once may not be announced by every screen reader. This limit is
+not covered by a test.
+
+## API
+
+The props of a native `<span>`, minus `children` and `role`, plus `icon` and
+`label`:
+
+<Controls of={SpinnerStories.WithLabel} />
+
+## Styling
+
+The component has no class and no icon. Each app, in its own
+`components/ui/spinner.tsx`:
+
+- passes its loading icon and its animation, inside `motion-safe:`, since
+  motion is opt-in;
+- gives `label` its look, usually inside an `sr-only` span.

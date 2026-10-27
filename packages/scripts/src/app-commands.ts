@@ -7,12 +7,19 @@ export interface Command {
   command: string;
 }
 
-const WORKSPACES = "!osmoz";
+const ROOT = "osmoz";
+
+const WORKSPACES = `!${ROOT}`;
 
 const vpRun = (filter: string, script: string): Command => ({
   args: ["run", "-F", filter, script],
   command: "vp",
 });
+
+const STORIES: Command[] = [
+  { args: ["--noEmit", "-p", ".storybook"], command: "tsc" },
+  vpRun(ROOT, "test:stories"),
+];
 
 const validateCommands = (app: string | undefined): Command[] =>
   app === undefined
@@ -30,7 +37,7 @@ export const appCommands = (action: AppAction, app?: string): Command[] => {
     case "dev":
       return [vpRun(target, "dev")];
     case "validate":
-      return validateCommands(app);
+      return [...validateCommands(app), ...STORIES];
     case "build":
       return [...validateCommands(app), vpRun(target, "build")];
   }

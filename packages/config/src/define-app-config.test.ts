@@ -1,3 +1,4 @@
+import babel from "@rolldown/plugin-babel";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import { describe, expect, it, vi } from "vite-plus/test";
 
@@ -5,6 +6,7 @@ import { defineAppConfig } from "./define-app-config.ts";
 import { headScriptsPlugin } from "./head-scripts-plugin.ts";
 import { testConfig } from "./test-config.ts";
 
+vi.mock("@rolldown/plugin-babel", { spy: true });
 vi.mock("@tanstack/router-plugin/vite", { spy: true });
 vi.mock("./head-scripts-plugin.ts", { spy: true });
 
@@ -38,6 +40,20 @@ describe("defineAppConfig", () => {
         expect.stringMatching(/@tailwindcss\/vite/),
       ]),
     );
+  });
+
+  it("compiles with the React Compiler by default", () => {
+    vi.mocked(babel).mockClear();
+    defineAppConfig({ root });
+
+    expect(babel).toHaveBeenCalledOnce();
+  });
+
+  it("leaves the React Compiler out when asked", () => {
+    vi.mocked(babel).mockClear();
+    defineAppConfig({ reactCompiler: false, root });
+
+    expect(babel).not.toHaveBeenCalled();
   });
 
   it("puts the router plugin before the React plugin", () => {

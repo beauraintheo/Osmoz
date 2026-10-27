@@ -100,7 +100,11 @@ data.
   injects the first-paint script of `@osmoz/preferences`;
   `src/theme/use-theme-store.ts` creates the app's single theme store, a
   zustand hook imported by `main.tsx` before rendering. Without JavaScript,
-  `light` applies. No theme switcher yet.
+  `light` applies.
+- Switcher: a light/dark toggle in the header on desktop only
+  (`components/theme-toggle.tsx`). It switches from the resolved theme to
+  the other one and stores that choice instead of `system`. The system /
+  light / dark choice in Help › Settings waits for the help dialog (OSM-42).
 - Aliases shared by both themes: `card-foreground`, `popover-foreground` and
   `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
   is `muted`, `ring` and `osmoz-o` are `primary`. `osmoz-cloud` takes the

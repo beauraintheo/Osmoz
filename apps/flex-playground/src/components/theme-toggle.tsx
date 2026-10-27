@@ -11,13 +11,14 @@ export const ThemeToggle = (): ReactElement => {
 
   const resolved = useThemeStore((state) => state.resolved);
   const setPreference = useThemeStore((state) => state.setPreference);
+  const target = resolved === "light" ? "dark" : "light";
 
   return (
     <IconButton
       className="max-lg:hidden"
-      icon={resolved === "light" ? RiMoonLine : RiSunLine}
-      label={messages.theme.label[resolved]}
-      onClick={() => setPreference(resolved === "dark" ? "light" : "dark")}
+      icon={target === "dark" ? RiMoonLine : RiSunLine}
+      label={messages.theme.switchTo[target]}
+      onClick={() => setPreference(target)}
       variant="ghost"
     />
   );

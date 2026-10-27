@@ -1,16 +1,15 @@
 import type { ComponentProps, ComponentType, ReactElement } from "react";
 
-type SvgProps = Pick<ComponentProps<"svg">, "aria-hidden" | "aria-label" | "className" | "role">;
+type SvgProps = Omit<ComponentProps<"svg">, "children">;
 
-interface IconProps {
-  className?: string;
+interface IconProps extends Omit<SvgProps, "aria-hidden" | "aria-label" | "role"> {
   icon: ComponentType<SvgProps>;
   label?: string;
 }
 
-export const Icon = ({ className, icon: Svg, label }: IconProps): ReactElement =>
+export const Icon = ({ icon: Svg, label, ...props }: IconProps): ReactElement =>
   label === undefined ? (
-    <Svg aria-hidden className={className} />
+    <Svg {...props} aria-hidden />
   ) : (
-    <Svg aria-label={label} className={className} role="img" />
+    <Svg {...props} aria-label={label} role="img" />
   );

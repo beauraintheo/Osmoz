@@ -27,9 +27,9 @@ export const en = {
     label: "by Osmoz",
   },
   theme: {
-    label: {
-      dark: "Dark theme",
-      light: "Light theme",
+    switchTo: {
+      dark: "Switch to the dark theme",
+      light: "Switch to the light theme",
     },
   },
 } satisfies typeof fr;

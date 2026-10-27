@@ -25,9 +25,9 @@ export const fr = {
     label: "par Osmoz",
   },
   theme: {
-    label: {
-      dark: "Thème sombre",
-      light: "Thème clair",
+    switchTo: {
+      dark: "Passer au thème sombre",
+      light: "Passer au thème clair",
     },
   },
 };

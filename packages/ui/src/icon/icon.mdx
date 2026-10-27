@@ -49,10 +49,11 @@ None: the icon is never focusable.
 
 ## API
 
-`icon` is the icon component itself, not an element: `icon={RiSaveLine}`. The
-component renders it, with no wrapper, and gives it `className`, `role`,
-`aria-hidden` and `aria-label`. Any component that accepts those props fits,
-so the package depends on no icon library.
+The props of a native `<svg>`, minus `aria-hidden`, `aria-label`, `children`
+and `role`, plus `icon` and `label`. `icon` is the icon component itself, not
+an element: `icon={RiSaveLine}`. The component renders it, with no wrapper,
+and passes it every other prop. Any component that accepts the props of an
+`<svg>` fits, so the package depends on no icon library.
 
 <Controls of={IconStories.WithLabel} />
 

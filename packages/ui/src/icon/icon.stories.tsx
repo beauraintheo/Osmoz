@@ -35,3 +35,10 @@ export const WithLabel: Story = {
     await expect(icon).not.toHaveAttribute("aria-hidden");
   },
 };
+
+export const WithSvgProps: Story = {
+  args: { id: "warning-icon" },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getByTestId("icon")).toHaveAttribute("id", "warning-icon");
+  },
+};

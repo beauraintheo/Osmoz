@@ -4,15 +4,29 @@ import type { ComponentProps, ReactElement } from "react";
 
 import { cn } from "@/lib/cn";
 
+import { Icon } from "./icon";
+import type { IconSize } from "./icon";
+
+interface SpinnerProps extends Omit<ComponentProps<typeof BaseSpinner>, "icon"> {
+  size?: IconSize;
+}
+
 export const Spinner = ({
   className,
   label,
+  size = "default",
   ...props
-}: Omit<ComponentProps<typeof BaseSpinner>, "icon">): ReactElement => (
+}: SpinnerProps): ReactElement => (
   <BaseSpinner
     {...props}
     className={cn("inline-flex items-center", className)}
-    icon={<RiLoader4Line className="motion-safe:animate-spin" />}
+    icon={
+      <Icon
+        className="group-aria-busy/button:inline motion-safe:animate-spin"
+        icon={RiLoader4Line}
+        size={size}
+      />
+    }
     label={label === undefined ? undefined : <span className="sr-only">{label}</span>}
   />
 );

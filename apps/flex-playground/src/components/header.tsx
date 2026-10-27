@@ -1,12 +1,13 @@
 import { OsmozSignature } from "@osmoz/brand/osmoz-signature";
 import type { ReactElement } from "react";
 
-import { useLocaleStore } from "@/i18n/use-locale-store";
+import { useMessages } from "@/i18n/use-messages";
 
 import { LangToggle } from "./lang-toggle";
+import { ThemeToggle } from "./theme-toggle";
 
 export const Header = (): ReactElement => {
-  const messages = useLocaleStore((state) => state.messages);
+  const messages = useMessages();
 
   return (
     <header className="flex h-14 items-center gap-3 border-b border-border bg-card py-2 pr-3 pl-5">
@@ -18,6 +19,7 @@ export const Header = (): ReactElement => {
       </div>
 
       <LangToggle />
+      <ThemeToggle />
 
       <OsmozSignature
         className="ml-auto"

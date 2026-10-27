@@ -147,9 +147,10 @@ is `/`, `routes/posts/home.tsx` is `/posts/`. A route file exports `Route`, and
 the linter forbids named exports from an `index` file.
 
 Texts come from the app's catalogs, in `src/i18n/`: one file per language,
-and `use-locale-store.ts`, which creates the app's single language store, a
-zustand hook. `src/main.tsx` imports it before rendering, and components read
-their texts with it ([conventions.md](conventions.md#texts-and-languages)).
+`use-locale-store.ts`, which creates the app's single language store, a
+zustand hook, and `use-messages.ts`, which components read their texts with.
+`src/main.tsx` imports the store before rendering
+([conventions.md](conventions.md#texts-and-languages)).
 
 ```ts
 import { createLocaleStore } from "@osmoz/preferences/i18n/create-locale-store";
@@ -163,6 +164,13 @@ export const useLocaleStore = createLocaleStore({
   fallback: "fr",
   locales: ["fr", "en"],
 });
+```
+
+```ts
+import type { fr } from "./fr";
+import { useLocaleStore } from "./use-locale-store";
+
+export const useMessages = (): typeof fr => useLocaleStore((state) => state.messages);
 ```
 
 Interface components come from `@osmoz/ui`, without style: the app wraps each
@@ -269,7 +277,7 @@ behind `main`, blocks the merge.
   the linter. `console.warn` and `console.error` pass.
 - **Function declarations are rejected.** Write `const f = (): T => …`.
 - **Text written in JSX is rejected**, `aria-label` included. It comes from the
-  app's catalog, read with the app's `useLocaleStore`: `{messages.app.name}`.
+  app's catalog, read with the app's `useMessages`: `{messages.app.name}`.
 - **`pnpm check:fix` reorders your imports, your Tailwind classes, and your
   keys and props** ([conventions.md](conventions.md#ordering)).
   That is expected; a blank line keeps a group apart. In VS Code, saving a file does the same: install the recommended

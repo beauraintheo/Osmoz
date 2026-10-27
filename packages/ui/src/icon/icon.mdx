@@ -1,0 +1,62 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as IconStories from "./icon.stories";
+
+<Meta of={IconStories} />
+
+# Icon
+
+Renders an icon component so it is either hidden from assistive technologies
+or announced as an image with a name. Without a `label`, it is decorative. With a `label`,
+it becomes an image that screen readers announce. The app gives it its sizes,
+so every icon of the app follows the same scale.
+
+<Canvas of={IconStories.Decorative} />
+
+## When to use it
+
+- Next to a text that already says what the icon means, like an icon inside a
+  `Button`: decorative.
+- Alone, when the icon carries a meaning no text repeats, like a warning
+  sign: with a `label`.
+
+## When not to use it
+
+- For an action shown by an icon alone: use `IconButton`, which names the
+  action, not the image.
+- For a wait: use `Spinner`.
+
+## States
+
+| State      | Props   | DOM                                     | Announced |
+| ---------- | ------- | --------------------------------------- | --------- |
+| Decorative | —       | `<svg aria-hidden="true">`              | no        |
+| Labeled    | `label` | `<svg role="img" aria-label="<label>">` | yes       |
+
+<Canvas of={IconStories.WithLabel} />
+
+## Keyboard
+
+None: the icon is never focusable.
+
+## Accessibility
+
+- A decorative icon is never announced, so a button reads "Save", not "image,
+  Save".
+- A labeled icon has the `img` role: its content is not read, only `label`.
+  The app passes it from its catalog.
+- `role`, `aria-hidden` and `aria-label` are not props: they follow `label`.
+
+## API
+
+`icon` is the icon component itself, not an element: `icon={RiSaveLine}`. The
+component renders it, with no wrapper, and gives it `className`, `role`,
+`aria-hidden` and `aria-label`. Any component that accepts those props fits,
+so the package depends on no icon library.
+
+<Controls of={IconStories.WithLabel} />
+
+## Styling
+
+The component has no class. Each app, in its own `components/ui/icon.tsx`,
+picks its icon library and gives the icon its sizes, one per `size`.

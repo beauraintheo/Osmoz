@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
-import { useLocaleStore } from "@/i18n/use-locale-store";
+import { useMessages } from "@/i18n/use-messages";
 
 const Home = (): ReactElement => {
-  const messages = useLocaleStore((state) => state.messages);
+  const messages = useMessages();
 
   return (
     <div className="flex flex-1 flex-col lg:min-h-0 lg:flex-row">

@@ -16,6 +16,10 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
+export const Small: Story = {
+  args: { size: "sm" },
+};
+
 export const WithLabel: Story = {
   args: { label: "Loading" },
   play: async ({ canvas }): Promise<void> => {

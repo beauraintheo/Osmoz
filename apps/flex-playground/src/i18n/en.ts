@@ -26,4 +26,10 @@ export const en = {
   signature: {
     label: "by Osmoz",
   },
+  theme: {
+    label: {
+      dark: "Dark theme",
+      light: "Light theme",
+    },
+  },
 } satisfies typeof fr;

@@ -4,7 +4,21 @@ import { expect, fn } from "storybook/test";
 import { IconButton } from "./icon-button.tsx";
 
 const meta = {
-  args: { icon: <svg />, label: "Undo", onClick: fn() },
+  args: {
+    icon: (
+      <svg fill="none" height="16" viewBox="0 0 24 24" width="16">
+        <path
+          d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"
+          stroke="currentColor"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+        />
+      </svg>
+    ),
+    label: "Undo",
+    onClick: fn(),
+  },
   argTypes: { icon: { control: false } },
   component: IconButton,
   title: "IconButton",

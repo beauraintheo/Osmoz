@@ -16,7 +16,11 @@ describe("emptyMessages", () => {
   it("gives the path of every empty or blank message, nested ones included", () => {
     expect(
       emptyMessages({
-        header: { menu: { close: "" }, signature: "by Osmoz", tagline: "  " },
+        header: {
+          menu: { close: "" },
+          signature: "by Osmoz",
+          tagline: "  ",
+        },
         title: "",
       }),
     ).toEqual(["header.menu.close", "header.tagline", "title"]);

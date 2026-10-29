@@ -69,8 +69,20 @@ unstyled, and one section per app for its look, titled by
 `.storybook/main.ts`. An app's stories set `parameters: { app: "<app>" }`:
 `.storybook/preview.tsx` then loads that app's `theme.css` with them, and only
 with them. The doc pages wear the Osmoz theme of `@osmoz/brand`. Blocks
-shared by the doc pages live in `.storybook/blocks/`, take their texts as
-props, and use only the contract tokens.
+shared by the doc pages live in `.storybook/blocks/`, one folder per block
+with its logic and tests, take their texts as props or children, and use only
+the contract tokens. `.storybook/preview.tsx` registers them, so a `.mdx`
+uses them without import:
+
+| Block                              | Shows                                                                                                                          |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `Guidelines`, `Guideline when="…"` | Each situation and the component it calls for: this one, or `use={OtherStories}` linked to its page; `preview` renders a story |
+| `States`, `State of={…}`           | Each state story, with the attributes read on its rendered element                                                             |
+| `Keyboard`, `Key keys={…}`         | Each key and its effect; `"Shift+Tab"` is a combination                                                                        |
+| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the active theme                                                               |
+
+A block's root has the `sb-unstyled` class, so Storybook's own doc styles
+stay out of it.
 
 > [!WARNING]
 > One Storybook holds one app today. It resolves the `@/` alias and builds
@@ -184,6 +196,12 @@ them for you (eslint-plugin-perfectionist, run by oxlint).
 
 🔒 **Lines stop at 100 characters**, enforced by the formatter (`printWidth`).
 It never splits a string: a long list of classes may go past it.
+
+🔒 **An object literal with 3 keys or more spans one line per key**, enforced
+by `@stylistic/object-curly-newline` (run by oxlint); `pnpm check:fix` breaks
+it for you. Below 3 keys, an object stays on one line unless it is already
+broken: the formatter keeps an object multi-line when a line break follows its
+opening brace.
 
 ## TypeScript
 

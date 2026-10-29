@@ -12,7 +12,7 @@
     "storybook": "storybook dev --port 6006 --no-open",
     "test": "vp run -F '!osmoz' test",
     "test:coverage": "vp run -F '!osmoz' test:coverage",
-    "test:stories": "vp test run --config vitest.storybook.config.ts --coverage",
+    "test:stories": "vp test run --coverage",
     "validate": "node packages/scripts/src/main.ts validate",
     "prepare": "husky"
   },
@@ -25,6 +25,7 @@
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-vitest": "catalog:",
     "@storybook/react-vite": "catalog:",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

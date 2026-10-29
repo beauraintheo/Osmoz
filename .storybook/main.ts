@@ -21,7 +21,11 @@ const config: StorybookConfig = {
   },
   framework: "@storybook/react-vite",
   stories: [
-    { directory: "../packages/ui/src", files: STORY_FILES, titlePrefix: "UI" },
+    {
+      directory: "../packages/ui/src",
+      files: STORY_FILES,
+      titlePrefix: "UI",
+    },
     {
       directory: "../apps/flex-playground/src/components/ui",
       files: STORY_FILES,

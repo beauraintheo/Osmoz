@@ -5,7 +5,11 @@ import { expect, fn } from "storybook/test";
 import { IconButton } from "./icon-button";
 
 const meta = {
-  args: { icon: RiArrowGoBackLine, label: "Undo", onClick: fn() },
+  args: {
+    icon: RiArrowGoBackLine,
+    label: "Undo",
+    onClick: fn(),
+  },
   argTypes: { icon: { control: false } },
   component: IconButton,
   parameters: { app: "flux" },

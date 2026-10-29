@@ -65,7 +65,7 @@ export default defineConfig({
       builtin: true,
     },
     ignorePatterns,
-    jsPlugins: ["eslint-plugin-perfectionist"],
+    jsPlugins: ["@stylistic/eslint-plugin", "eslint-plugin-perfectionist"],
     options: {
       typeAware: true,
       typeCheck: false,
@@ -131,6 +131,18 @@ export default defineConfig({
 
       "no-console": ["error", { allow: ["warn", "error"] }],
       "unicorn/filename-case": ["error", { case: "kebabCase" }],
+
+      "@stylistic/object-curly-newline": [
+        "error",
+        {
+          ObjectExpression: {
+            consistent: true,
+            minProperties: 3,
+            multiline: true,
+          },
+          ObjectPattern: { consistent: true, multiline: true },
+        },
+      ],
 
       "perfectionist/sort-enums": ["error", SORT_OPTIONS],
       "perfectionist/sort-interfaces": ["error", SORT_OPTIONS],

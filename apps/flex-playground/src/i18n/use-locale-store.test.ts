@@ -11,7 +11,12 @@ vi.mock("@osmoz/preferences/i18n/create-locale-store", () => ({
 describe("useLocaleStore", () => {
   it("is created from the app's catalogs, French first and as the fallback", () => {
     expect(useLocaleStore).toEqual({
-      createdFrom: { app: "flux", catalogs: { en, fr }, fallback: "fr", locales: ["fr", "en"] },
+      createdFrom: {
+        app: "flux",
+        catalogs: { en, fr },
+        fallback: "fr",
+        locales: ["fr", "en"],
+      },
     });
   });
 });

@@ -10,6 +10,7 @@ import { docsTheme, toMode } from "./docs-theme";
 import type { Mode } from "./docs-theme";
 
 import osmozTheme from "@osmoz/brand/osmoz-theme.css?inline";
+import "./osmoz-docs-container.css";
 
 const readMode = (context: DocsContainerProps["context"]): Mode => {
   const story = context.componentStories()[0];
@@ -47,7 +48,11 @@ export const OsmozDocsContainer = ({
     <div
       data-theme={`osmoz-${mode}`}
       ref={page}
-      style={{ background: "var(--background)", minHeight: "100vh" }}
+      style={{
+        background: "var(--background)",
+        fontFamily: theme.fontBase,
+        minHeight: "100vh",
+      }}
     >
       <style>{osmozTheme}</style>
       <DocsContainer context={context} theme={theme}>

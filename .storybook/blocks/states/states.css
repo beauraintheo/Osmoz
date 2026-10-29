@@ -1,0 +1,72 @@
+.osmoz-states {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0 40px;
+}
+
+.osmoz-state {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.osmoz-states .osmoz-state-title {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  color: var(--foreground);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.osmoz-state-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 72px;
+  padding: 8px;
+  border-radius: 10px;
+  background: var(--muted);
+}
+
+.osmoz-state-preview .sb-story {
+  margin: 0;
+}
+
+.osmoz-states .osmoz-state-attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.osmoz-states .osmoz-state-attributes li {
+  margin: 0;
+}
+
+.osmoz-states .osmoz-state-attributes code {
+  padding: 3px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.osmoz-state-behavior {
+  color: var(--muted-foreground);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.osmoz-state-behavior > p {
+  margin: 0;
+}

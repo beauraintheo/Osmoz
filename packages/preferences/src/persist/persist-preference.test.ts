@@ -35,7 +35,11 @@ const setup = ({ stored }: { stored?: string } = {}): Setup => {
   const store = create<State>()(
     persist(
       () => ({ locale: FALLBACK, other: 1 }),
-      persistPreference({ field: "locale", name, restore }),
+      persistPreference({
+        field: "locale",
+        name,
+        restore,
+      }),
     ),
   );
 

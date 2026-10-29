@@ -79,7 +79,7 @@ uses them without import:
 | `Guidelines`, `Guideline when="…"` | Each situation and the component it calls for: this one, or `use={OtherStories}` linked to its page; `preview` renders a story |
 | `States`, `State of={…}`           | Each state story, with the attributes read on its rendered element                                                             |
 | `Keyboard`, `Key keys={…}`         | Each key and its effect; `"Shift+Tab"` is a combination                                                                        |
-| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the active theme                                                               |
+| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the doc page's Osmoz theme, not an app's                                       |
 
 A block's root has the `sb-unstyled` class, so Storybook's own doc styles
 stay out of it.

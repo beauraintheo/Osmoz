@@ -10,5 +10,8 @@ export const readAttributes = (element: Element): Attribute[] =>
     .filter(({ name }) => !HIDDEN.has(name))
     .toSorted((first, second) => first.name.localeCompare(second.name));
 
+export const sameAttributes = (first: Attribute[], second: Attribute[]): boolean =>
+  JSON.stringify(first) === JSON.stringify(second);
+
 export const formatAttribute = ({ name, value }: Attribute): string =>
   value === "" ? name : `${name}="${value}"`;

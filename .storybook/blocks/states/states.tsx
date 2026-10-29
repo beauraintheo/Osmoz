@@ -3,8 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import type { ReactElement, ReactNode } from "react";
 import type { ModuleExport } from "storybook/internal/types";
 
-import { formatAttribute, readAttributes } from "./read-attributes";
+import { formatAttribute, readAttributes, sameAttributes } from "./read-attributes";
 import type { Attribute } from "./read-attributes";
+import { storyRoot } from "./story-root";
 
 import "./states.css";
 
@@ -34,9 +35,12 @@ export const State = ({ children, of }: StateProps): ReactElement => {
     }
 
     const read = (): void => {
-      const rendered = element.querySelector("[data-name]")?.firstElementChild ?? null;
+      const container = element.querySelector("[data-name]");
+      const rendered = container === null ? null : storyRoot(container);
 
-      setAttributes(rendered === null ? [] : readAttributes(rendered));
+      const next = rendered === null ? [] : readAttributes(rendered);
+
+      setAttributes((current) => (sameAttributes(current, next) ? current : next));
     };
 
     read();

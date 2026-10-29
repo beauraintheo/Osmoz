@@ -1,5 +1,7 @@
 import type { ReactElement, ReactNode } from "react";
 
+import { splitShortcut } from "./split-shortcut";
+
 import "./keyboard.css";
 
 interface KeyboardProps {
@@ -16,7 +18,7 @@ interface ShortcutProps {
 }
 
 const Shortcut = ({ shortcut }: ShortcutProps): ReactElement => {
-  const keys = shortcut.split("+");
+  const keys = splitShortcut(shortcut);
 
   return keys.length === 1 ? (
     <kbd>{shortcut}</kbd>

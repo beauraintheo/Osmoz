@@ -21,6 +21,7 @@ const withAppTheme: Decorator = (Story, { globals, parameters }) => {
 
   return (
     <div
+      data-app-theme=""
       data-theme={typeof theme === "string" ? theme : "light"}
       style={{
         background: "var(--background)",

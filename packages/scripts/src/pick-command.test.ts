@@ -23,7 +23,11 @@ const setup = (...answers: (string | undefined)[]): Mocks => {
   );
   const exec = vi.fn((_command: Command): number => 0);
   const onCancel = vi.fn((): void => undefined);
-  return { ask, exec, onCancel };
+  return {
+    ask,
+    exec,
+    onCancel,
+  };
 };
 
 describe("pickCommand", () => {

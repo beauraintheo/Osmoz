@@ -15,13 +15,21 @@ describe("resolveButtonBehavior", () => {
 
   it("disables a disabled button natively", () => {
     expect(
-      resolveButtonBehavior({ disabled: true, focusableWhenDisabled: false, pending: false }),
+      resolveButtonBehavior({
+        disabled: true,
+        focusableWhenDisabled: false,
+        pending: false,
+      }),
     ).toEqual({ disabled: true, inert: false });
   });
 
   it("keeps a disabled button focusable when asked", () => {
     expect(
-      resolveButtonBehavior({ disabled: true, focusableWhenDisabled: true, pending: false }),
+      resolveButtonBehavior({
+        disabled: true,
+        focusableWhenDisabled: true,
+        pending: false,
+      }),
     ).toEqual({ disabled: undefined, inert: true });
   });
 
@@ -37,13 +45,21 @@ describe("resolveButtonBehavior", () => {
 
   it("keeps a pending disabled button focusable", () => {
     expect(
-      resolveButtonBehavior({ disabled: true, focusableWhenDisabled: false, pending: true }),
+      resolveButtonBehavior({
+        disabled: true,
+        focusableWhenDisabled: false,
+        pending: true,
+      }),
     ).toEqual({ disabled: undefined, inert: true });
   });
 
   it("ignores focusableWhenDisabled on an enabled button", () => {
     expect(
-      resolveButtonBehavior({ disabled: false, focusableWhenDisabled: true, pending: false }),
+      resolveButtonBehavior({
+        disabled: false,
+        focusableWhenDisabled: true,
+        pending: false,
+      }),
     ).toEqual({ disabled: undefined, inert: false });
   });
 });

@@ -32,7 +32,15 @@ const setup = ({
     localStorage.setItem(key, stored);
   }
 
-  return { key, store: createLocaleStore({ app, catalogs: { en, fr }, fallback: "fr", locales }) };
+  return {
+    key,
+    store: createLocaleStore({
+      app,
+      catalogs: { en, fr },
+      fallback: "fr",
+      locales,
+    }),
+  };
 };
 
 const storageEvent = (key: string | null): void => {

@@ -1,0 +1,86 @@
+.osmoz-keyboard {
+  margin: 24px 0 40px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.osmoz-key {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  padding: 16px 20px;
+}
+
+.osmoz-key + .osmoz-key {
+  border-top: 1px solid var(--border);
+}
+
+.osmoz-key dt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.osmoz-key dd {
+  margin: 0;
+  padding: 0;
+  color: var(--muted-foreground);
+  line-height: 1.55;
+}
+
+.osmoz-key dd > p {
+  margin: 0;
+}
+
+.osmoz-key kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 28px;
+  height: 26px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-bottom-width: 2px;
+  border-radius: 6px;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.osmoz-key .osmoz-key-combination {
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.osmoz-key-combination > kbd + kbd::before {
+  position: absolute;
+  margin-left: -15px;
+  color: var(--muted-foreground);
+  content: "+";
+}
+
+.osmoz-key-combination > kbd {
+  position: relative;
+}
+
+.osmoz-key-combination > kbd + kbd {
+  margin-left: 10px;
+}
+
+@media (max-width: 640px) {
+  .osmoz-key {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}

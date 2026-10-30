@@ -4,7 +4,11 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vite-plus/test"
 
 import { firstPaintScript } from "./first-paint-script.ts";
 
-const options = { app: "demo", system: { dark: "ink", light: "paper" }, themes: ["paper", "ink"] };
+const options = {
+  app: "demo",
+  system: { dark: "ink", light: "paper" },
+  themes: ["paper", "ink"],
+};
 
 const stubSystemScheme = (scheme: "light" | "dark"): void => {
   vi.stubGlobal(

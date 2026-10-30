@@ -15,7 +15,11 @@ export const Button = ({
   type = "button",
   ...props
 }: ButtonProps): ReactElement => {
-  const behavior = resolveButtonBehavior({ disabled, focusableWhenDisabled, pending });
+  const behavior = resolveButtonBehavior({
+    disabled,
+    focusableWhenDisabled,
+    pending,
+  });
 
   return (
     <button

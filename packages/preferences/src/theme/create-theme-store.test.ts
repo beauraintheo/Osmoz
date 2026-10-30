@@ -47,7 +47,11 @@ const setup = ({ dark = false, stored }: { dark?: boolean; stored?: string } = {
     themes: ["paper", "ink"],
   });
 
-  return { key, scheme, store };
+  return {
+    key,
+    scheme,
+    store,
+  };
 };
 
 const appliedTheme = (): string | undefined => document.documentElement.dataset.theme;

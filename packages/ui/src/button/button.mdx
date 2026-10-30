@@ -1,5 +1,7 @@
 import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
 
+import * as IconButtonStories from "../icon-button/icon-button.stories";
+import * as LinkStories from "../link/link.stories";
 import * as ButtonStories from "./button.stories";
 
 <Meta of={ButtonStories} />
@@ -15,46 +17,45 @@ focusable**, so a disabled action can still be reached and explained.
 ## Usage
 
 <Guidelines>
-<Guideline kind="do" title="Use it">
-
-- To run an action: submit, save, open a dialog, toggle a mode.
-- When the action has a visible text label.
-
-</Guideline>
-<Guideline kind="avoid" title="Use something else">
-
-- To go to another page or URL: use `Link`. A button that navigates breaks
-  middle-click, "open in a new tab" and the screen reader's links list.
-- When the action is shown by an icon alone: use `IconButton`, which requires
-  a text label for assistive technologies.
-
-</Guideline>
+  <Guideline preview={ButtonStories.Default} when="To run an action with a visible text label.">
+    Submit, save, open a dialog, toggle a mode.
+  </Guideline>
+  <Guideline preview={LinkStories.Default} use={LinkStories} when="To go to another page or URL.">
+    A button that navigates breaks middle-click, "open in a new tab" and the screen reader's links
+    list.
+  </Guideline>
+  <Guideline
+    preview={IconButtonStories.Default}
+    use={IconButtonStories}
+    when="When an icon alone shows the action."
+  >
+    It requires a text label, read by assistive technologies.
+  </Guideline>
 </Guidelines>
 
 ## States
 
-| State               | Props                              | DOM                                       | Focusable | Click   |
-| ------------------- | ---------------------------------- | ----------------------------------------- | --------- | ------- |
-| Default             | —                                  | `type="button"`                           | yes       | runs    |
-| Disabled            | `disabled`                         | `disabled`                                | no        | blocked |
-| Disabled, focusable | `disabled` `focusableWhenDisabled` | `aria-disabled="true"`                    | yes       | blocked |
-| Pending             | `pending`                          | `aria-busy="true"` `aria-disabled="true"` | yes       | blocked |
+Each card renders its story and lists the attributes read on the rendered
+`<button>`.
 
-<Canvas of={ButtonStories.Disabled} />
-
-<Canvas of={ButtonStories.FocusableWhenDisabled} />
-
-<Canvas of={ButtonStories.Pending} />
+<States>
+  <State of={ButtonStories.Default}>Focusable. Click runs.</State>
+  <State of={ButtonStories.Disabled}>`disabled`. Skipped by Tab. Click blocked.</State>
+  <State of={ButtonStories.FocusableWhenDisabled}>
+    `disabled` and `focusableWhenDisabled`. Focusable. Click blocked.
+  </State>
+  <State of={ButtonStories.Pending}>`pending`. Focusable. Click blocked.</State>
+</States>
 
 A pending button stays focusable: the focus does not jump away while the
 action runs, and assistive technologies announce it as busy.
 
 ## Keyboard
 
-| Key              | Effect                                                    |
-| ---------------- | --------------------------------------------------------- |
-| `Tab`            | Moves the focus to the button, unless it is `disabled`    |
-| `Enter`, `Space` | Runs the action, unless the button is disabled or pending |
+<Keyboard>
+  <Key keys={["Tab"]}>Moves the focus to the button, unless it is `disabled`.</Key>
+  <Key keys={["Enter", "Space"]}>Runs the action, unless the button is disabled or pending.</Key>
+</Keyboard>
 
 ## Accessibility
 
@@ -78,3 +79,14 @@ The component has no class. Each app styles it in its own
 `components/ui/button.tsx`, with a class for every state above: `disabled:`,
 `aria-disabled:`, `aria-busy:`, `focus-visible:`. See each app's section of
 this Storybook for its look.
+
+The roles of the contract a styled button maps to, with their values in the
+Osmoz theme of this page, not of an app:
+
+<Tokens>
+  <Token name="primary">Background of the main action.</Token>
+  <Token name="primary-foreground">Its text and icon.</Token>
+  <Token name="secondary">Background of a secondary action.</Token>
+  <Token name="secondary-foreground">Its text and icon.</Token>
+  <Token name="ring">Focus outline.</Token>
+</Tokens>

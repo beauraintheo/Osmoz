@@ -54,7 +54,11 @@ export const createThemeStore = <Theme extends string>({
           commit(get().preference);
         });
 
-        return { ...select("system"), setPreference: commit, themes };
+        return {
+          ...select("system"),
+          setPreference: commit,
+          themes,
+        };
       },
       persistPreference({
         field: "preference",

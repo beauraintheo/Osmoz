@@ -13,8 +13,16 @@ const injectedTags = (scripts: readonly string[]): unknown => {
 describe("headScriptsPlugin", () => {
   it("injects each script inline at the end of the head, in order", () => {
     expect(injectedTags(["first()", "second()"])).toEqual([
-      { children: "first()", injectTo: "head", tag: "script" },
-      { children: "second()", injectTo: "head", tag: "script" },
+      {
+        children: "first()",
+        injectTo: "head",
+        tag: "script",
+      },
+      {
+        children: "second()",
+        injectTo: "head",
+        tag: "script",
+      },
     ]);
   });
 

@@ -16,7 +16,12 @@ describe("testConfig", () => {
 
   it("requires 100% coverage", () => {
     expect(testConfig.coverage).toMatchObject({
-      thresholds: { branches: 100, functions: 100, lines: 100, statements: 100 },
+      thresholds: {
+        branches: 100,
+        functions: 100,
+        lines: 100,
+        statements: 100,
+      },
     });
   });
 });

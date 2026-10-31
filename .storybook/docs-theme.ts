@@ -1,9 +1,9 @@
 import { themes } from "storybook/theming";
 import type { ThemeVars } from "storybook/theming";
 
-export type Mode = "light" | "dark";
+import type { useThemeStore } from "./use-theme-store";
 
-export const toMode = (value: unknown): Mode => (value === "dark" ? "dark" : "light");
+type Mode = ReturnType<typeof useThemeStore.getState>["resolved"];
 
 export const toHex = (color: string): string => {
   const canvas = document.createElement("canvas");
@@ -36,6 +36,10 @@ export const docsTheme = (element: HTMLElement, mode: Mode): ThemeVars => {
     barBg: token("card"),
     barSelectedColor: token("primary"),
     barTextColor: token("muted-foreground"),
+    booleanBg: token("muted"),
+    booleanSelectedBg: token("card"),
+    buttonBg: token("card"),
+    buttonBorder: token("input"),
     colorSecondary: token("primary"),
     inputBg: token("card"),
     inputBorder: token("input"),

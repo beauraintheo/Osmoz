@@ -22,6 +22,7 @@
     "@commitlint/config-conventional": "^21.2.3",
     "@osmoz/brand": "workspace:*",
     "@osmoz/config": "workspace:*",
+    "@osmoz/preferences": "workspace:*",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-vitest": "catalog:",

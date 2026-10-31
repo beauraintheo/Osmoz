@@ -6,7 +6,18 @@ import { Icon } from "./icon";
 
 const meta = {
   args: { icon: RiAlertLine },
-  argTypes: { icon: { control: false } },
+  argTypes: {
+    icon: { control: false, description: "A Remix icon component. See UI/Icon." },
+    label: {
+      control: "text",
+      description: "See UI/Icon.",
+      table: { type: { summary: "string" } },
+    },
+    size: {
+      description:
+        "`default` grows on a coarse pointer, next to touch-sized controls. `sm` keeps its size.",
+    },
+  },
   component: Icon,
   parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],

@@ -4,6 +4,14 @@ import { expect } from "storybook/test";
 import { Spinner } from "./spinner";
 
 const meta = {
+  argTypes: {
+    label: {
+      control: "text",
+      description: "Visually hidden. See UI/Spinner.",
+      table: { type: { summary: "ReactNode" } },
+    },
+    size: { description: "The sizes of Flux/Icon, so the spinner can take an icon's place." },
+  },
   component: Spinner,
   parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],

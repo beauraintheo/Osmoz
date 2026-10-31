@@ -19,7 +19,37 @@ const meta = {
     label: "Undo",
     onClick: fn(),
   },
-  argTypes: { icon: { control: false } },
+  argTypes: {
+    disabled: {
+      control: "boolean",
+      description: "See Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    focusableWhenDisabled: {
+      control: "boolean",
+      description: "See Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    icon: {
+      control: false,
+      description: "The icon element, hidden from assistive technologies.",
+    },
+    label: {
+      description: "The accessible name, read instead of the icon. From the app's catalog.",
+    },
+    onClick: { description: "See Button." },
+    pending: {
+      control: "boolean",
+      description: "See Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    type: {
+      control: "inline-radio",
+      description: "See Button.",
+      options: ["button", "submit", "reset"],
+      table: { type: { summary: '"button" | "submit" | "reset"' } },
+    },
+  },
   component: IconButton,
   title: "IconButton",
 } satisfies Meta<typeof IconButton>;

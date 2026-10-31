@@ -7,6 +7,39 @@ import { Icon } from "./icon";
 
 const meta = {
   args: { children: "Save", onClick: fn() },
+  argTypes: {
+    children: { description: "See UI/Button." },
+    disabled: {
+      control: "boolean",
+      description: "See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    focusableWhenDisabled: {
+      control: "boolean",
+      description: "See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    onClick: { description: "See UI/Button." },
+    pending: {
+      control: "boolean",
+      description: "Adds the spinner before the content and hides its icons. See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    size: {
+      description:
+        "`sm` for dense toolbars. Both sizes grow on a coarse pointer, to stay touchable.",
+    },
+    type: {
+      control: "inline-radio",
+      description: "See UI/Button.",
+      options: ["button", "submit", "reset"],
+      table: { type: { summary: '"button" | "submit" | "reset"' } },
+    },
+    variant: {
+      description:
+        "`primary` for the main action of a view, `secondary` for the others, `ghost` for a quiet action in a toolbar.",
+    },
+  },
   component: Button,
   parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],

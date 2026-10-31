@@ -17,6 +17,15 @@ const inRow: Decorator = (Story) => (
 
 const meta = {
   args: {},
+  argTypes: {
+    decorative: {
+      description: "Hides the line from assistive technologies, for a purely visual split.",
+    },
+    orientation: {
+      description:
+        "Set as `data-orientation` for the app's style, and as `aria-orientation` unless decorative.",
+    },
+  },
   component: Separator,
   title: "Separator",
 } satisfies Meta<typeof Separator>;

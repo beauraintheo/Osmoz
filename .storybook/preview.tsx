@@ -1,18 +1,46 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
+import type { ReactElement, ReactNode } from "react";
 
 import { Guideline, Guidelines } from "./blocks/guidelines/guidelines";
 import { Key, Keyboard } from "./blocks/keyboard/keyboard";
 import { State, States } from "./blocks/states/states";
 import { Token, Tokens } from "./blocks/tokens/tokens";
 import { OsmozDocsContainer } from "./osmoz-docs-container";
+import { useThemeStore } from "./use-theme-store";
 
 import fluxTheme from "../apps/flex-playground/src/theme/theme.css?inline";
 
 const APP_STYLES: Readonly<Record<string, string>> = { flux: fluxTheme };
 
-const withAppTheme: Decorator = (Story, { globals, parameters, viewMode }) => {
+interface AppThemeProps {
+  children: ReactNode;
+  fullHeight: boolean;
+  style: string;
+}
+
+const AppTheme = ({ children, fullHeight, style }: AppThemeProps): ReactElement => {
+  const theme = useThemeStore((state) => state.resolved);
+
+  return (
+    <div
+      data-app-theme=""
+      data-theme={theme}
+      style={{
+        background: "var(--background)",
+        boxSizing: "border-box",
+        color: "var(--foreground)",
+        minHeight: fullHeight ? "100vh" : undefined,
+        padding: "1rem",
+      }}
+    >
+      <style>{style}</style>
+      {children}
+    </div>
+  );
+};
+
+const withAppTheme: Decorator = (Story, { parameters, viewMode }) => {
   const app: unknown = parameters.app;
-  const theme: unknown = globals.theme;
   const style = typeof app === "string" ? APP_STYLES[app] : undefined;
 
   if (style === undefined) {
@@ -20,36 +48,14 @@ const withAppTheme: Decorator = (Story, { globals, parameters, viewMode }) => {
   }
 
   return (
-    <div
-      data-app-theme=""
-      data-theme={typeof theme === "string" ? theme : "light"}
-      style={{
-        background: "var(--background)",
-        boxSizing: "border-box",
-        color: "var(--foreground)",
-        minHeight: viewMode === "story" ? "100vh" : undefined,
-        padding: "1rem",
-      }}
-    >
-      <style>{style}</style>
+    <AppTheme fullHeight={viewMode === "story"} style={style}>
       <Story />
-    </div>
+    </AppTheme>
   );
 };
 
 const preview: Preview = {
   decorators: [withAppTheme],
-  globalTypes: {
-    theme: {
-      description: "App theme",
-      toolbar: {
-        dynamicTitle: true,
-        icon: "paintbrush",
-        items: ["light", "dark"],
-      },
-    },
-  },
-  initialGlobals: { theme: "light" },
   parameters: {
     a11y: { test: "error" },
     docs: {

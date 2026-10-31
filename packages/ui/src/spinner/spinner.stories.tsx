@@ -46,7 +46,18 @@ const meta = {
       gap: "0.25rem",
     },
   },
-  argTypes: { icon: { control: false } },
+  argTypes: {
+    icon: {
+      control: false,
+      description:
+        "The animated icon, always hidden from assistive technologies. The app animates it, inside `prefers-reduced-motion: no-preference`.",
+    },
+    label: {
+      description:
+        "Turns the spinner into a `status` region that announces this text. Without it, the spinner is decorative.",
+    },
+    style: { table: { disable: true } },
+  },
   component: Spinner,
   title: "Spinner",
 } satisfies Meta<typeof Spinner>;

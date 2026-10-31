@@ -23,6 +23,7 @@ const ignorePatterns = [
   "**/node_modules/**",
   "**/dist/**",
   "**/coverage/**",
+  "storybook-static/**",
   "**/*.gen.ts",
   "**/CHANGELOG.md",
   "**/.claude/settings.local.json",

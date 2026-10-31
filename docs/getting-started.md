@@ -22,18 +22,19 @@ pnpm dev
 
 ## 2. Everyday commands
 
-| Command               | What it does                                                            |
-| --------------------- | ----------------------------------------------------------------------- |
-| `pnpm dev [app]`      | Run every workspace in dev mode, or only `<app>`                        |
-| `pnpm validate [app]` | `check`, then types and tests at 100% coverage, stories included        |
-| `pnpm build [app]`    | `validate` without the stories, then build. Stops if validation fails   |
-| `pnpm check`          | Format and lint (oxfmt + type-aware oxlint), without writing            |
-| `pnpm check:fix`      | Same, with fixes: formatting, import and class order, autofixable rules |
-| `pnpm check-types`    | TypeScript, in every workspace and in `.storybook/`                     |
-| `pnpm test`           | Unit tests of every workspace, once                                     |
-| `pnpm test:coverage`  | Same, with the 100% coverage threshold                                  |
-| `pnpm test:stories`   | Every story's interaction test in Chromium, `.tsx` coverage at 100%     |
-| `pnpm storybook`      | The components' Storybook, on http://127.0.0.1:6006                     |
+| Command                | What it does                                                            |
+| ---------------------- | ----------------------------------------------------------------------- |
+| `pnpm dev [app]`       | Run every workspace in dev mode, or only `<app>`                        |
+| `pnpm validate [app]`  | `check`, then types and tests at 100% coverage, stories included        |
+| `pnpm build [app]`     | `validate` without the stories, then build. Stops if validation fails   |
+| `pnpm check`           | Format and lint (oxfmt + type-aware oxlint), without writing            |
+| `pnpm check:fix`       | Same, with fixes: formatting, import and class order, autofixable rules |
+| `pnpm check-types`     | TypeScript, in every workspace and in `.storybook/`                     |
+| `pnpm test`            | Unit tests of every workspace, once                                     |
+| `pnpm test:coverage`   | Same, with the 100% coverage threshold                                  |
+| `pnpm test:stories`    | Every story's interaction test in Chromium, `.tsx` coverage at 100%     |
+| `pnpm storybook`       | The components' Storybook, on http://127.0.0.1:6006                     |
+| `pnpm storybook:build` | The Storybook's static build, in `storybook-static/`                    |
 
 `[app]` is a folder name of `apps/`, like `pnpm build flex-playground`. An
 unknown name fails and lists the apps.
@@ -257,13 +258,19 @@ export const Button = ({ className, ...props }: ButtonProps): ReactElement => (
    fresh Claude Code session. When the PR touches code, it also runs
    `/code-review` and reports its bugs. Every finding gets a change or a reply.
 8. **Merge.** Squash merge into `main` once the `validate` check passes, delete
-   the branch.
+   the branch. The merge publishes the Storybook.
 
-Every pull request runs `pnpm validate` in GitHub Actions
-(`.github/workflows/validate.yml`), with the Node version of `.node-version`
+Every pull request runs `pnpm validate`, then `pnpm storybook:build`, in
+GitHub Actions (`.github/workflows/validate.yml`), with the Node version of `.node-version`
 and the pnpm version of `package.json`. The `main` ruleset requires its
 `validate` check on a branch up to date with `main`: a red check, or a branch
 behind `main`, blocks the merge.
+
+Every merge into `main` builds the Storybook and publishes it on GitHub Pages
+(`.github/workflows/storybook.yml`), at
+[beauraintheo.github.io/Osmoz](https://beauraintheo.github.io/Osmoz/). A pull
+request publishes nothing. To republish without a merge, run the workflow by
+hand from the Actions tab, on `main`.
 
 > [!IMPORTANT]
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to

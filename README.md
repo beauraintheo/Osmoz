@@ -38,6 +38,9 @@ The application stack is decided per project, through Linear tickets.
 | [Conventions](docs/conventions.md)         | Naming, TypeScript, React, design, tests, git, PRs, tickets |
 | [CLAUDE.md](CLAUDE.md)                     | Rules for Claude Code, built on the pages above             |
 
+The components live in the [Storybook](https://beauraintheo.github.io/Osmoz/),
+published from `main`.
+
 Claude Code skills: `/linear-ticket <intention>` drafts a Linear ticket,
 `/pull-request` drafts a pull request, `/review` reviews it against the
 conventions and runs `/code-review` for bugs.

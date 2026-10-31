@@ -1,6 +1,6 @@
 .osmoz-guidelines {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 136px max-content;
+  grid-template-columns: minmax(0, 1fr) minmax(136px, max-content) max-content;
   margin: 24px 0 40px;
   padding: 0;
   overflow: hidden;
@@ -69,7 +69,14 @@
 }
 
 .osmoz-guideline-preview .sb-story {
+  flex: 1;
   margin: 0;
+}
+
+.osmoz-guideline-preview .sb-story > [data-name] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .osmoz-guidelines .osmoz-guideline-verdict {
@@ -116,7 +123,7 @@
 
 @media (max-width: 640px) {
   .osmoz-guidelines {
-    grid-template-columns: 136px minmax(0, 1fr);
+    grid-template-columns: minmax(136px, max-content) minmax(0, 1fr);
   }
 
   .osmoz-guidelines .osmoz-guideline {

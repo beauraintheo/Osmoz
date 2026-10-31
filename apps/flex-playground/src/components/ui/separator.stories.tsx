@@ -11,7 +11,7 @@ const inRow: Decorator = (Story) => (
 
 const meta = {
   component: Separator,
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "Separator",
 } satisfies Meta<typeof Separator>;

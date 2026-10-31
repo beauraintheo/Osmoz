@@ -1,5 +1,6 @@
 import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
 
+import * as ButtonStories from "../button/button.stories";
 import * as SpinnerStories from "./spinner.stories";
 
 <Meta of={SpinnerStories} />
@@ -12,26 +13,40 @@ that screen readers announce.
 
 <Canvas of={SpinnerStories.Default} />
 
-## When to use it
+## Usage
 
-- Without a label, next to an element that already announces the wait, like a
-  pending `Button`.
-- With a label, for a wait no button carries, like an area that loads.
+<Guidelines>
+  <Guideline
+    preview={SpinnerStories.Default}
+    when="Next to an element that already announces the wait."
+  >
+    Without a label, like the spinner inside a pending `Button`.
+  </Guideline>
+  <Guideline preview={SpinnerStories.WithLabel} when="For a wait no button carries.">
+    With a label, like an area that loads.
+  </Guideline>
+  <Guideline
+    preview={ButtonStories.Pending}
+    use={ButtonStories}
+    when="When the wait is a button's action running."
+  >
+    `pending` on `Button` or `IconButton` shows the spinner and sets `aria-busy`.
+  </Guideline>
+</Guidelines>
 
-## When not to use it
-
-- For a button whose action is running: use `Button` or `IconButton` with
-  `pending`. They show the spinner and set `aria-busy`.
-- For a progress that can be measured: use the native `<progress>` element.
+For a progress that can be measured, use the native `<progress>` element.
 
 ## States
 
-| State      | Props   | DOM                                                         | Announced |
-| ---------- | ------- | ----------------------------------------------------------- | --------- |
-| Decorative | —       | `<span aria-hidden="true">` around the icon                 | no        |
-| Labeled    | `label` | `role="status"`, icon in `<span aria-hidden>`, then `label` | yes       |
+Each card renders its story and lists the attributes read on the rendered
+`<span>`.
 
-<Canvas of={SpinnerStories.WithLabel} />
+<States>
+  <State of={SpinnerStories.Default}>No `label`. Hidden from assistive technologies.</State>
+  <State of={SpinnerStories.WithLabel}>
+    `label`. A status region: `label` is announced, the icon is hidden.
+  </State>
+</States>
 
 ## Keyboard
 
@@ -63,3 +78,6 @@ The component has no class and no icon. Each app, in its own
 - passes its loading icon and its animation, inside `motion-safe:`, since
   motion is opt-in;
 - gives `label` its look, usually inside an `sr-only` span.
+
+It uses no role of the contract: the icon takes `currentColor`, the color of
+the text around it.

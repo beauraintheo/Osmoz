@@ -8,7 +8,7 @@ const meta = {
   args: { icon: RiAlertLine },
   argTypes: { icon: { control: false } },
   component: Icon,
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "Icon",
 } satisfies Meta<typeof Icon>;

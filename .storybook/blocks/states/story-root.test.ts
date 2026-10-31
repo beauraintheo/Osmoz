@@ -21,6 +21,20 @@ describe("storyRoot", () => {
     expect(storyRoot(rendered)?.tagName).toBe("BUTTON");
   });
 
+  it("reads the element inside a story's layout wrapper", () => {
+    const rendered = container('<div data-story-layout=""><hr></div>');
+
+    expect(storyRoot(rendered)?.tagName).toBe("HR");
+  });
+
+  it("reads the element inside a layout wrapper inside an app's theme wrapper", () => {
+    const rendered = container(
+      '<div data-app-theme=""><style></style><div data-story-layout=""><hr></div></div>',
+    );
+
+    expect(storyRoot(rendered)?.tagName).toBe("HR");
+  });
+
   it("reads nothing from a story that has not rendered yet", () => {
     expect(storyRoot(container(""))).toBeNull();
   });

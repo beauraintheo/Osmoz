@@ -1,14 +1,20 @@
-import { describe, expect, it } from "vite-plus/test";
+import { afterEach, describe, expect, it } from "vite-plus/test";
 
 import { readToken } from "./read-token";
 
 const themed = (tokens: Readonly<Record<string, string>>): HTMLElement => {
   const element = document.createElement("div");
 
-  Object.entries(tokens).map(([name, value]) => element.style.setProperty(`--${name}`, value));
+  element.style.cssText = Object.entries(tokens)
+    .map(([name, value]) => `--${name}: ${value}`)
+    .join("; ");
 
   return document.body.appendChild(element);
 };
+
+afterEach(() => {
+  document.body.replaceChildren();
+});
 
 describe("readToken", () => {
   it("reads a color token as a color", () => {

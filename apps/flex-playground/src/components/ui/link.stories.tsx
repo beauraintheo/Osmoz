@@ -21,7 +21,7 @@ const meta = {
   args: { children: "Read the docs", to: "/" },
   component: Link,
   decorators: [withRouter],
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "Link",
 } satisfies Meta<typeof Link>;

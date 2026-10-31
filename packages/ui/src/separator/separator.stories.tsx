@@ -1,7 +1,19 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 
 import { Separator } from "./separator.tsx";
+
+const inBlock: Decorator = (Story) => (
+  <div data-story-layout="" style={{ minWidth: "6rem", width: "100%" }}>
+    <Story />
+  </div>
+);
+
+const inRow: Decorator = (Story) => (
+  <div data-story-layout="" style={{ display: "flex", height: "2rem" }}>
+    <Story />
+  </div>
+);
 
 const meta = {
   args: {},
@@ -14,6 +26,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  decorators: [inBlock],
   play: async ({ canvas }): Promise<void> => {
     const separator = canvas.getByRole("separator");
 
@@ -24,6 +37,7 @@ export const Default: Story = {
 
 export const Vertical: Story = {
   args: { orientation: "vertical" },
+  decorators: [inRow],
   play: async ({ canvas }): Promise<void> => {
     const separator = canvas.getByRole("separator");
 
@@ -34,6 +48,7 @@ export const Vertical: Story = {
 
 export const Decorative: Story = {
   args: { decorative: true, orientation: "vertical" },
+  decorators: [inRow],
   play: async ({ canvas, canvasElement }): Promise<void> => {
     const separator = canvasElement.querySelector("hr");
 

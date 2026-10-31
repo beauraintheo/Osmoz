@@ -8,7 +8,7 @@ import { Icon } from "./icon";
 const meta = {
   args: { children: "Save", onClick: fn() },
   component: Button,
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "Button",
 } satisfies Meta<typeof Button>;

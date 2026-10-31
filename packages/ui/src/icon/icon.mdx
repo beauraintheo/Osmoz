@@ -1,5 +1,7 @@
 import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
 
+import * as IconButtonStories from "../icon-button/icon-button.stories";
+import * as SpinnerStories from "../spinner/spinner.stories";
 import * as IconStories from "./icon.stories";
 
 <Meta of={IconStories} />
@@ -13,27 +15,42 @@ so every icon of the app follows the same scale.
 
 <Canvas of={IconStories.Decorative} />
 
-## When to use it
+## Usage
 
-- Next to a text that already says what the icon means, like an icon inside a
-  `Button`: decorative.
-- Alone, when the icon carries a meaning no text repeats, like a warning
-  sign: with a `label`.
-
-## When not to use it
-
-- For an action shown by an icon alone: use `IconButton`, which names the
-  action, not the image.
-- For a wait: use `Spinner`.
+<Guidelines>
+  <Guideline
+    preview={IconStories.Decorative}
+    when="Next to a text that already says what the icon means."
+  >
+    Decorative, like an icon inside a `Button`.
+  </Guideline>
+  <Guideline
+    preview={IconStories.WithLabel}
+    when="When the icon carries a meaning no text repeats."
+  >
+    With a `label`, like a warning sign.
+  </Guideline>
+  <Guideline
+    preview={IconButtonStories.Default}
+    use={IconButtonStories}
+    when="For an action shown by an icon alone."
+  >
+    It names the action, not the image.
+  </Guideline>
+  <Guideline preview={SpinnerStories.Default} use={SpinnerStories} when="To show a wait.">
+    It becomes a status region when the wait needs announcing.
+  </Guideline>
+</Guidelines>
 
 ## States
 
-| State      | Props   | DOM                                     | Announced |
-| ---------- | ------- | --------------------------------------- | --------- |
-| Decorative | —       | `<svg aria-hidden="true">`              | no        |
-| Labeled    | `label` | `<svg role="img" aria-label="<label>">` | yes       |
+Each card renders its story and lists the attributes read on the rendered
+`<svg>`.
 
-<Canvas of={IconStories.WithLabel} />
+<States>
+  <State of={IconStories.Decorative}>No `label`. Never announced.</State>
+  <State of={IconStories.WithLabel}>`label`. Announced as an image named `label`.</State>
+</States>
 
 ## Keyboard
 
@@ -61,3 +78,6 @@ and passes it every other prop. Any component that accepts the props of an
 
 The component has no class. Each app, in its own `components/ui/icon.tsx`,
 picks its icon library and gives the icon its sizes, one per `size`.
+
+It uses no role of the contract: the icon takes `currentColor`, the color of
+the text around it.

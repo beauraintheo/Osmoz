@@ -42,3 +42,5 @@ jobs:
         run: pnpm exec playwright install-deps chromium-headless-shell
 
       - run: pnpm validate
+
+      - run: pnpm storybook:build

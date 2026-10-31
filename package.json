@@ -10,6 +10,7 @@
     "check:fix": "vp check --fix",
     "check-types": "tsc --noEmit && tsc --noEmit -p .storybook && vp run -F '!osmoz' check-types",
     "storybook": "storybook dev --port 6006 --no-open",
+    "storybook:build": "storybook build --output-dir storybook-static",
     "test": "vp run -F '!osmoz' test",
     "test:coverage": "vp run -F '!osmoz' test:coverage",
     "test:stories": "vp test run --coverage",

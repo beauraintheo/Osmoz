@@ -53,13 +53,7 @@ const Verdict = ({ use }: VerdictProps): ReactElement => {
   };
 
   return (
-    <a
-      className="osmoz-guideline-verdict"
-      data-elsewhere=""
-      href={`./${path}`}
-      onClick={go}
-      target="_top"
-    >
+    <a className="osmoz-guideline-verdict" href={`./${path}`} onClick={go} target="_top">
       <ArrowIcon />
       <code>{name}</code>
     </a>

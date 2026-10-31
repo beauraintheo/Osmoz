@@ -10,7 +10,7 @@ import fluxTheme from "../apps/flex-playground/src/theme/theme.css?inline";
 
 const APP_STYLES: Readonly<Record<string, string>> = { flux: fluxTheme };
 
-const withAppTheme: Decorator = (Story, { globals, parameters }) => {
+const withAppTheme: Decorator = (Story, { globals, parameters, viewMode }) => {
   const app: unknown = parameters.app;
   const theme: unknown = globals.theme;
   const style = typeof app === "string" ? APP_STYLES[app] : undefined;
@@ -25,7 +25,9 @@ const withAppTheme: Decorator = (Story, { globals, parameters }) => {
       data-theme={typeof theme === "string" ? theme : "light"}
       style={{
         background: "var(--background)",
+        boxSizing: "border-box",
         color: "var(--foreground)",
+        minHeight: viewMode === "story" ? "100vh" : undefined,
         padding: "1rem",
       }}
     >

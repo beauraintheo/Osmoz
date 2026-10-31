@@ -66,9 +66,10 @@ adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 The Storybook lives at the root, in `.storybook/`. It shows three sections:
 Osmoz's own pages, `UI` for the contract of each `@osmoz/ui` component,
 unstyled, and one section per app for its look, titled by
-`.storybook/main.ts`. An app's stories set `parameters: { app: "<app>" }`:
-`.storybook/preview.tsx` then loads that app's `theme.css` with them, and only
-with them. The doc pages wear the Osmoz theme of `@osmoz/brand`. Blocks
+`.storybook/main.ts`. An app's stories set
+`parameters: { app: "<app>", layout: "fullscreen" }`: `.storybook/preview.tsx`
+then loads that app's `theme.css` with them, and only with them, and paints
+the app's background over the whole canvas. The doc pages wear the Osmoz theme of `@osmoz/brand`. Blocks
 shared by the doc pages live in `.storybook/blocks/`, one folder per block
 with its logic and tests, take their texts as props or children, and use only
 the contract tokens. `.storybook/preview.tsx` registers them, so a `.mdx`
@@ -80,6 +81,10 @@ uses them without import:
 | `States`, `State of={…}`           | Each state story, with the attributes read on its rendered element                                                             |
 | `Keyboard`, `Key keys={…}`         | Each key and its effect; `"Shift+Tab"` is a combination                                                                        |
 | `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the doc page's Osmoz theme, not an app's                                       |
+
+A story that needs a layout to show, like a vertical `<hr>` in a row, wraps
+itself in a decorator marked `data-story-layout`: `States` reads the
+attributes of the element inside it.
 
 A block's root has the `sb-unstyled` class, so Storybook's own doc styles
 stay out of it.

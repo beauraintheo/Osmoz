@@ -218,7 +218,8 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    - `packages/ui/src/<component>/<component>.mdx`: why it exists, its usage,
      states, keyboard, accessibility and API.
    - `apps/<app>/src/components/ui/<component>.stories.tsx`: one story per
-     variant, size and board state, with `parameters: { app: "<app>" }`.
+     variant, size and board state, with
+     `parameters: { app: "<app>", layout: "fullscreen" }`.
 5. **Use it.** Routes, features and the app's own components import the
    styled component from `components/ui/`, never `@osmoz/ui` directly.
 6. **Check it.** The rendered states match the boards, every action works with

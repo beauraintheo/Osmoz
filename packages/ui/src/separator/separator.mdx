@@ -16,34 +16,35 @@ so each app can draw it horizontal or vertical.
 ## Usage
 
 <Guidelines>
-<Guideline kind="do" title="Use it">
+  <Guideline preview={SeparatorStories.Default} when="Between two parts of the same block.">
+    Horizontal.
+  </Guideline>
+  <Guideline preview={SeparatorStories.Vertical} when="Between two groups of controls in a bar.">
+    Vertical, and `decorative` when the layout already groups them, like Flux's top bar.
+  </Guideline>
+</Guidelines>
 
-- Between two parts of the same block, horizontal.
-- Between two groups of controls in a bar, vertical, and `decorative` when
-  the layout already groups them, like Flux's top bar.
-
-</Guideline>
-<Guideline kind="avoid" title="Use something else">
+Not every separation needs one:
 
 - To space elements apart: use `gap` or `margin` in the layout.
 - To separate sections that have a title: use a heading (`h2`…) inside a
   `<section>`, which already structures the content.
 - To outline a block: use a `border` class on its container.
 
-</Guideline>
-</Guidelines>
-
 ## States
 
-| State      | Props                           | DOM                                                                     | Focusable | Announced |
-| ---------- | ------------------------------- | ----------------------------------------------------------------------- | --------- | --------- |
-| Default    | —                               | `<hr>`, `aria-orientation="horizontal"` `data-orientation="horizontal"` | no        | yes       |
-| Vertical   | `orientation="vertical"`        | `aria-orientation="vertical"` `data-orientation="vertical"`             | no        | yes       |
-| Decorative | `decorative`, any `orientation` | `role="none"` `data-orientation`, no `aria-orientation`                 | no        | no        |
+Each card renders its story and lists the attributes read on the rendered
+`<hr>`.
 
-<Canvas of={SeparatorStories.Vertical} />
-
-<Canvas of={SeparatorStories.Decorative} />
+<States>
+  <State of={SeparatorStories.Default}>Horizontal. Announced as a separator.</State>
+  <State of={SeparatorStories.Vertical}>
+    `orientation="vertical"`. Announced as a vertical separator.
+  </State>
+  <State of={SeparatorStories.Decorative}>
+    `decorative`, any `orientation`. Skipped by screen readers.
+  </State>
+</States>
 
 ## Keyboard
 
@@ -82,3 +83,10 @@ Pick those classes from the prop rather than with
 outweighs a plain class, so a caller's `className="h-5"` would lose to it. A
 fixed height also needs `self-center`, since `self-stretch` with a set height
 aligns the line to the start.
+
+The role of the contract a styled separator maps to, with its value in the
+Osmoz theme of this page, not of an app:
+
+<Tokens>
+  <Token name="border">Color of the line.</Token>
+</Tokens>

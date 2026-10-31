@@ -1,10 +1,51 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ReactElement } from "react";
 import { expect } from "storybook/test";
 
 import { Spinner } from "./spinner.tsx";
 
+const SPIN_STYLE = `
+@keyframes story-spinner-turn {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .story-spinner-arc {
+    animation: story-spinner-turn 1s linear infinite;
+    transform-origin: center;
+  }
+}
+`;
+
+const LoadingSvg = (): ReactElement => (
+  <svg
+    data-testid="icon"
+    fill="none"
+    height="16"
+    style={{ display: "block" }}
+    viewBox="0 0 24 24"
+    width="16"
+  >
+    <style>{SPIN_STYLE}</style>
+    <path
+      className="story-spinner-arc"
+      d="M12 3a9 9 0 1 0 9 9"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
 const meta = {
-  args: { icon: <svg data-testid="icon" /> },
+  args: {
+    icon: <LoadingSvg />,
+    style: {
+      alignItems: "center",
+      display: "inline-flex",
+      gap: "0.25rem",
+    },
+  },
   argTypes: { icon: { control: false } },
   component: Spinner,
   title: "Spinner",

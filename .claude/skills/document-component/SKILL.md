@@ -1,6 +1,6 @@
 ---
 name: document-component
-description: Documents a component of @osmoz/ui in the Storybook — its behavior stories with interaction tests, the styled stories of every app that wraps it, and its doc page (why it exists, when to use it, when not, states, keyboard, accessibility). Reads the code, gets the plan approved, drafts the files, runs the checks. Does not commit. Triggers: "document a component", "write the stories", "documente le composant", "fais les stories", /document-component.
+description: Documents a component of @osmoz/ui in the Storybook — its behavior stories with interaction tests, the styled stories of every app that wraps it, and its doc page built on the Storybook's blocks (why it exists, usage guidelines, states, keyboard, accessibility, tokens). Reads the code, gets the plan approved, drafts the files, runs the checks. Does not commit. Triggers: "document a component", "write the stories", "documente le composant", "fais les stories", /document-component.
 argument-hint: "<component>"
 ---
 
@@ -45,8 +45,10 @@ Stories <app> (habillage) :
 
 Doc :
 - Pourquoi : <one sentence>
-- Quand l'utiliser : <points>
-- Quand ne pas l'utiliser : <points, each naming the component to use instead>
+- Usage : <one line per situation> → <this component, or the one to use instead>
+- États : <one line per state story> → <props, focus, click or announcement>
+- Clavier : <keys and effects, or "aucun, jamais focusable">
+- Tokens : <contract roles the app's wrappers use, or "aucun, currentColor">
 
 Questions : <what the code does not settle, or —>
 ```
@@ -61,15 +63,24 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 - `title` is the component's name in PascalCase (`"IconButton"`): `.storybook/main.ts` prefixes it with `UI`, and each app's stories with the app's name. The same `title` in every app's file.
 - Texts go through `args`, never as JSX text: the linter rejects it. Use short English placeholders (`"Save"`).
 - Every story has a `play` test that checks behavior only: the role, the accessible name, ARIA and `data-*` attributes, focus with `userEvent.tab()`, keys, clicks that run or are blocked. Never a class, never a style.
+- Every story shows something in the doc page: an icon passed as a prop draws a real path, never an empty `<svg>`. An element that renders empty or flat without a layout, like an `<hr>`, gets a decorator marked `data-story-layout` that gives it one, with inline styles: `States` reads past it.
 - Callbacks are `fn()` in the meta's `args`, and a blocked action asserts `not.toHaveBeenCalled()`.
 
 **Styled stories**, one file per app, `apps/<app>/src/components/ui/<component>.stories.tsx`:
 
-- The meta sets `parameters: { app: "<app>" }` and `tags: ["autodocs"]`.
+- The meta sets `parameters: { app: "<app>", layout: "fullscreen" }` and `tags: ["autodocs"]`.
 - One story per variant, size and board state. Props holding an element, like `icon`, get `argTypes: { <prop>: { control: false } }`.
 - A `play` test only for what the wrapper adds over `@osmoz/ui`. The behavior is already tested in the UI stories.
 
-**Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English, with these sections in this order: the title and why it exists, followed by the `Default` canvas; "Usage", a `<Guidelines>` block with one `<Guideline when="…">` per situation, its reason as children: without `use` it calls for this component, with `use={OtherStories}` (the other component's stories, imported) it links to that component's page, and `preview={Stories.Default}` renders the component it calls for (the blocks come from `.storybook/blocks/`, registered in `.storybook/preview.tsx`: no import); "States", a `<States>` block with one `<State of={Stories.<State>}>` per state story, its props, focus and click effect as children, the attributes being read on the rendered element; "Keyboard", a `<Keyboard>` block with one `<Key keys={["Tab"]}>` per key, its effect as children, `"Shift+Tab"` for a combination; "Accessibility"; "API", with `Controls`; "Styling", saying which classes each app needs for each state, followed by a `<Tokens>` block with one `<Token name="…">` per contract role a styled component maps to, its role as children, the value being read in the Osmoz theme of the doc page.
+**Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English. The blocks come from `.storybook/blocks/` and are registered in `.storybook/preview.tsx`: never import them. No Markdown table. The sections, in this order:
+
+1. **Title and why it exists**, then the canvas of the first story: `Default`, or the first one when there is none.
+2. **Usage**: a `<Guidelines>` block, one `<Guideline when="…">` per situation, its reason or examples as children. The situations that call for this component come first, without `use`. Each situation that calls for another one names it with `use={OtherStories}`, its stories imported, which links to its page. `preview={Stories.<First>}` renders the component the situation calls for.
+3. **States**: one sentence saying the cards list the attributes read on the rendered element, then a `<States>` block, one `<State of={Stories.<State>}>` per story that shows a state, in the stories' order. Its children say the props that set it and its behavior: focus, click, announcement. Never restate an attribute the block already reads. A story that tests something other than a state, like a forwarded prop, gets no card. What holds in every state follows the block, as prose.
+4. **Keyboard**: a `<Keyboard>` block, one `<Key keys={["Tab"]}>` per key, its effect as children, `"Shift+Tab"` for a combination. A component that is never focusable gets no block, only "None: the <component> is never focusable."
+5. **Accessibility**: a list.
+6. **API**: the native props it extends, minus and plus, then `Controls`.
+7. **Styling**: which classes each app needs for each state, then one sentence and a `<Tokens>` block, one `<Token name="…">` per contract role the apps' wrappers use, its role as children; the value is read in the Osmoz theme of the doc page. A component whose wrappers use no contract role gets no block, and the section says where its color comes from, usually `currentColor`.
 
 Every claim in the doc is backed by the code or by a `play` test. If a claim cannot be checked, it goes to the questions instead.
 
@@ -83,4 +94,4 @@ Never change the component to make a story pass. If a story shows a bug, stop an
 4. `pnpm exec storybook build -o <scratchpad>/storybook-static`: the doc page compiles.
 5. `pnpm validate`. Report its actual output. If it fails, say what fails.
 
-Then list what the user should review: the "Use something else" points, and any state the boards and the code disagree on. Stop. Do not commit.
+Then list what the user should review: the guidelines that send to another component, and any state the boards and the code disagree on. Stop. Do not commit.

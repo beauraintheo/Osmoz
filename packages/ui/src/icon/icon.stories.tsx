@@ -5,7 +5,23 @@ import { expect } from "storybook/test";
 import { Icon } from "./icon.tsx";
 
 const TestSvg = (props: ComponentProps<"svg">): ReactElement => (
-  <svg {...props} data-testid="icon" />
+  <svg
+    {...props}
+    data-testid="icon"
+    fill="none"
+    height="16"
+    style={{ display: "block" }}
+    viewBox="0 0 24 24"
+    width="16"
+  >
+    <path
+      d="M12 3 2 21h20L12 3Zm0 7v4m0 3v.01"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
 );
 
 const meta = {

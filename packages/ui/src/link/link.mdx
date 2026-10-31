@@ -1,5 +1,6 @@
 import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
 
+import * as ButtonStories from "../button/button.stories";
 import * as LinkStories from "./link.stories";
 
 <Meta of={LinkStories} />
@@ -12,25 +13,34 @@ opens a tab without saying so.
 
 <Canvas of={LinkStories.Default} />
 
-## When to use it
+## Usage
 
-- To go to another page of the app.
-- To go to another site, like the MDN page of a CSS property.
-
-## When not to use it
-
-- To run an action on the page: use `Button`. A link that acts breaks the
-  expectation that it can be opened in a new tab, and is missing from the
-  screen reader's buttons list.
+<Guidelines>
+  <Guideline preview={LinkStories.Default} when="To go to another page of the app." />
+  <Guideline preview={LinkStories.NewTab} when="To go to another site.">
+    Like the MDN page of a CSS property.
+  </Guideline>
+  <Guideline
+    preview={ButtonStories.Default}
+    use={ButtonStories}
+    when="To run an action on the page."
+  >
+    A link that acts breaks the expectation that it can be opened in a new tab, and is missing from
+    the screen reader's buttons list.
+  </Guideline>
+</Guidelines>
 
 ## States
 
-| State   | Props                 | DOM                                            | Focusable | Click            |
-| ------- | --------------------- | ---------------------------------------------- | --------- | ---------------- |
-| Default | `href`                | `<a href>`                                     | yes       | follows the link |
-| New tab | `newTab` `newTabHint` | `target="_blank"`, `newTabHint` after the text | yes       | opens a new tab  |
+Each card renders its story and lists the attributes read on the rendered
+`<a>`.
 
-<Canvas of={LinkStories.NewTab} />
+<States>
+  <State of={LinkStories.Default}>`href`. Focusable. Click follows the link.</State>
+  <State of={LinkStories.NewTab}>
+    `newTab` and `newTabHint`. Click opens a new tab. `newTabHint` follows the text.
+  </State>
+</States>
 
 `newTabHint` is part of the link's accessible name: "Read the docs (new tab)".
 The app decides whether it is visible.
@@ -43,10 +53,10 @@ destination must not receive the referrer.
 
 ## Keyboard
 
-| Key     | Effect                                     |
-| ------- | ------------------------------------------ |
-| `Tab`   | Moves the focus to the link                |
-| `Enter` | Follows the link, in a new tab if `newTab` |
+<Keyboard>
+  <Key keys={["Tab"]}>Moves the focus to the link.</Key>
+  <Key keys={["Enter"]}>Follows the link, in a new tab if `newTab`.</Key>
+</Keyboard>
 
 ## Accessibility
 
@@ -73,3 +83,14 @@ The component has no class and knows no router. Each app, in its own
 
 A router link marks the link of the current page with `aria-current="page"`
 and `data-status="active"`. Flux has no class for that state yet.
+
+The roles of the contract a styled link maps to, with their values in the
+Osmoz theme of this page, not of an app:
+
+<Tokens>
+  <Token name="primary">Text of a link inside a text.</Token>
+  <Token name="accent-foreground">Its text on hover.</Token>
+  <Token name="muted-foreground">Text of a quiet link.</Token>
+  <Token name="foreground">Its text on hover.</Token>
+  <Token name="ring">Focus outline.</Token>
+</Tokens>

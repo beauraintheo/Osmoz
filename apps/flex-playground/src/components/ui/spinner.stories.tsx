@@ -5,7 +5,7 @@ import { Spinner } from "./spinner";
 
 const meta = {
   component: Spinner,
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "Spinner",
 } satisfies Meta<typeof Spinner>;

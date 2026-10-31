@@ -12,7 +12,7 @@ const meta = {
   },
   argTypes: { icon: { control: false } },
   component: IconButton,
-  parameters: { app: "flux" },
+  parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],
   title: "IconButton",
 } satisfies Meta<typeof IconButton>;

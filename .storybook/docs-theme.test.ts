@@ -1,69 +1,50 @@
-import { describe, expect, it, vi } from "vite-plus/test";
+import { describe, expect, it } from "vite-plus/test";
 
-import { docsTheme, toHex } from "./docs-theme";
+import { docsTheme } from "./docs-theme";
+import type { ThemeTokens } from "./theme-tokens";
 
-const TOKENS = {
+const TOKENS: ThemeTokens = {
+  accent: "#252b5e",
+  accentForeground: "#ede8ff",
   background: "#101828",
   border: "#202838",
   card: "#303848",
+  colorScheme: "dark",
+  fontCode: "Code Font, monospace",
+  fontText: "Text Font, sans-serif",
   foreground: "#f0f4f8",
   input: "#505868",
   muted: "#404858",
-  "muted-foreground": "#a0a8b8",
-  "osmoz-font-mono": "Code Font, monospace",
-  "osmoz-font-sans": "Text Font, sans-serif",
+  mutedForeground: "#a0a8b8",
+  osmozCloud: "#9c8cff",
+  osmozO: "#ff8fb8",
   primary: "#8070f0",
-} as const;
-
-const themed = (): HTMLElement => {
-  const element = document.createElement("div");
-
-  Object.entries(TOKENS).map(([name, value]) => element.style.setProperty(`--${name}`, value));
-
-  return document.body.appendChild(element);
 };
-
-describe("toHex", () => {
-  it("converts an rgb color", () => {
-    expect(toHex("rgb(255, 0, 128)")).toBe("#ff0080");
-  });
-
-  it("converts an oklch color, which Storybook's theme cannot parse", () => {
-    expect(toHex("oklch(1 0 0)")).toBe("#ffffff");
-  });
-
-  it("keeps the color as is without a 2D context", () => {
-    const getContext = vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
-
-    expect(toHex("oklch(1 0 0)")).toBe("oklch(1 0 0)");
-
-    getContext.mockRestore();
-  });
-});
 
 describe("docsTheme", () => {
   it("maps the contract tokens onto Storybook's theme", () => {
-    const theme = docsTheme(themed(), "dark");
-
-    expect(theme).toMatchObject({
+    expect(docsTheme(TOKENS)).toMatchObject({
       appBg: TOKENS.background,
       appBorderColor: TOKENS.border,
       appPreviewBg: TOKENS.card,
+      barBg: TOKENS.card,
+      barSelectedColor: TOKENS.primary,
+      barTextColor: TOKENS.mutedForeground,
       base: "dark",
       booleanBg: TOKENS.muted,
       booleanSelectedBg: TOKENS.card,
       buttonBg: TOKENS.card,
       buttonBorder: TOKENS.input,
       colorSecondary: TOKENS.primary,
-      fontBase: TOKENS["osmoz-font-sans"],
-      fontCode: TOKENS["osmoz-font-mono"],
+      fontBase: TOKENS.fontText,
+      fontCode: TOKENS.fontCode,
       inputBorder: TOKENS.input,
       textColor: TOKENS.foreground,
-      textMutedColor: TOKENS["muted-foreground"],
+      textMutedColor: TOKENS.mutedForeground,
     });
   });
 
-  it("starts from the base theme of the mode", () => {
-    expect(docsTheme(themed(), "light").base).toBe("light");
+  it("starts from the base theme of the color scheme", () => {
+    expect(docsTheme({ ...TOKENS, colorScheme: "light" }).base).toBe("light");
   });
 });

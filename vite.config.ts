@@ -109,6 +109,7 @@ export default defineConfig({
       "oxc/no-barrel-file": ["error", { threshold: 0 }],
 
       "func-style": ["error", "expression"],
+      "no-nested-ternary": "error",
       "no-param-reassign": ["error", { props: true }],
       "no-var": "error",
       "prefer-const": "error",

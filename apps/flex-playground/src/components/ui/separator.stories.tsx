@@ -13,12 +13,12 @@ const meta = {
   argTypes: {
     decorative: {
       control: "boolean",
-      description: "See UI/Separator.",
+      description: "See Osmoz/Separator.",
       table: { type: { summary: "boolean" } },
     },
     orientation: {
       control: "inline-radio",
-      description: "`vertical` stretches to the height of its row. See UI/Separator.",
+      description: "`vertical` stretches to the height of its row. See Osmoz/Separator.",
       options: ["horizontal", "vertical"],
       table: {
         defaultValue: { summary: "horizontal" },

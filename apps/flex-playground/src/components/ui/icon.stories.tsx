@@ -7,10 +7,10 @@ import { Icon } from "./icon";
 const meta = {
   args: { icon: RiAlertLine },
   argTypes: {
-    icon: { control: false, description: "A Remix icon component. See UI/Icon." },
+    icon: { control: false, description: "A Remix icon component. See Osmoz/Icon." },
     label: {
       control: "text",
-      description: "See UI/Icon.",
+      description: "See Osmoz/Icon.",
       table: { type: { summary: "string" } },
     },
     size: {

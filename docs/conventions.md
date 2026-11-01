@@ -67,34 +67,66 @@ adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 `argTypes` of its meta, never in a code comment. A description says what a
 developer cannot read in the type: when to use the prop, what it changes,
 what it requires. It is written once: an app's story describes what its
-wrapper adds and points to the UI page for the rest (`"See UI/Button."`). A
+wrapper adds and points to the component's Osmoz page for the rest
+(`"See Osmoz/Button."`). A
 prop the table misses, because `react-docgen` cannot read its type, gets its
 `argTypes` entry with `table.type.summary`.
 
-The Storybook lives at the root, in `.storybook/`. It shows three sections:
-Osmoz's own pages, `UI` for the contract of each `@osmoz/ui` component,
-unstyled, and one section per app for its look, titled by
-`.storybook/main.ts`. Osmoz's pages are `.mdx` files without stories in
-`.storybook/pages/`, in English: Introduction, Using a component and Brand.
-The `storySort` of `.storybook/preview.tsx` orders the sections and those
-pages, so the Storybook opens on Introduction. A new page gets its place
-there. The doc pages can render the components of `@osmoz/brand`:
+The Storybook lives at the root, in `.storybook/`. It shows one section for
+Osmoz and one per app for its look, titled by `.storybook/main.ts`. The
+Osmoz section holds its own pages, then the contract of each `@osmoz/ui`
+component, unstyled, at the same level. Osmoz's pages are `.mdx` files without
+stories in `.storybook/pages/`, in English: Introduction, Using a component
+and Brand.
+Each app's section opens on its own Introduction, `introduction.mdx` next to
+its stories in `components/ui/`: what the app is for, its identity (colors,
+fonts and typography roles, read with `Tokens`), its themes, its UX
+principles and the components it styles. The `storySort` of
+`.storybook/preview.tsx` orders the sections and those pages, so the
+Storybook opens on Introduction. A new page gets its place there. The doc pages can render the components of `@osmoz/brand`:
 `.storybook/osmoz-docs-classes.css` generates their Tailwind classes, and
 those of `.storybook/pages/`, without Tailwind's preflight. An app's stories set
-`parameters: { app: "<app>", layout: "fullscreen" }`: `.storybook/preview.tsx`
-then loads that app's `theme.css` with them, and only with them, and paints
-the app's background over the whole canvas, so Storybook's backgrounds tool
-is turned off (`features.backgrounds` in `.storybook/main.ts`). The doc pages wear the Osmoz theme of `@osmoz/brand`.
-`.storybook/osmoz-docs-container.css` colors the unselected label of the API
-table's boolean controls by Storybook's own markup, which no theme variable
-reaches: check it again on every Storybook upgrade.
+`parameters: { app: "<app>", layout: "fullscreen" }`: that `app` names the
+story's section. A doc page without stories takes the section of its id,
+`flux-introduction--docs` (`sectionOfEntry` in `.storybook/theme-stores.ts`).
+In an app's section the whole Storybook wears the app's
+theme: the canvas, the doc page, the sidebar and the toolbar. The Osmoz
+section wears the Osmoz theme of `@osmoz/brand`. `.storybook/theme-surface.tsx`
+loads the section's `theme.css`, sets its `data-theme`, reads the contract
+tokens where they render and sends them to the manager, which builds
+Storybook's theme from them (`.storybook/docs-theme.ts`): no color is copied
+into `.storybook/`. An app's canvas is painted with its background, so
+Storybook's backgrounds tool is hidden with the other tools of the toolbar
+(`.storybook/hidden-tools.ts`). A new app gets its store in
+`.storybook/theme-stores.ts`, its `theme.css` and font tokens in
+`.storybook/theme-surface.tsx`, and the surface of its stories and doc
+blocks in the `STORY_SURFACES` of `.storybook/preview.tsx`.
 
-The light/dark button of the toolbar, added by `.storybook/manager.tsx`, is
-not a Storybook global: changing a global re-renders the whole doc page and
-Storybook reloads it. It sets the store of `.storybook/use-theme-store.ts`,
-built with `createThemeStore` of `@osmoz/preferences` and kept under
-`osmoz-storybook:theme`; the preview follows it through the storage event and
-only changes `data-theme`. Until a choice is made, it follows the system.
+The sidebar shows the Osmoz mark, named after the section: "Osmoz", or the
+app's name in its monospace font, above "Design system", and links to the
+section's Introduction. The mark is rendered in the preview and sent to the manager as HTML
+(`.storybook/brand-title.ts`): the manager cannot render a JSX component of
+`@osmoz/brand`. The manager keeps the last theme it received
+(`.storybook/theme-event-cache.ts`) and applies it as it starts, so a reload
+never flashes Storybook's own theme. `.storybook/manager-style.ts` colors
+with the active theme what no theme variable reaches, by Storybook's own
+markup: the selected sidebar item with the `accent` pair, the panel's tabs
+with `muted-foreground` and `primary`, the toolbar's breadcrumb and theme
+picker. It also sets the sidebar and toolbar spacing of the mockups: 24px
+around and between the sidebar's groups, a 56px toolbar with 40px side
+margins. `.storybook/osmoz-docs-container.css` does the same for the
+unselected label of the API table's boolean controls. Check both again on
+every Storybook upgrade.
+
+The toolbar, set by `.storybook/manager.tsx`, shows only the page's
+breadcrumb on the left and the theme picker on the right: every other tool,
+Storybook's or an addon's, is hidden (`.storybook/hidden-tools.ts`). The picker
+offers the themes of the section's app and is not a Storybook global:
+changing a global re-renders the whole doc page and Storybook reloads it. Each section
+has its store in `.storybook/theme-stores.ts`, built with `createThemeStore`
+of `@osmoz/preferences` and kept under `osmoz-storybook:theme` for Osmoz,
+`osmoz-storybook:<app>:theme` for an app; the preview follows it through
+the storage event. Until a choice is made, it follows the system.
 `manager.tsx` uses `createElement`, not JSX: Storybook builds the manager
 with the classic JSX transform, without React in scope.
 
@@ -109,7 +141,7 @@ uses them without import:
 | `Guidelines`, `Guideline when="…"` | Each situation and the component it calls for: this one, or `use={OtherStories}` linked to its page; `preview` renders a story |
 | `States`, `State of={…}`           | Each state story, with the attributes read on its rendered element                                                             |
 | `Keyboard`, `Key keys={…}`         | Each key and its effect; `"Shift+Tab"` is a combination                                                                        |
-| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the doc page's Osmoz theme, not an app's                                       |
+| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the doc page's theme, the section's                                            |
 
 A story that needs a layout to show, like a vertical `<hr>` in a row, wraps
 itself in a decorator marked `data-story-layout`: `States` reads the
@@ -271,6 +303,9 @@ inferred from Zod.
 
 🔒 `const` by default, no `var`, no `forEach`: use `map`, `filter`, `reduce`,
 `flatMap`.
+
+🔒 **No nested ternary.** A choice between more than two values is a
+constant map read by its key, or an early return.
 
 🔒 **No mutation of a parameter**, its properties included. 👀 No mutation of a
 shared variable, no `delete`: build a new value.
@@ -488,6 +523,9 @@ class. `pnpm test:stories` runs them in Chromium and holds the `.tsx` of
 Compiler, which adds branches no render can take. An uncovered branch is a
 missing story. The same run holds the `.ts` files of `.storybook/` at 100%,
 with their `.test.ts` next to them, in Chromium too. Other `.tsx` files will be covered by end-to-end tests.
+A package first imported by `.storybook/` goes in the `optimizeDeps.include`
+of `vitest.config.ts`: otherwise Vite finds it mid-run, reloads the browser,
+and a test times out on CI, which starts without its cache.
 
 👀 **Every bug fix starts with a failing test.**
 

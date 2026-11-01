@@ -8,21 +8,21 @@ import { Icon } from "./icon";
 const meta = {
   args: { children: "Save", onClick: fn() },
   argTypes: {
-    children: { description: "See UI/Button." },
+    children: { description: "See Osmoz/Button." },
     disabled: {
       control: "boolean",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
     focusableWhenDisabled: {
       control: "boolean",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
-    onClick: { description: "See UI/Button." },
+    onClick: { description: "See Osmoz/Button." },
     pending: {
       control: "boolean",
-      description: "Adds the spinner before the content and hides its icons. See UI/Button.",
+      description: "Adds the spinner before the content and hides its icons. See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
     size: {
@@ -31,7 +31,7 @@ const meta = {
     },
     type: {
       control: "inline-radio",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       options: ["button", "submit", "reset"],
       table: { type: { summary: '"button" | "submit" | "reset"' } },
     },

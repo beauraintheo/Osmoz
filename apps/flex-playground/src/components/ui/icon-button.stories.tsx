@@ -13,12 +13,12 @@ const meta = {
   argTypes: {
     disabled: {
       control: "boolean",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
     focusableWhenDisabled: {
       control: "boolean",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
     icon: {
@@ -26,17 +26,17 @@ const meta = {
       description: "A Remix icon component, sized by `size`.",
       table: { type: { summary: "ComponentType<SVGProps>" } },
     },
-    label: { description: "See UI/IconButton." },
-    onClick: { description: "See UI/Button." },
+    label: { description: "See Osmoz/IconButton." },
+    onClick: { description: "See Osmoz/Button." },
     pending: {
       control: "boolean",
-      description: "Replaces the icon with the spinner. See UI/Button.",
+      description: "Replaces the icon with the spinner. See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
     size: { description: "See Flux/Button." },
     type: {
       control: "inline-radio",
-      description: "See UI/Button.",
+      description: "See Osmoz/Button.",
       options: ["button", "submit", "reset"],
       table: { type: { summary: '"button" | "submit" | "reset"' } },
     },

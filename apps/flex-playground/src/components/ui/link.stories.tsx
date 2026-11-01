@@ -20,15 +20,15 @@ const withRouter: Decorator = (Story) => (
 const meta = {
   args: { children: "Read the docs", to: "/" },
   argTypes: {
-    children: { description: "See UI/Link." },
+    children: { description: "See Osmoz/Link." },
     newTab: {
       control: "boolean",
-      description: "See UI/Link.",
+      description: "See Osmoz/Link.",
       table: { type: { summary: "boolean" } },
     },
     newTabHint: {
       control: "text",
-      description: "Visually hidden, read after the text. See UI/Link.",
+      description: "Visually hidden, read after the text. See Osmoz/Link.",
       table: { type: { summary: "ReactNode" } },
     },
     to: { description: "A route of the app, typed by TanStack Router." },

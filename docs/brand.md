@@ -91,6 +91,30 @@ in OKLCH, converted from these hex values. `card-foreground`,
 `popover-foreground` and `secondary-foreground` are `foreground`, `popover` is
 `card`, `secondary` is `muted`, and `ring` is `primary`.
 
+### Fonts
+
+| Token             | Font           | Use                     |
+| ----------------- | -------------- | ----------------------- |
+| `osmoz-font-sans` | Manrope        | Titles and running text |
+| `osmoz-font-mono` | JetBrains Mono | Code                    |
+
+Manrope is the wordmark's font, so the interface speaks with the same voice.
+JetBrains Mono keeps Manrope's open, rounded shapes, so the two read well together.
+
+`osmoz-theme.css` imports `osmoz-fonts.css`, which declares the latin and
+latin-ext faces of both fonts from Fontsource's files. Nothing is loaded
+from a third party. Fontsource's own CSS is not imported; its `unicode-range`
+values are copied and must be checked when Fontsource is updated.
+
+The tokens are prefixed `osmoz-`, unlike Tailwind's `--font-sans`: the
+Storybook nests an app's stories inside the Osmoz doc page, and an app reads
+its own `--font-sans`. The Storybook passes them to its doc theme
+(`fontBase`, `fontCode`); the portfolio will map them in its `@theme`.
+
+Unlike an app, the faces use `font-display: swap`, with no preload. A doc
+page can take a reflow when the font arrives. With `optional` and no preload,
+the system font would stay for most first visits.
+
 ## Wordmark
 
 Osmoz, in Manrope Bold, letter-spacing -0.03em.
@@ -154,8 +178,6 @@ changed, rendered at 180 px.
 
 ## Not done yet
 
-- The Osmoz theme's fonts: Manrope for the interface, a monospace for code,
-  bundled like an app's fonts.
 - The wordmark outlined to paths.
 - The `.ico` 32 px fallback, for browsers without SVG favicons.
 - An app's favicon generated from `osmoz-symbol.svg` and its accent, instead of

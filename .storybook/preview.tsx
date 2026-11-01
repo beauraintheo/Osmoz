@@ -29,6 +29,7 @@ const AppTheme = ({ children, fullHeight, style }: AppThemeProps): ReactElement 
         background: "var(--background)",
         boxSizing: "border-box",
         color: "var(--foreground)",
+        fontFamily: "var(--font-sans)",
         minHeight: fullHeight ? "100vh" : undefined,
         padding: "1rem",
       }}

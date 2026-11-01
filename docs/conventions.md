@@ -77,7 +77,8 @@ unstyled, and one section per app for its look, titled by
 `.storybook/main.ts`. An app's stories set
 `parameters: { app: "<app>", layout: "fullscreen" }`: `.storybook/preview.tsx`
 then loads that app's `theme.css` with them, and only with them, and paints
-the app's background over the whole canvas. The doc pages wear the Osmoz theme of `@osmoz/brand`.
+the app's background over the whole canvas, so Storybook's backgrounds tool
+is turned off (`features.backgrounds` in `.storybook/main.ts`). The doc pages wear the Osmoz theme of `@osmoz/brand`.
 `.storybook/osmoz-docs-container.css` colors the unselected label of the API
 table's boolean controls by Storybook's own markup, which no theme variable
 reaches: check it again on every Storybook upgrade.

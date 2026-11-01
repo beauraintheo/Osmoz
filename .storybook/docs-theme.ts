@@ -25,7 +25,8 @@ export const toHex = (color: string): string => {
 
 export const docsTheme = (element: HTMLElement, mode: Mode): ThemeVars => {
   const styles = getComputedStyle(element);
-  const token = (name: string): string => toHex(styles.getPropertyValue(`--${name}`).trim());
+  const value = (name: string): string => styles.getPropertyValue(`--${name}`).trim();
+  const token = (name: string): string => toHex(value(name));
 
   return {
     ...themes[mode],
@@ -41,6 +42,8 @@ export const docsTheme = (element: HTMLElement, mode: Mode): ThemeVars => {
     buttonBg: token("card"),
     buttonBorder: token("input"),
     colorSecondary: token("primary"),
+    fontBase: value("osmoz-font-sans"),
+    fontCode: value("osmoz-font-mono"),
     inputBg: token("card"),
     inputBorder: token("input"),
     inputTextColor: token("foreground"),

@@ -10,6 +10,8 @@ const TOKENS = {
   input: "#505868",
   muted: "#404858",
   "muted-foreground": "#a0a8b8",
+  "osmoz-font-mono": "Code Font, monospace",
+  "osmoz-font-sans": "Text Font, sans-serif",
   primary: "#8070f0",
 } as const;
 
@@ -53,6 +55,8 @@ describe("docsTheme", () => {
       buttonBg: TOKENS.card,
       buttonBorder: TOKENS.input,
       colorSecondary: TOKENS.primary,
+      fontBase: TOKENS["osmoz-font-sans"],
+      fontCode: TOKENS["osmoz-font-mono"],
       inputBorder: TOKENS.input,
       textColor: TOKENS.foreground,
       textMutedColor: TOKENS["muted-foreground"],

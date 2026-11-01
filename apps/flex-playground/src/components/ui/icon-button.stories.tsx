@@ -70,6 +70,7 @@ export const Small: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+  tags: ["state"],
 };
 
 export const Pending: Story = {
@@ -80,4 +81,5 @@ export const Pending: Story = {
     await expect(button).toHaveAttribute("aria-busy", "true");
     await expect(button.querySelectorAll("svg")).toHaveLength(1);
   },
+  tags: ["state"],
 };

@@ -9,15 +9,19 @@ import {
 } from "storybook/manager-api";
 import type { ThemeVars } from "storybook/theming";
 
-import { breadcrumbParts } from "./breadcrumb-parts";
-import { docsTheme } from "./docs-theme";
-import { hiddenTools } from "./hidden-tools";
-import { managerStyle } from "./manager-style";
-import { readThemeEvent, THEME_EVENT } from "./theme-event";
-import type { ThemeEvent } from "./theme-event";
-import { restoreThemeEvent, saveThemeEvent } from "./theme-event-cache";
-import { THEME_STORES } from "./theme-stores";
-import type { Section } from "./theme-stores";
+import { breadcrumbParts } from "./manager/breadcrumb-parts";
+import { hiddenTools } from "./manager/hidden-tools";
+import { managerStyle } from "./manager/manager-style";
+import {
+  readThemeEvent,
+  restoreThemeEvent,
+  saveThemeEvent,
+  THEME_EVENT,
+} from "./theme/theme-event";
+import type { ThemeEvent } from "./theme/theme-event";
+import { THEME_STORES } from "./theme/theme-stores";
+import type { Section } from "./theme/theme-stores";
+import { docsTheme } from "./theme/theme-tokens";
 
 const ADDON = "osmoz/theme";
 const SECTION_STATE = "osmoz/theme/section";

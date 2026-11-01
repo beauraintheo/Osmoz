@@ -1,4 +1,4 @@
-import type { ThemeTokens } from "./theme-tokens";
+import type { ThemeTokens } from "../theme/theme-tokens";
 
 export const managerStyle = (tokens: ThemeTokens): string => `
 :root {

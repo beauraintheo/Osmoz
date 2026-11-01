@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vite-plus/test";
 
+import type { ThemeTokens } from "../theme/theme-tokens";
 import { managerStyle } from "./manager-style";
-import type { ThemeTokens } from "./theme-tokens";
 
 const TOKENS: ThemeTokens = {
   accent: "#252b5e",

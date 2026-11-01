@@ -4,17 +4,16 @@ import { addons } from "storybook/preview-api";
 import { themes } from "storybook/theming";
 import type { ThemeVars } from "storybook/theming";
 
-import { docsPath } from "./blocks/guidelines/docs-link";
-import { brandTitle } from "./brand-title";
-import { docsTheme } from "./docs-theme";
+import { docsPath } from "../docs/docs-link";
+import { brandTitle } from "../manager/brand-title";
 import { THEME_EVENT } from "./theme-event";
 import type { ThemeEvent } from "./theme-event";
 import { THEME_STORES } from "./theme-stores";
 import type { Section } from "./theme-stores";
-import { readThemeTokens } from "./theme-tokens";
+import { docsTheme, readThemeTokens } from "./theme-tokens";
 import type { FontTokens } from "./theme-tokens";
 
-import fluxTheme from "../apps/flex-playground/src/theme/theme.css?inline";
+import fluxTheme from "../../apps/flex-playground/src/theme/theme.css?inline";
 import osmozTheme from "@osmoz/brand/osmoz-theme.css?inline";
 
 interface SectionLook {

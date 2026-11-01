@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-import { readThemeTokens } from "./theme-tokens";
+import { docsTheme, readThemeTokens } from "./theme-tokens";
+import type { ThemeTokens } from "./theme-tokens";
 
 const FONTS = { code: "app-font-mono", text: "app-font-sans" } as const;
 
@@ -20,6 +21,24 @@ const TOKENS = {
   "osmoz-o": "#ff8fb8",
   primary: "oklch(1 0 0)",
 } as const;
+
+const THEME_TOKENS: ThemeTokens = {
+  accent: "#252b5e",
+  accentForeground: "#ede8ff",
+  background: "#101828",
+  border: "#202838",
+  card: "#303848",
+  colorScheme: "dark",
+  fontCode: "Code Font, monospace",
+  fontText: "Text Font, sans-serif",
+  foreground: "#f0f4f8",
+  input: "#505868",
+  muted: "#404858",
+  mutedForeground: "#a0a8b8",
+  osmozCloud: "#9c8cff",
+  osmozO: "#ff8fb8",
+  primary: "#8070f0",
+};
 
 const themed = (colorScheme: string): HTMLElement => {
   const element = document.createElement("div");
@@ -69,5 +88,33 @@ describe("readThemeTokens", () => {
     expect(readThemeTokens(themed("light"), FONTS).primary).toBe(TOKENS.primary);
 
     getContext.mockRestore();
+  });
+});
+
+describe("docsTheme", () => {
+  it("maps the contract tokens onto Storybook's theme", () => {
+    expect(docsTheme(THEME_TOKENS)).toMatchObject({
+      appBg: THEME_TOKENS.background,
+      appBorderColor: THEME_TOKENS.border,
+      appPreviewBg: THEME_TOKENS.card,
+      barBg: THEME_TOKENS.card,
+      barSelectedColor: THEME_TOKENS.primary,
+      barTextColor: THEME_TOKENS.mutedForeground,
+      base: "dark",
+      booleanBg: THEME_TOKENS.muted,
+      booleanSelectedBg: THEME_TOKENS.card,
+      buttonBg: THEME_TOKENS.card,
+      buttonBorder: THEME_TOKENS.input,
+      colorSecondary: THEME_TOKENS.primary,
+      fontBase: THEME_TOKENS.fontText,
+      fontCode: THEME_TOKENS.fontCode,
+      inputBorder: THEME_TOKENS.input,
+      textColor: THEME_TOKENS.foreground,
+      textMutedColor: THEME_TOKENS.mutedForeground,
+    });
+  });
+
+  it("starts from the base theme of the color scheme", () => {
+    expect(docsTheme({ ...THEME_TOKENS, colorScheme: "light" }).base).toBe("light");
   });
 });

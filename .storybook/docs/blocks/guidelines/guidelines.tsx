@@ -1,10 +1,9 @@
-import { DocsContext, Story, useOf } from "@storybook/addon-docs/blocks";
-import { useContext } from "react";
-import type { MouseEvent, ReactElement, ReactNode } from "react";
-import { NAVIGATE_URL } from "storybook/internal/core-events";
+import { Story, useOf } from "@storybook/addon-docs/blocks";
+import type { ReactElement, ReactNode } from "react";
 import type { ModuleExport, ModuleExports } from "storybook/internal/types";
 
-import { componentName, docsPath, isPlainClick } from "./docs-link";
+import { DocsAnchor } from "../../docs-anchor";
+import { componentName } from "../../docs-link";
 
 import "./guidelines.css";
 
@@ -37,26 +36,17 @@ const ArrowIcon = (): ReactElement => (
 
 const Verdict = ({ use }: VerdictProps): ReactElement => {
   const { preparedMeta } = useOf(use, ["meta"]);
-  const context = useContext(DocsContext);
   const name = componentName(preparedMeta.title);
 
   if (use === "meta") {
     return <code className="osmoz-guideline-verdict">{name}</code>;
   }
 
-  const path = docsPath(preparedMeta.id);
-  const go = (event: MouseEvent<HTMLAnchorElement>): void => {
-    if (isPlainClick(event)) {
-      event.preventDefault();
-      context.channel.emit(NAVIGATE_URL, path);
-    }
-  };
-
   return (
-    <a className="osmoz-guideline-verdict" href={`./${path}`} onClick={go} target="_top">
+    <DocsAnchor className="osmoz-guideline-verdict" id={preparedMeta.id}>
       <ArrowIcon />
       <code>{name}</code>
-    </a>
+    </DocsAnchor>
   );
 };
 

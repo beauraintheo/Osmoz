@@ -18,7 +18,7 @@ const chromium = (): BrowserConfigOptions => ({
   provider: playwright(),
 });
 
-const prebundled = { include: ["zod/mini"] };
+const prebundled = { include: ["@storybook/react-vite", "zod/mini"] };
 
 export default defineConfig({
   test: {

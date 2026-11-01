@@ -19,6 +19,27 @@ const withRouter: Decorator = (Story) => (
 
 const meta = {
   args: { children: "Read the docs", to: "/" },
+  argTypes: {
+    children: { description: "See UI/Link." },
+    newTab: {
+      control: "boolean",
+      description: "See UI/Link.",
+      table: { type: { summary: "boolean" } },
+    },
+    newTabHint: {
+      control: "text",
+      description: "Visually hidden, read after the text. See UI/Link.",
+      table: { type: { summary: "ReactNode" } },
+    },
+    to: { description: "A route of the app, typed by TanStack Router." },
+    variant: {
+      control: "inline-radio",
+      description:
+        "`inline` for a link in running text, `quiet` for a secondary link outside it, like in a header.",
+      options: ["inline", "quiet"],
+      table: { defaultValue: { summary: "inline" }, type: { summary: '"inline" | "quiet"' } },
+    },
+  },
   component: Link,
   decorators: [withRouter],
   parameters: { app: "flux", layout: "fullscreen" },

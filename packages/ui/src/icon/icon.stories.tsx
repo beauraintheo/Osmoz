@@ -26,7 +26,16 @@ const TestSvg = (props: ComponentProps<"svg">): ReactElement => (
 
 const meta = {
   args: { icon: TestSvg },
-  argTypes: { icon: { control: false } },
+  argTypes: {
+    icon: {
+      control: false,
+      description: "The SVG component to render. It receives every other prop.",
+    },
+    label: {
+      description:
+        "Makes the icon meaningful: role `img`, named by this text. Without it, the icon is decorative and hidden from assistive technologies.",
+    },
+  },
   component: Icon,
   title: "Icon",
 } satisfies Meta<typeof Icon>;

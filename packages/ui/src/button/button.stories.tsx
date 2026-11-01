@@ -5,6 +5,35 @@ import { Button } from "./button.tsx";
 
 const meta = {
   args: { children: "Save", onClick: fn() },
+  argTypes: {
+    children: {
+      description:
+        "The label, from the app's catalog. An icon beside it goes in a decorative Icon.",
+    },
+    disabled: {
+      control: "boolean",
+      description: "Removes the button from the tab order and blocks its action.",
+      table: { type: { summary: "boolean" } },
+    },
+    focusableWhenDisabled: {
+      description:
+        "With `disabled`, keeps the button in the tab order and sets `aria-disabled` instead, so the user can still reach it and learn why it is unavailable.",
+    },
+    onClick: {
+      description: "Runs on click, Enter and Space. Not called while disabled or pending.",
+    },
+    pending: {
+      description:
+        "The action is running: sets `aria-busy`, blocks the action and keeps the focus on the button.",
+    },
+    type: {
+      control: "inline-radio",
+      description:
+        "Defaults to `button`, so the button never submits its form by accident. Pass `submit` on purpose.",
+      options: ["button", "submit", "reset"],
+      table: { type: { summary: '"button" | "submit" | "reset"' } },
+    },
+  },
   component: Button,
   title: "Button",
 } satisfies Meta<typeof Button>;

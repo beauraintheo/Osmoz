@@ -63,13 +63,35 @@ first use. 🔒 Its folder holds `<component>.stories.tsx` and
 adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 `/document-component` drafts all three.
 
+👀 **Every prop in a story's API table has a description**, in the
+`argTypes` of its meta, never in a code comment. A description says what a
+developer cannot read in the type: when to use the prop, what it changes,
+what it requires. It is written once: an app's story describes what its
+wrapper adds and points to the UI page for the rest (`"See UI/Button."`). A
+prop the table misses, because `react-docgen` cannot read its type, gets its
+`argTypes` entry with `table.type.summary`.
+
 The Storybook lives at the root, in `.storybook/`. It shows three sections:
 Osmoz's own pages, `UI` for the contract of each `@osmoz/ui` component,
 unstyled, and one section per app for its look, titled by
 `.storybook/main.ts`. An app's stories set
 `parameters: { app: "<app>", layout: "fullscreen" }`: `.storybook/preview.tsx`
 then loads that app's `theme.css` with them, and only with them, and paints
-the app's background over the whole canvas. The doc pages wear the Osmoz theme of `@osmoz/brand`. Blocks
+the app's background over the whole canvas. The doc pages wear the Osmoz theme of `@osmoz/brand`.
+`.storybook/osmoz-docs-container.css` colors the unselected label of the API
+table's boolean controls by Storybook's own markup, which no theme variable
+reaches: check it again on every Storybook upgrade.
+
+The light/dark button of the toolbar, added by `.storybook/manager.tsx`, is
+not a Storybook global: changing a global re-renders the whole doc page and
+Storybook reloads it. It sets the store of `.storybook/use-theme-store.ts`,
+built with `createThemeStore` of `@osmoz/preferences` and kept under
+`osmoz-storybook:theme`; the preview follows it through the storage event and
+only changes `data-theme`. Until a choice is made, it follows the system.
+`manager.tsx` uses `createElement`, not JSX: Storybook builds the manager
+with the classic JSX transform, without React in scope.
+
+Blocks
 shared by the doc pages live in `.storybook/blocks/`, one folder per block
 with its logic and tests, take their texts as props or children, and use only
 the contract tokens. `.storybook/preview.tsx` registers them, so a `.mdx`

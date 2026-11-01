@@ -10,7 +10,40 @@ const meta = {
     label: "Undo",
     onClick: fn(),
   },
-  argTypes: { icon: { control: false } },
+  argTypes: {
+    disabled: {
+      control: "boolean",
+      description: "See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    focusableWhenDisabled: {
+      control: "boolean",
+      description: "See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    icon: {
+      control: false,
+      description: "A Remix icon component, sized by `size`.",
+      table: { type: { summary: "ComponentType<SVGProps>" } },
+    },
+    label: { description: "See UI/IconButton." },
+    onClick: { description: "See UI/Button." },
+    pending: {
+      control: "boolean",
+      description: "Replaces the icon with the spinner. See UI/Button.",
+      table: { type: { summary: "boolean" } },
+    },
+    size: { description: "See Flux/Button." },
+    type: {
+      control: "inline-radio",
+      description: "See UI/Button.",
+      options: ["button", "submit", "reset"],
+      table: { type: { summary: '"button" | "submit" | "reset"' } },
+    },
+    variant: {
+      description: "`ghost` by default, the usual look of a toolbar action. See Flux/Button.",
+    },
+  },
   component: IconButton,
   parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],

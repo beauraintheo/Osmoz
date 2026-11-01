@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vite-plus/test";
 
-import { docsTheme, toHex, toMode } from "./docs-theme";
+import { docsTheme, toHex } from "./docs-theme";
 
 const TOKENS = {
   background: "#101828",
@@ -8,6 +8,7 @@ const TOKENS = {
   card: "#303848",
   foreground: "#f0f4f8",
   input: "#505868",
+  muted: "#404858",
   "muted-foreground": "#a0a8b8",
   primary: "#8070f0",
 } as const;
@@ -19,16 +20,6 @@ const themed = (): HTMLElement => {
 
   return document.body.appendChild(element);
 };
-
-describe("toMode", () => {
-  it("keeps dark", () => {
-    expect(toMode("dark")).toBe("dark");
-  });
-
-  it("falls back to light for any other value", () => {
-    expect([toMode("light"), toMode(undefined), toMode(1)]).toEqual(["light", "light", "light"]);
-  });
-});
 
 describe("toHex", () => {
   it("converts an rgb color", () => {
@@ -57,6 +48,10 @@ describe("docsTheme", () => {
       appBorderColor: TOKENS.border,
       appPreviewBg: TOKENS.card,
       base: "dark",
+      booleanBg: TOKENS.muted,
+      booleanSelectedBg: TOKENS.card,
+      buttonBg: TOKENS.card,
+      buttonBorder: TOKENS.input,
       colorSecondary: TOKENS.primary,
       inputBorder: TOKENS.input,
       textColor: TOKENS.foreground,

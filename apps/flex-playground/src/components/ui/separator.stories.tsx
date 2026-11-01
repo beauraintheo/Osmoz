@@ -10,6 +10,22 @@ const inRow: Decorator = (Story) => (
 );
 
 const meta = {
+  argTypes: {
+    decorative: {
+      control: "boolean",
+      description: "See UI/Separator.",
+      table: { type: { summary: "boolean" } },
+    },
+    orientation: {
+      control: "inline-radio",
+      description: "`vertical` stretches to the height of its row. See UI/Separator.",
+      options: ["horizontal", "vertical"],
+      table: {
+        defaultValue: { summary: "horizontal" },
+        type: { summary: '"horizontal" | "vertical"' },
+      },
+    },
+  },
   component: Separator,
   parameters: { app: "flux", layout: "fullscreen" },
   tags: ["autodocs"],

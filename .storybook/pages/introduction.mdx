@@ -1,0 +1,44 @@
+import { Canvas, Meta } from "@storybook/addon-docs/blocks";
+
+import * as UiButtonStories from "../../packages/ui/src/button/button.stories";
+
+<Meta title="Introduction" />
+
+# One behavior. Many identities.
+
+Every Osmoz component is written once, without a single class: a native
+element, its keyboard, its ARIA states. Each app then gives it its own look,
+from its own tokens. This Storybook shows both halves.
+
+<Canvas of={UiButtonStories.Pending} />
+
+The same pending button, as the contract ships it: no class, only the
+`aria-busy` it sets. Each app styles it in its own section.
+
+## Four principles
+
+1. **Native elements first.** A `<button>` before a div with a role. A
+   headless library comes in only where no native element fits.
+2. **Behavior shared, look owned.** `@osmoz/ui` ships no class. Each app wraps
+   every component in its own `components/ui/`, with its tokens.
+3. **Texts come from the app.** A shared component writes no user-facing word.
+   Every label is a prop, read from the app's catalog, in its language.
+4. **AA in every theme.** WCAG 2.2 AA is the floor: contrast, visible focus,
+   opt-in motion, 24 px targets, everything by keyboard.
+
+## How to read this Storybook
+
+| Section               | What it shows                                                                                                             |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Osmoz**             | Why the design system exists and how to use it: these pages and the brand.                                                |
+| **UI**                | Each component bare, the contract: its states, the DOM they produce, its keyboard. An interaction test checks each claim. |
+| **An app, like Flux** | The same components dressed by one app, in its theme. The toolbar's theme button switches every page.                     |
+
+## Apps
+
+| App      | What it is                        | Themes      |
+| -------- | --------------------------------- | ----------- |
+| **Flux** | An interactive Flexbox reference. | Light, Dark |
+
+Behavior lives in `@osmoz/ui`, the mark in `@osmoz/brand`, the looks in each
+app.

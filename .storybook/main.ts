@@ -22,6 +22,11 @@ const config: StorybookConfig = {
   framework: "@storybook/react-vite",
   stories: [
     {
+      directory: "./pages",
+      files: "*.mdx",
+      titlePrefix: "Osmoz",
+    },
+    {
       directory: "../packages/ui/src",
       files: STORY_FILES,
       titlePrefix: "UI",

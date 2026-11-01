@@ -23,6 +23,7 @@
     "@osmoz/brand": "workspace:*",
     "@osmoz/config": "workspace:*",
     "@osmoz/preferences": "workspace:*",
+    "@osmoz/theme": "workspace:*",
     "@storybook/addon-a11y": "catalog:",
     "@storybook/addon-docs": "catalog:",
     "@storybook/addon-vitest": "catalog:",
@@ -41,6 +42,7 @@
     "react-dom": "catalog:",
     "remark-gfm": "catalog:",
     "storybook": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite-plus": "catalog:"
   },

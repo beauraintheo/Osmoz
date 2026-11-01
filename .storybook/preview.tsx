@@ -72,6 +72,11 @@ const preview: Preview = {
       },
       container: OsmozDocsContainer,
     },
+    options: {
+      storySort: {
+        order: ["Osmoz", ["Introduction", "Using a component", "Brand"], "UI", "Flux"],
+      },
+    },
   },
 };
 

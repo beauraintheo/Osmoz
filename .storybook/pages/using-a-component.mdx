@@ -1,0 +1,63 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Using a component" />
+
+# Using a component
+
+An app never uses `@osmoz/ui` directly. It uses its own styled version of each
+component, which wraps the contract with the app's classes.
+
+## Import it from `components/ui/`
+
+Routes, features and the app's own components import the styled component
+from the app's `components/ui/`:
+
+```tsx
+import { Button } from "@/components/ui/button";
+```
+
+Never from `@osmoz/ui`: a component imported from there renders without the
+app's look. If the app has no styled version yet, it adds one first, in
+`components/ui/<component>.tsx`, with its stories next to it.
+
+## Give it texts from the catalog
+
+A component writes no text of its own, and no text is written in JSX. Read
+every label from the app's catalog with its `useMessages` hook, then pass it
+as a child or a prop:
+
+```tsx
+import { Button } from "@/components/ui/button";
+import { useMessages } from "@/i18n/use-messages";
+
+export const SaveButton = (): ReactElement => {
+  const messages = useMessages();
+
+  return <Button variant="primary">{messages.actions.save}</Button>;
+};
+```
+
+Punctuation and hidden hints belong to the message too, like the
+`"(new tab)"` a link announces. Switching the language then changes every text
+at once.
+
+## Go through the boards first
+
+The app's mockups are the reference for every look. A new component, or a
+state the boards do not show yet, is drawn there first: on the screen that
+uses it, then on the components boards, in every state and every theme, with
+tokens and typography roles only.
+
+The code follows the boards. A state found while coding goes back to them.
+
+## Check it here
+
+Each component has two pages:
+
+- **UI**: its contract, the states, keyboard and accessibility every app
+  inherits, and its API.
+- **The app's section**: its look, one story per variant, size and state of
+  the boards.
+
+The rendered states match the boards, every action works with the keyboard,
+and `pnpm validate` passes.

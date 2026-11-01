@@ -1,0 +1,70 @@
+import { OsmozSignature } from "@osmoz/brand/osmoz-signature";
+import { OsmozSymbol } from "@osmoz/brand/osmoz-symbol";
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Brand" />
+
+# Brand
+
+One author, many identities: every app shares the Osmoz mark, and nothing
+else. Below, the mark as `@osmoz/brand` renders it, in this page's Osmoz
+theme.
+
+## The symbol
+
+<div className="flex items-center gap-8 rounded-lg border border-border bg-card p-8">
+  <OsmozSymbol aria-label="Osmoz" className="h-16 w-auto" />
+  <OsmozSymbol className="h-8 w-auto" />
+  <OsmozSymbol className="h-4 w-auto" />
+</div>
+
+A cloud outline with a solid O passing through its edge, half outside and half
+inside: knowledge passing through, as in osmosis. The cloud line cuts a gap
+into the O where they cross.
+
+```tsx
+import { OsmozSymbol } from "@osmoz/brand/osmoz-symbol";
+
+<OsmozSymbol className="h-4 w-auto" />;
+```
+
+- It is drawn without color: the O reads `--osmoz-o`, the app's accent, and
+  the cloud `--osmoz-cloud`, the Osmoz cloud color. Without them, both fall
+  back to `currentColor`.
+- It is decorative by default. Given an `aria-label`, it is announced as an
+  image.
+- It is at least 16 px high.
+
+## The signature
+
+<div className="flex items-center gap-8 rounded-lg border border-border bg-card p-8">
+  <OsmozSignature label="by Osmoz" newTabLabel="(new tab)" />
+</div>
+
+The signature sits in every app's header, next to the app's own name. It
+links to Osmoz, in a new tab announced to screen readers.
+
+```tsx
+import { OsmozSignature } from "@osmoz/brand/osmoz-signature";
+
+<OsmozSignature label={messages.signature.label} newTabLabel={messages.link.newTab} />;
+```
+
+- On a large screen, the symbol followed by its label. On a small one, the
+  symbol alone: the label stays, visually hidden, as the link's name.
+- The app passes its texts, `label` and `newTabLabel`, from its catalog, and
+  through `className` only its placement. Its look is the same in every app.
+- Its target is 32 px high with a mouse and 44 px with a coarse pointer.
+
+## Colors
+
+The mark's colors are fixed when it stands for Osmoz itself. Inside an app,
+the O takes the app's accent; the cloud never changes.
+
+<Tokens>
+  <Token name="osmoz-o">The O: the app's accent, here Osmoz's own.</Token>
+  <Token name="osmoz-cloud">The cloud: the Osmoz cloud color, in every app.</Token>
+</Tokens>
+
+Each app's favicon is the same symbol, with the O in the app's accent, so the
+tabs of every app read as one family and still tell apart.

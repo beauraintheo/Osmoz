@@ -74,7 +74,13 @@ prop the table misses, because `react-docgen` cannot read its type, gets its
 The Storybook lives at the root, in `.storybook/`. It shows three sections:
 Osmoz's own pages, `UI` for the contract of each `@osmoz/ui` component,
 unstyled, and one section per app for its look, titled by
-`.storybook/main.ts`. An app's stories set
+`.storybook/main.ts`. Osmoz's pages are `.mdx` files without stories in
+`.storybook/pages/`, in English: Introduction, Using a component and Brand.
+The `storySort` of `.storybook/preview.tsx` orders the sections and those
+pages, so the Storybook opens on Introduction. A new page gets its place
+there. The doc pages can render the components of `@osmoz/brand`:
+`.storybook/osmoz-docs-classes.css` generates their Tailwind classes, and
+those of `.storybook/pages/`, without Tailwind's preflight. An app's stories set
 `parameters: { app: "<app>", layout: "fullscreen" }`: `.storybook/preview.tsx`
 then loads that app's `theme.css` with them, and only with them, and paints
 the app's background over the whole canvas, so Storybook's backgrounds tool

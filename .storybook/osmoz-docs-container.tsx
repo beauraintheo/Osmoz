@@ -8,6 +8,7 @@ import type { ThemeVars } from "storybook/theming";
 import { docsTheme } from "./docs-theme";
 import { useThemeStore } from "./use-theme-store";
 
+import osmozClasses from "./osmoz-docs-classes.css?inline";
 import osmozTheme from "@osmoz/brand/osmoz-theme.css?inline";
 import "./osmoz-docs-container.css";
 
@@ -36,6 +37,7 @@ export const OsmozDocsContainer = ({
       }}
     >
       <style>{osmozTheme}</style>
+      <style>{osmozClasses}</style>
       <DocsContainer context={context} theme={theme}>
         {children}
       </DocsContainer>

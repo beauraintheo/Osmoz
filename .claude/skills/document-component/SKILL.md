@@ -60,7 +60,7 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 **Behavior stories**, `packages/ui/src/<component>/<component>.stories.tsx`:
 
 - One story per state the component exposes, named after the state (`Disabled`, `Pending`), and `Default` first.
-- `title` is the component's name in PascalCase (`"IconButton"`): `.storybook/main.ts` prefixes it with `UI`, and each app's stories with the app's name. The same `title` in every app's file.
+- `title` is the component's name in PascalCase (`"IconButton"`): `.storybook/main.ts` prefixes it with `Osmoz`, and each app's stories with the app's name. The same `title` in every app's file.
 - Texts go through `args`, never as JSX text: the linter rejects it. Use short English placeholders (`"Save"`).
 - Every story has a `play` test that checks behavior only: the role, the accessible name, ARIA and `data-*` attributes, focus with `userEvent.tab()`, keys, clicks that run or are blocked. Never a class, never a style.
 - Every story shows something in the doc page: an icon passed as a prop draws a real path, never an empty `<svg>`. An element that renders empty or flat without a layout, like an `<hr>`, gets a decorator marked `data-story-layout` that gives it one, with inline styles: `States` reads past it.
@@ -71,7 +71,7 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 
 - The meta sets `parameters: { app: "<app>", layout: "fullscreen" }` and `tags: ["autodocs"]`.
 - One story per variant, size and board state. Props holding an element, like `icon`, get `argTypes: { <prop>: { control: false } }`.
-- `argTypes` describe what the wrapper adds (`variant`, `size`, a prop whose look it changes). A prop it only passes on points to the UI page, `"See UI/<Component>."`, so a description is written once.
+- `argTypes` describe what the wrapper adds (`variant`, `size`, a prop whose look it changes). A prop it only passes on points to the component's Osmoz page, `"See Osmoz/<Component>."`, so a description is written once.
 - A `play` test only for what the wrapper adds over `@osmoz/ui`. The behavior is already tested in the UI stories.
 
 **Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English. The blocks come from `.storybook/blocks/` and are registered in `.storybook/preview.tsx`: never import them. No Markdown table. The sections, in this order:

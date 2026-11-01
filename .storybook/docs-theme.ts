@@ -1,54 +1,28 @@
 import { themes } from "storybook/theming";
 import type { ThemeVars } from "storybook/theming";
 
-import type { useThemeStore } from "./use-theme-store";
+import type { ThemeTokens } from "./theme-tokens";
 
-type Mode = ReturnType<typeof useThemeStore.getState>["resolved"];
-
-export const toHex = (color: string): string => {
-  const canvas = document.createElement("canvas");
-  const drawing = canvas.getContext("2d", { willReadFrequently: true });
-
-  if (drawing === null) {
-    return color;
-  }
-
-  drawing.fillStyle = color;
-  drawing.fillRect(0, 0, 1, 1);
-
-  const channels = Array.from(drawing.getImageData(0, 0, 1, 1).data.slice(0, 3), (channel) =>
-    channel.toString(16).padStart(2, "0"),
-  );
-
-  return `#${channels.join("")}`;
-};
-
-export const docsTheme = (element: HTMLElement, mode: Mode): ThemeVars => {
-  const styles = getComputedStyle(element);
-  const value = (name: string): string => styles.getPropertyValue(`--${name}`).trim();
-  const token = (name: string): string => toHex(value(name));
-
-  return {
-    ...themes[mode],
-    appBg: token("background"),
-    appBorderColor: token("border"),
-    appContentBg: token("background"),
-    appPreviewBg: token("card"),
-    barBg: token("card"),
-    barSelectedColor: token("primary"),
-    barTextColor: token("muted-foreground"),
-    booleanBg: token("muted"),
-    booleanSelectedBg: token("card"),
-    buttonBg: token("card"),
-    buttonBorder: token("input"),
-    colorSecondary: token("primary"),
-    fontBase: value("osmoz-font-sans"),
-    fontCode: value("osmoz-font-mono"),
-    inputBg: token("card"),
-    inputBorder: token("input"),
-    inputTextColor: token("foreground"),
-    textColor: token("foreground"),
-    textInverseColor: token("background"),
-    textMutedColor: token("muted-foreground"),
-  };
-};
+export const docsTheme = (tokens: ThemeTokens): ThemeVars => ({
+  ...themes[tokens.colorScheme],
+  appBg: tokens.background,
+  appBorderColor: tokens.border,
+  appContentBg: tokens.background,
+  appPreviewBg: tokens.card,
+  barBg: tokens.card,
+  barSelectedColor: tokens.primary,
+  barTextColor: tokens.mutedForeground,
+  booleanBg: tokens.muted,
+  booleanSelectedBg: tokens.card,
+  buttonBg: tokens.card,
+  buttonBorder: tokens.input,
+  colorSecondary: tokens.primary,
+  fontBase: tokens.fontText,
+  fontCode: tokens.fontCode,
+  inputBg: tokens.card,
+  inputBorder: tokens.input,
+  inputTextColor: tokens.foreground,
+  textColor: tokens.foreground,
+  textInverseColor: tokens.background,
+  textMutedColor: tokens.mutedForeground,
+});

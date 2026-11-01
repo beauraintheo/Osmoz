@@ -1,0 +1,82 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Introduction" />
+
+# Flux
+
+An interactive Flexbox reference: the place to check how a property behaves
+when in doubt. It targets developers who already use Flexbox and need to
+confirm a behavior fast, and stays clear enough for a beginner.
+
+This section shows the `@osmoz/ui` components as Flux dresses them, in its
+own theme. The toolbar's theme button switches every page of it.
+
+## Identity
+
+A quiet tool around a loud canvas: neutral surfaces, one teal accent, the
+code in monospace. Every value below is read in the theme of this page.
+
+### Colors
+
+<Tokens>
+  <Token name="background">The page.</Token>
+  <Token name="card">The panels and the code.</Token>
+  <Token name="foreground">The text.</Token>
+  <Token name="muted-foreground">Secondary text: hints, labels, values.</Token>
+  <Token name="primary">The accent: the main action, the selection, the focus.</Token>
+  <Token name="border">Lines between panels and rows.</Token>
+  <Token name="osmoz-o">The O of the Osmoz mark: Flux's accent.</Token>
+</Tokens>
+
+### Typography
+
+<Tokens>
+  <Token name="font-sans">The interface.</Token>
+  <Token name="font-mono">CSS properties, values and the generated code.</Token>
+  <Token name="text-title">App and dialog titles, in `font-mono`.</Token>
+  <Token name="text-body">Running text and explanations.</Token>
+  <Token name="text-control">Buttons, fields and property names.</Token>
+  <Token name="text-label">Field and group labels, in `font-mono`.</Token>
+  <Token name="text-overline">Section titles, in capitals.</Token>
+  <Token name="text-code">The generated CSS and HTML.</Token>
+  <Token name="text-canvas">The text of the items on the canvas.</Token>
+  <Token name="text-tile">The labels of the value tiles.</Token>
+</Tokens>
+
+### Themes
+
+| Theme     | When                                       |
+| --------- | ------------------------------------------ |
+| **Light** | On a light system, and without JavaScript. |
+| **Dark**  | On a dark system.                          |
+
+The header's toggle switches to the other theme, and the choice is
+remembered under `flux:theme`.
+
+## UX principles
+
+Every design choice is checked against these. When two conflict, the first
+listed wins.
+
+1. **Instant feedback.** Every change shows on the canvas immediately.
+2. **Recognition over recall.** Every value is visible with a diagram of its
+   effect; nothing hides behind a dropdown.
+3. **Direct manipulation.** Resize the container by dragging it, select an
+   item by clicking it.
+4. **User control.** Every change can be undone; nothing asks for
+   confirmation.
+5. **Standards.** CSS names are written exactly as in CSS; defaults are the
+   browser's.
+6. **Progressive disclosure.** Explanations are one hover or focus away.
+7. **Accessible by default.** WCAG 2.2 AA and full keyboard use.
+
+## Components
+
+| Component                                        | In Flux                                    |
+| ------------------------------------------------ | ------------------------------------------ |
+| [Button](?path=/docs/flux-button--docs)          | Every action with a label.                 |
+| [Icon button](?path=/docs/flux-iconbutton--docs) | Undo, redo, help: an action with an icon.  |
+| [Icon](?path=/docs/flux-icon--docs)              | The icons of the buttons and the controls. |
+| [Link](?path=/docs/flux-link--docs)              | Navigation, and the MDN links.             |
+| [Separator](?path=/docs/flux-separator--docs)    | Lines between groups of controls.          |
+| [Spinner](?path=/docs/flux-spinner--docs)        | A pending action.                          |

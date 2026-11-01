@@ -1,60 +1,159 @@
 import { createElement } from "react";
 import type { ReactElement } from "react";
-import { IconButton } from "storybook/internal/components";
-import { addons, types } from "storybook/manager-api";
+import {
+  addons,
+  types,
+  useAddonState,
+  useStorybookApi,
+  useStorybookState,
+} from "storybook/manager-api";
+import type { ThemeVars } from "storybook/theming";
 
-import { useThemeStore } from "./use-theme-store";
+import { breadcrumbParts } from "./breadcrumb-parts";
+import { docsTheme } from "./docs-theme";
+import { hiddenTools } from "./hidden-tools";
+import { managerStyle } from "./manager-style";
+import { readThemeEvent, THEME_EVENT } from "./theme-event";
+import type { ThemeEvent } from "./theme-event";
+import { restoreThemeEvent, saveThemeEvent } from "./theme-event-cache";
+import { THEME_STORES } from "./theme-stores";
+import type { Section } from "./theme-stores";
 
-const NEXT_THEME = { dark: "light", light: "dark" } as const;
+const ADDON = "osmoz/theme";
+const SECTION_STATE = "osmoz/theme/section";
+const BREADCRUMB_TOOL = `${ADDON}/breadcrumb`;
+const THEME_TOOL = `${ADDON}/tool`;
 
-const LABELS = {
-  dark: "Switch to the dark theme",
-  light: "Switch to the light theme",
-} as const;
+const STORYBOOK_TOOLS = [
+  "menu",
+  "remount",
+  "isolationMode",
+  "zoom",
+  "addons",
+  "fullscreen",
+  "open-in-editor",
+];
 
-const ICON_PATHS = {
-  dark: "M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z",
-  light:
-    "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm0-6v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41",
-} as const;
+const SECTION_NAMES: Readonly<Record<Section, string>> = { flux: "Flux", osmoz: "Osmoz" };
 
-const ThemeTool = (): ReactElement => {
-  const resolved = useThemeStore((state) => state.resolved);
-  const setPreference = useThemeStore((state) => state.setPreference);
-  const next = NEXT_THEME[resolved];
+const THEME_NAMES = { dark: "Dark", light: "Light" } as const;
+
+const pickerLabel = (section: Section): string => `${SECTION_NAMES[section]} theme`;
+
+const managerTheme = (event: ThemeEvent): ThemeVars => ({
+  ...docsTheme(event.tokens),
+  brandTarget: "_self",
+  brandTitle: event.brandTitle,
+  brandUrl: event.brandUrl,
+});
+
+const Breadcrumb = (): ReactElement | null => {
+  const api = useStorybookApi();
+
+  useStorybookState();
+
+  const title = api.getCurrentStoryData()?.title;
+
+  if (title === undefined) {
+    return null;
+  }
+
+  const { current, parents } = breadcrumbParts(title);
 
   return createElement(
-    IconButton,
+    "span",
+    { className: "osmoz-breadcrumb" },
+    ...parents.flatMap((parent, index) => [
+      parent,
+      createElement(
+        "span",
+        { "aria-hidden": true, key: parents.slice(0, index + 1).join("/") },
+        " / ",
+      ),
+    ]),
+    createElement("span", { className: "osmoz-breadcrumb-current" }, current),
+  );
+};
+
+const ThemePicker = (): ReactElement => {
+  const [section] = useAddonState<Section>(SECTION_STATE, "osmoz");
+  const store = THEME_STORES[section];
+  const resolved = store((state) => state.resolved);
+  const themes = store((state) => state.themes);
+  const setPreference = store((state) => state.setPreference);
+
+  return createElement(
+    "div",
     {
-      ariaLabel: LABELS[next],
-      onClick: (): void => {
-        setPreference(next);
-      },
+      "aria-label": pickerLabel(section),
+      className: "osmoz-theme-picker",
+      role: "group",
     },
     createElement(
-      "svg",
-      {
-        "aria-hidden": true,
-        fill: "none",
-        height: 14,
-        viewBox: "0 0 24 24",
-        width: 14,
-      },
-      createElement("path", {
-        d: ICON_PATHS[next],
-        stroke: "currentColor",
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-        strokeWidth: 2,
-      }),
+      "span",
+      { "aria-hidden": true, className: "osmoz-theme-picker-label" },
+      SECTION_NAMES[section],
+    ),
+    ...themes.map((theme) =>
+      createElement(
+        "button",
+        {
+          "aria-pressed": theme === resolved,
+          key: theme,
+          onClick: (): void => {
+            setPreference(theme);
+          },
+          type: "button",
+        },
+        THEME_NAMES[theme],
+      ),
     ),
   );
 };
 
-addons.register("osmoz/theme", () => {
-  addons.add("osmoz/theme/tool", {
-    render: ThemeTool,
-    title: "Theme",
+const style = document.createElement("style");
+const cached = restoreThemeEvent();
+
+document.head.append(style);
+
+if (cached !== undefined) {
+  style.textContent = managerStyle(cached.tokens);
+  addons.setConfig({ theme: managerTheme(cached) });
+}
+
+addons.register(ADDON, (api) => {
+  if (cached !== undefined) {
+    void api.setAddonState(SECTION_STATE, cached.section);
+  }
+
+  api.on(THEME_EVENT, (payload: unknown) => {
+    const event = readThemeEvent(payload);
+
+    if (event !== undefined) {
+      saveThemeEvent(event);
+      style.textContent = managerStyle(event.tokens);
+      void api.setAddonState(SECTION_STATE, event.section);
+      api.setOptions({ theme: managerTheme(event) });
+    }
+  });
+
+  addons.add(BREADCRUMB_TOOL, {
+    render: Breadcrumb,
+    title: "Breadcrumb",
     type: types.TOOL,
+  });
+
+  addons.add(THEME_TOOL, {
+    render: ThemePicker,
+    title: "Theme",
+    type: types.TOOLEXTRA,
+  });
+
+  addons.setConfig({
+    toolbar: hiddenTools([
+      ...STORYBOOK_TOOLS,
+      ...Object.keys(addons.getElements(types.TOOL)),
+      ...Object.keys(addons.getElements(types.TOOLEXTRA)),
+    ]),
   });
 });

@@ -37,7 +37,9 @@ src/
   components/   shared UI with no domain knowledge, built from components/ui:
                 header, language and theme toggles
     ui/         Flux's design system: one styled version per @osmoz/ui
-                component, and nothing that knows the app
+                component with its stories, and nothing that knows the
+                app; introduction.mdx, the Flux section's entry page in
+                the Storybook, is the one file that describes Flux
   lib/          pure utilities with no domain knowledge, cn.ts included
   theme/        the app's theme: theme.css, its font faces (fonts.css),
                 its themes (theme-options.ts) and the theme store

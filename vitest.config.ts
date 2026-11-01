@@ -18,6 +18,8 @@ const chromium = (): BrowserConfigOptions => ({
   provider: playwright(),
 });
 
+const prebundled = { include: ["zod/mini"] };
+
 export default defineConfig({
   test: {
     coverage: {
@@ -34,11 +36,13 @@ export default defineConfig({
     },
     projects: [
       {
+        optimizeDeps: prebundled,
         plugins: [flux.plugins, storybookTest({ configDir: ".storybook" })],
         resolve: flux.resolve,
         test: { browser: chromium(), name: "stories" },
       },
       {
+        optimizeDeps: prebundled,
         test: {
           browser: chromium(),
           include: [".storybook/**/*.test.ts"],

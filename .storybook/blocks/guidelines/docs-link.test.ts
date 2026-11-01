@@ -13,13 +13,13 @@ const PLAIN: Click = {
 
 describe("docsPath", () => {
   it("points to a component's doc page in Storybook's interface", () => {
-    expect(docsPath("ui-link")).toBe("?path=/docs/ui-link--docs");
+    expect(docsPath("osmoz-link")).toBe("?path=/docs/osmoz-link--docs");
   });
 });
 
 describe("componentName", () => {
   it("keeps the last segment of a story title", () => {
-    expect(componentName("UI/IconButton")).toBe("IconButton");
+    expect(componentName("Osmoz/IconButton")).toBe("IconButton");
   });
 
   it("keeps a title without a section as is", () => {

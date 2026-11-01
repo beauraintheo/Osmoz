@@ -7,7 +7,7 @@ const meta = {
   argTypes: {
     label: {
       control: "text",
-      description: "Visually hidden. See UI/Spinner.",
+      description: "Visually hidden. See Osmoz/Spinner.",
       table: { type: { summary: "ReactNode" } },
     },
     size: { description: "The sizes of Flux/Icon, so the spinner can take an icon's place." },

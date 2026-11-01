@@ -1,62 +1,40 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
-import type { ReactElement, ReactNode } from "react";
 
 import { Guideline, Guidelines } from "./blocks/guidelines/guidelines";
 import { Key, Keyboard } from "./blocks/keyboard/keyboard";
 import { State, States } from "./blocks/states/states";
 import { Token, Tokens } from "./blocks/tokens/tokens";
 import { OsmozDocsContainer } from "./osmoz-docs-container";
-import { useThemeStore } from "./use-theme-store";
+import { sectionOf } from "./theme-stores";
+import type { Section } from "./theme-stores";
+import { ThemeSurface } from "./theme-surface";
+import type { Variant } from "./theme-surface";
 
-import fluxTheme from "../apps/flex-playground/src/theme/theme.css?inline";
+type ViewMode = "docs" | "story";
 
-const APP_STYLES: Readonly<Record<string, string>> = { flux: fluxTheme };
-
-interface AppThemeProps {
-  children: ReactNode;
-  fullHeight: boolean;
-  style: string;
-}
-
-const AppTheme = ({ children, fullHeight, style }: AppThemeProps): ReactElement => {
-  const theme = useThemeStore((state) => state.resolved);
-
-  return (
-    <div
-      data-app-theme=""
-      data-theme={theme}
-      style={{
-        background: "var(--background)",
-        boxSizing: "border-box",
-        color: "var(--foreground)",
-        fontFamily: "var(--font-sans)",
-        minHeight: fullHeight ? "100vh" : undefined,
-        padding: "1rem",
-      }}
-    >
-      <style>{style}</style>
-      {children}
-    </div>
-  );
+const STORY_SURFACES: Readonly<Record<Section, Readonly<Record<ViewMode, Variant | undefined>>>> = {
+  flux: { docs: "block", story: "canvas" },
+  osmoz: { docs: undefined, story: "bare" },
 };
 
-const withAppTheme: Decorator = (Story, { parameters, viewMode }) => {
+const withThemeSurface: Decorator = (Story, { parameters, viewMode }) => {
   const app: unknown = parameters.app;
-  const style = typeof app === "string" ? APP_STYLES[app] : undefined;
+  const section = sectionOf(app);
+  const variant = STORY_SURFACES[section][viewMode];
 
-  if (style === undefined) {
+  if (variant === undefined) {
     return <Story />;
   }
 
   return (
-    <AppTheme fullHeight={viewMode === "story"} style={style}>
-      <Story />
-    </AppTheme>
+    <ThemeSurface section={section} variant={variant}>
+      {() => <Story />}
+    </ThemeSurface>
   );
 };
 
 const preview: Preview = {
-  decorators: [withAppTheme],
+  decorators: [withThemeSurface],
   parameters: {
     a11y: { test: "error" },
     docs: {
@@ -74,7 +52,7 @@ const preview: Preview = {
     },
     options: {
       storySort: {
-        order: ["Osmoz", ["Introduction", "Using a component", "Brand"], "UI", "Flux"],
+        order: ["Osmoz", ["Introduction", "Using a component", "Brand"], "Flux", ["Introduction"]],
       },
     },
   },

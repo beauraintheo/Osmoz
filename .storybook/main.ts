@@ -29,7 +29,7 @@ const config: StorybookConfig = {
     {
       directory: "../packages/ui/src",
       files: STORY_FILES,
-      titlePrefix: "UI",
+      titlePrefix: "Osmoz",
     },
     {
       directory: "../apps/flex-playground/src/components/ui",

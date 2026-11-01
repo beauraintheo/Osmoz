@@ -44,7 +44,8 @@
     "storybook": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
-    "vite-plus": "catalog:"
+    "vite-plus": "catalog:",
+    "zod": "catalog:"
   },
   "packageManager": "pnpm@12.11.2"
 }

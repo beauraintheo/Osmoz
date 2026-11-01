@@ -5,4 +5,4 @@
 @import "@osmoz/theme/base.css";
 @import "@osmoz/brand/brand.css";
 
-@source "./pages";
+@source "../pages";

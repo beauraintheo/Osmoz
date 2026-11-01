@@ -1,14 +1,15 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 
-import { Guideline, Guidelines } from "./blocks/guidelines/guidelines";
-import { Key, Keyboard } from "./blocks/keyboard/keyboard";
-import { State, States } from "./blocks/states/states";
-import { Token, Tokens } from "./blocks/tokens/tokens";
-import { OsmozDocsContainer } from "./osmoz-docs-container";
-import { sectionOf } from "./theme-stores";
-import type { Section } from "./theme-stores";
-import { ThemeSurface } from "./theme-surface";
-import type { Variant } from "./theme-surface";
+import { AppComponentPage } from "./docs/app-component-page/app-component-page";
+import { Guideline, Guidelines } from "./docs/blocks/guidelines/guidelines";
+import { Key, Keyboard } from "./docs/blocks/keyboard/keyboard";
+import { State, States } from "./docs/blocks/states/states";
+import { Token, Tokens } from "./docs/blocks/tokens/tokens";
+import { DocsContainer } from "./docs/docs-container";
+import { sectionOf } from "./theme/theme-stores";
+import type { Section } from "./theme/theme-stores";
+import { ThemeSurface } from "./theme/theme-surface";
+import type { Variant } from "./theme/theme-surface";
 
 type ViewMode = "docs" | "story";
 
@@ -48,7 +49,8 @@ const preview: Preview = {
         Token,
         Tokens,
       },
-      container: OsmozDocsContainer,
+      container: DocsContainer,
+      page: AppComponentPage,
     },
     options: {
       storySort: {

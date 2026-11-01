@@ -18,7 +18,7 @@ Never run a git command that changes state.
 
 1. `packages/ui/src/<component>/<component>.tsx` must exist. If not, stop and say so.
 2. Find every app that wraps it: `apps/*/src/components/ui/<component>.tsx`.
-3. Each of those apps must be in `.storybook/main.ts` (its `stories`) and `.storybook/preview.tsx` (`APP_STYLES`). If one is missing, stop and say so: adding a second app raises the theme and `@/` alias collision documented in `docs/conventions.md`, and that choice is the user's.
+3. Each of those apps must be in `.storybook/main.ts` (its `stories`) and `.storybook/preview.tsx` (`STORY_SURFACES`), with its store in `.storybook/theme/theme-stores.ts` and its look in `.storybook/theme/theme-surface.tsx`. If one is missing, stop and say so: adding a second app raises the theme and `@/` alias collision documented in `docs/conventions.md`, and that choice is the user's.
 
 ## 2. Read what the component does
 
@@ -69,12 +69,13 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 
 **Styled stories**, one file per app, `apps/<app>/src/components/ui/<component>.stories.tsx`:
 
-- The meta sets `parameters: { app: "<app>", layout: "fullscreen" }` and `tags: ["autodocs"]`.
+- The meta sets `parameters: { app: "<app>", layout: "fullscreen", tokens: { … } }` and `tags: ["autodocs"]`: `tokens` names each contract role the wrapper uses, its role in the app as value. The doc page is generated from the stories, never written in MDX.
 - One story per variant, size and board state. Props holding an element, like `icon`, get `argTypes: { <prop>: { control: false } }`.
+- A story that shows a state, like `Disabled` or `Pending`, gets `tags: ["state"]`: it becomes a column of the page's matrix. One story that shows the component in use, like a toolbar, gets `tags: ["usage"]`.
 - `argTypes` describe what the wrapper adds (`variant`, `size`, a prop whose look it changes). A prop it only passes on points to the component's Osmoz page, `"See Osmoz/<Component>."`, so a description is written once.
 - A `play` test only for what the wrapper adds over `@osmoz/ui`. The behavior is already tested in the UI stories.
 
-**Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English. The blocks come from `.storybook/blocks/` and are registered in `.storybook/preview.tsx`: never import them. No Markdown table. The sections, in this order:
+**Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English. The blocks come from `.storybook/docs/blocks/` and are registered in `.storybook/preview.tsx`: never import them. No Markdown table. The sections, in this order:
 
 1. **Title and why it exists**, then the canvas of the first story: `Default`, or the first one when there is none.
 2. **Usage**: a `<Guidelines>` block, one `<Guideline when="…">` per situation, its reason or examples as children. The situations that call for this component come first, without `use`. Each situation that calls for another one names it with `use={OtherStories}`, its stories imported, which links to its page. `preview={Stories.<First>}` renders the component the situation calls for.

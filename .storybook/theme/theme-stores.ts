@@ -1,7 +1,7 @@
 import { createThemeStore } from "@osmoz/preferences/theme/create-theme-store";
 import { defineThemeOptions } from "@osmoz/preferences/theme/theme-options";
 
-import { THEME_OPTIONS as FLUX_THEME_OPTIONS } from "../apps/flex-playground/src/theme/theme-options";
+import { THEME_OPTIONS as FLUX_THEME_OPTIONS } from "../../apps/flex-playground/src/theme/theme-options";
 
 const STORAGE_APP = "osmoz-storybook";
 

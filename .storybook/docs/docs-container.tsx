@@ -1,14 +1,14 @@
-import { DocsContainer } from "@storybook/addon-docs/blocks";
+import { DocsContainer as BaseDocsContainer } from "@storybook/addon-docs/blocks";
 import type { DocsContainerProps } from "@storybook/addon-docs/blocks";
 import type { PropsWithChildren, ReactElement } from "react";
 
-import { sectionOf, sectionOfEntry } from "./theme-stores";
-import { ThemeSurface } from "./theme-surface";
+import { sectionOf, sectionOfEntry } from "../theme/theme-stores";
+import { ThemeSurface } from "../theme/theme-surface";
 
-import osmozClasses from "./osmoz-docs-classes.css?inline";
-import "./osmoz-docs-container.css";
+import docsClasses from "./docs-classes.css?inline";
+import "./docs-container.css";
 
-export const OsmozDocsContainer = ({
+export const DocsContainer = ({
   children,
   context,
 }: PropsWithChildren<DocsContainerProps>): ReactElement => {
@@ -22,10 +22,10 @@ export const OsmozDocsContainer = ({
     <ThemeSurface section={section} variant="page">
       {(theme) => (
         <>
-          <style>{osmozClasses}</style>
-          <DocsContainer context={context} theme={theme}>
+          <style>{docsClasses}</style>
+          <BaseDocsContainer context={context} theme={theme}>
             {children}
-          </DocsContainer>
+          </BaseDocsContainer>
         </>
       )}
     </ThemeSurface>

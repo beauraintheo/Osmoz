@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it } from "vite-plus/test";
 
+import { readThemeEvent, restoreThemeEvent, saveThemeEvent } from "./theme-event";
 import type { ThemeEvent } from "./theme-event";
-import { restoreThemeEvent, saveThemeEvent } from "./theme-event-cache";
 
 const KEY = "osmoz-storybook:manager-theme";
 
@@ -27,6 +27,24 @@ const EVENT: ThemeEvent = {
     primary: "#8070f0",
   },
 };
+
+describe("readThemeEvent", () => {
+  it("reads the section and the tokens sent by the preview", () => {
+    expect(readThemeEvent(EVENT)).toEqual(EVENT);
+  });
+
+  it("rejects an unknown section", () => {
+    expect(readThemeEvent({ ...EVENT, section: "unknown" })).toBeUndefined();
+  });
+
+  it("rejects an event without the brand's link", () => {
+    expect(readThemeEvent({ ...EVENT, brandUrl: undefined })).toBeUndefined();
+  });
+
+  it("rejects missing tokens", () => {
+    expect(readThemeEvent({ section: "flux" })).toBeUndefined();
+  });
+});
 
 describe("theme event cache", () => {
   afterEach(() => {

@@ -63,6 +63,27 @@ first use. 🔒 Its folder holds `<component>.stories.tsx` and
 adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 `/document-component` drafts all three.
 
+👀 **An app's component page is generated from its stories**, never written
+in MDX: `.storybook/docs/app-component-page/` renders every page tagged
+`autodocs`, set as `docs.page` in `.storybook/preview.tsx`. It shows, in the
+app's theme:
+
+- a link to the `Osmoz/<Component>` page, found by the same title in the
+  Storybook's `index.json`;
+- a matrix of the options of the `variant` prop, one row each, by its rest
+  state and each story tagged `state`, one column each: every cell renders
+  the story with that variant;
+- the options of the `size` prop, at rest;
+- the story tagged `usage`, with its source;
+- the props of the app's stories that the Osmoz component's stories do not
+  have, in an API table;
+- the `parameters.tokens` of the meta, `{ <token>: "<role>" }`, with the
+  `Tokens` block.
+
+A section without its source is left out. The page's texts are in English,
+in `page-messages.ts`, since a page without MDX has no children to take
+them from.
+
 👀 **Every prop in a story's API table has a description**, in the
 `argTypes` of its meta, never in a code comment. A description says what a
 developer cannot read in the type: when to use the prop, what it changes,
@@ -73,7 +94,13 @@ prop the table misses, because `react-docgen` cannot read its type, gets its
 `argTypes` entry with `table.type.summary`.
 
 The Storybook lives at the root, in `.storybook/`. It shows one section for
-Osmoz and one per app for its look, titled by `.storybook/main.ts`. The
+Osmoz and one per app for its look, titled by `.storybook/main.ts`. Next to `main.ts`, `preview.tsx` and
+`manager.tsx`, which Storybook expects at its root, its code is grouped by
+concern: `theme/` for the section's theme and what the preview sends the
+manager, `manager/` for what only the manager draws, `docs/` for the doc
+page's container, its blocks, its links (`DocsAnchor` in `docs-anchor.tsx`,
+which every link to another doc page uses) and the generated page of an app's
+components. The
 Osmoz section holds its own pages, then the contract of each `@osmoz/ui`
 component, unstyled, at the same level. Osmoz's pages are `.mdx` files without
 stories in `.storybook/pages/`, in English: Introduction, Using a component
@@ -84,46 +111,46 @@ fonts and typography roles, read with `Tokens`), its themes, its UX
 principles and the components it styles. The `storySort` of
 `.storybook/preview.tsx` orders the sections and those pages, so the
 Storybook opens on Introduction. A new page gets its place there. The doc pages can render the components of `@osmoz/brand`:
-`.storybook/osmoz-docs-classes.css` generates their Tailwind classes, and
+`.storybook/docs/docs-classes.css` generates their Tailwind classes, and
 those of `.storybook/pages/`, without Tailwind's preflight. An app's stories set
 `parameters: { app: "<app>", layout: "fullscreen" }`: that `app` names the
 story's section. A doc page without stories takes the section of its id,
-`flux-introduction--docs` (`sectionOfEntry` in `.storybook/theme-stores.ts`).
+`flux-introduction--docs` (`sectionOfEntry` in `.storybook/theme/theme-stores.ts`).
 In an app's section the whole Storybook wears the app's
 theme: the canvas, the doc page, the sidebar and the toolbar. The Osmoz
-section wears the Osmoz theme of `@osmoz/brand`. `.storybook/theme-surface.tsx`
+section wears the Osmoz theme of `@osmoz/brand`. `.storybook/theme/theme-surface.tsx`
 loads the section's `theme.css`, sets its `data-theme`, reads the contract
 tokens where they render and sends them to the manager, which builds
-Storybook's theme from them (`.storybook/docs-theme.ts`): no color is copied
+Storybook's theme from them (`docsTheme` in `.storybook/theme/theme-tokens.ts`): no color is copied
 into `.storybook/`. An app's canvas is painted with its background, so
 Storybook's backgrounds tool is hidden with the other tools of the toolbar
-(`.storybook/hidden-tools.ts`). A new app gets its store in
-`.storybook/theme-stores.ts`, its `theme.css` and font tokens in
-`.storybook/theme-surface.tsx`, and the surface of its stories and doc
+(`.storybook/manager/hidden-tools.ts`). A new app gets its store in
+`.storybook/theme/theme-stores.ts`, its `theme.css` and font tokens in
+`.storybook/theme/theme-surface.tsx`, and the surface of its stories and doc
 blocks in the `STORY_SURFACES` of `.storybook/preview.tsx`.
 
 The sidebar shows the Osmoz mark, named after the section: "Osmoz", or the
 app's name in its monospace font, above "Design system", and links to the
 section's Introduction. The mark is rendered in the preview and sent to the manager as HTML
-(`.storybook/brand-title.ts`): the manager cannot render a JSX component of
+(`.storybook/manager/brand-title.ts`): the manager cannot render a JSX component of
 `@osmoz/brand`. The manager keeps the last theme it received
-(`.storybook/theme-event-cache.ts`) and applies it as it starts, so a reload
-never flashes Storybook's own theme. `.storybook/manager-style.ts` colors
+(`saveThemeEvent` in `.storybook/theme/theme-event.ts`) and applies it as it starts, so a reload
+never flashes Storybook's own theme. `.storybook/manager/manager-style.ts` colors
 with the active theme what no theme variable reaches, by Storybook's own
 markup: the selected sidebar item with the `accent` pair, the panel's tabs
 with `muted-foreground` and `primary`, the toolbar's breadcrumb and theme
 picker. It also sets the sidebar and toolbar spacing of the mockups: 24px
 around and between the sidebar's groups, a 56px toolbar with 40px side
-margins. `.storybook/osmoz-docs-container.css` does the same for the
+margins. `.storybook/docs/docs-container.css` does the same for the
 unselected label of the API table's boolean controls. Check both again on
 every Storybook upgrade.
 
 The toolbar, set by `.storybook/manager.tsx`, shows only the page's
 breadcrumb on the left and the theme picker on the right: every other tool,
-Storybook's or an addon's, is hidden (`.storybook/hidden-tools.ts`). The picker
+Storybook's or an addon's, is hidden (`.storybook/manager/hidden-tools.ts`). The picker
 offers the themes of the section's app and is not a Storybook global:
 changing a global re-renders the whole doc page and Storybook reloads it. Each section
-has its store in `.storybook/theme-stores.ts`, built with `createThemeStore`
+has its store in `.storybook/theme/theme-stores.ts`, built with `createThemeStore`
 of `@osmoz/preferences` and kept under `osmoz-storybook:theme` for Osmoz,
 `osmoz-storybook:<app>:theme` for an app; the preview follows it through
 the storage event. Until a choice is made, it follows the system.
@@ -131,7 +158,7 @@ the storage event. Until a choice is made, it follows the system.
 with the classic JSX transform, without React in scope.
 
 Blocks
-shared by the doc pages live in `.storybook/blocks/`, one folder per block
+shared by the doc pages live in `.storybook/docs/blocks/`, one folder per block
 with its logic and tests, take their texts as props or children, and use only
 the contract tokens. `.storybook/preview.tsx` registers them, so a `.mdx`
 uses them without import:

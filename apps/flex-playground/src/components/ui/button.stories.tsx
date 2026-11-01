@@ -1,4 +1,4 @@
-import { RiArrowRightLine, RiSaveLine } from "@remixicon/react";
+import { RiArrowRightLine, RiFileCopyLine, RiSaveLine } from "@remixicon/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn } from "storybook/test";
 
@@ -41,7 +41,20 @@ const meta = {
     },
   },
   component: Button,
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    app: "flux",
+    layout: "fullscreen",
+    tokens: {
+      "accent-foreground": "Background of a primary action on hover.",
+      card: "Background of a secondary action.",
+      foreground: "Text and icon of a secondary or ghost action.",
+      input: "Border of a secondary action.",
+      muted: "Background of a secondary or ghost action on hover.",
+      primary: "Background and border of a primary action.",
+      "primary-foreground": "Text and icon of a primary action.",
+      ring: "Focus outline.",
+    },
+  },
   tags: ["autodocs"],
   title: "Button",
 } satisfies Meta<typeof Button>;
@@ -93,8 +106,31 @@ export const WithIconAtEnd: Story = {
   ),
 };
 
+const COPY_HTML = "Copy HTML";
+
+export const Usage: Story = {
+  args: { children: "Copy CSS", variant: "primary" },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(2);
+  },
+  render: ({ children, ...args }): ReturnType<typeof Button> => (
+    <div className="flex gap-2">
+      <Button {...args}>
+        <Icon icon={RiFileCopyLine} />
+        {children}
+      </Button>
+      <Button>
+        <Icon icon={RiFileCopyLine} />
+        {COPY_HTML}
+      </Button>
+    </div>
+  ),
+  tags: ["usage"],
+};
+
 export const Disabled: Story = {
   args: { disabled: true },
+  tags: ["state"],
 };
 
 export const Pending: Story = {
@@ -115,4 +151,5 @@ export const Pending: Story = {
       {children}
     </Button>
   ),
+  tags: ["state"],
 };

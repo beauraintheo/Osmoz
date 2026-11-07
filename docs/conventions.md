@@ -34,28 +34,16 @@ element (`<button>`, `<dialog>`). A headless library comes in only where no
 native element fits, chosen with the first component that needs it.
 
 👀 **One folder per `@osmoz/ui` component**, named after it, holding the
-component and, when it has logic beyond wiring, that logic and its tests
-(`button/button.tsx`, `button/button-behavior.ts`).
-The `"./*": "./src/*/*.tsx"` export keeps the import short: `@osmoz/ui/link`.
+component and, when it has logic beyond wiring, that logic and its tests.
 
-👀 **Routing stays out of `@osmoz/ui`.** Its `Link` is a plain anchor. It
-opens a new tab only through its `newTab` prop, which then requires a
-`newTabHint` to announce it. Each app
-styles it, gives the hint its own text, then turns it into a router link with
-TanStack Router's `createLink`, so `to` stays typed against its routes.
+👀 **Routing stays out of `@osmoz/ui`.** Each app turns the shared link into a
+router link, so its targets stay typed against its routes.
 
-👀 **The Osmoz mark lives in `@osmoz/brand`, from the start.** It ships there
-as components that look the same in every app: the symbol and the signature.
-They take their colors from the app's theme (`--osmoz-o`, `--osmoz-cloud` and
-the contract tokens), and their classes use only those tokens and Tailwind's
-default scales, never a token or role of one app. `@osmoz/brand/brand.css`
-declares their `@source`: an app that uses the mark imports it in its
-`theme.css`, right after `@osmoz/theme/base.css`, so its Tailwind generates
-them. It is not
-part of `@osmoz/ui`, and the second-app rule does not apply to it: the mark is
-shared by nature ([brand.md](brand.md)). The mark's source files stay in
-`docs/brand/`, and a file enters the package only when code imports it. An
-image used by one app stays in that app.
+👀 **The Osmoz mark lives in `@osmoz/brand`, from the start.** It looks the
+same in every app and takes its colors from the app's theme, never from a token
+or role of one app. The second-app rule does not apply to it: the mark is
+shared by nature ([brand.md](brand.md)). An image used by one app stays in that
+app.
 
 👀 **Every `@osmoz/ui` component is documented in the Storybook**, from its
 first use. 🔒 Its folder holds `<component>.stories.tsx` and
@@ -64,145 +52,25 @@ adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 `/document-component` drafts all three.
 
 👀 **An app's component page is generated from its stories**, never written
-in MDX: `.storybook/docs/app-component-page/` renders every page tagged
-`autodocs`, set as `docs.page` in `.storybook/preview.tsx`. It shows, in the
-app's theme:
+in MDX.
 
-- a link to the `Osmoz/<Component>` page, found by the same title in the
-  Storybook's `index.json`;
-- a matrix of the options of the `variant` prop, one row each, by its rest
-  state and each story tagged `state`, one column each: every cell renders
-  the story with that variant;
-- the options of the `size` prop, at rest;
-- the story tagged `usage`, with its source;
-- the props of the app's stories that the Osmoz component's stories do not
-  have, in an API table;
-- the `parameters.tokens` of the meta, `{ <token>: "<role>" }`, with the
-  `Tokens` block.
-
-A section without its source is left out. The page's texts are in English,
-in `page-messages.ts`, since a page without MDX has no children to take
-them from.
-
-👀 **Every prop in a story's API table has a description**, in the
-`argTypes` of its meta, never in a code comment. A description says what a
-developer cannot read in the type: when to use the prop, what it changes,
-what it requires. It is written once: an app's story describes what its
-wrapper adds and points to the component's Osmoz page for the rest
-(`"See Osmoz/Button."`). A
-prop the table misses, because `react-docgen` cannot read its type, gets its
-`argTypes` entry with `table.type.summary`.
-
-The Storybook lives at the root, in `.storybook/`. It shows one section for
-Osmoz and one per app for its look, titled by `.storybook/main.ts`. Next to `main.ts`, `preview.tsx` and
-`manager.tsx`, which Storybook expects at its root, its code is grouped by
-concern: `theme/` for the section's theme and what the preview sends the
-manager, `manager/` for what only the manager draws, `docs/` for the doc
-page's container, its blocks, its links (`DocsAnchor` in `docs-anchor.tsx`,
-which every link to another doc page uses) and the generated page of an app's
-components. The
-Osmoz section holds its own pages, then the contract of each `@osmoz/ui`
-component, unstyled, at the same level. Osmoz's pages are `.mdx` files without
-stories in `.storybook/pages/`, in English: Introduction, Using a component
-and Brand.
-Each app's section opens on its own Introduction, `introduction.mdx` next to
-its stories in `components/ui/`: what the app is for, its identity (colors,
-fonts and typography roles, read with `Tokens`), its themes, its UX
-principles and the components it styles. The `storySort` of
-`.storybook/preview.tsx` orders the sections and those pages, so the
-Storybook opens on Introduction. A new page gets its place there. The doc pages can render the components of `@osmoz/brand`:
-`.storybook/docs/docs-classes.css` generates their Tailwind classes, and
-those of `.storybook/pages/`, without Tailwind's preflight. An app's stories set
-`parameters: { app: "<app>", layout: "fullscreen" }`: that `app` names the
-story's section. A doc page without stories takes the section of its id,
-`flux-introduction--docs` (`sectionOfEntry` in `.storybook/theme/theme-stores.ts`).
-In an app's section the whole Storybook wears the app's
-theme: the canvas, the doc page, the sidebar and the toolbar. The Osmoz
-section wears the Osmoz theme of `@osmoz/brand`. `.storybook/theme/theme-surface.tsx`
-loads the section's `theme.css`, sets its `data-theme`, reads the contract
-tokens where they render and sends them to the manager, which builds
-Storybook's theme from them (`docsTheme` in `.storybook/theme/theme-tokens.ts`): no color is copied
-into `.storybook/`. An app's canvas is painted with its background, so
-Storybook's backgrounds tool is hidden with the other tools of the toolbar
-(`.storybook/manager/hidden-tools.ts`). A new app gets its store in
-`.storybook/theme/theme-stores.ts`, its `theme.css` and font tokens in
-`.storybook/theme/theme-surface.tsx`, and the surface of its stories and doc
-blocks in the `STORY_SURFACES` of `.storybook/preview.tsx`.
-
-The sidebar shows the Osmoz mark, named after the section: "Osmoz", or the
-app's name in its monospace font, above "Design system", and links to the
-section's Introduction. The mark is rendered in the preview and sent to the manager as HTML
-(`.storybook/manager/brand-title.ts`): the manager cannot render a JSX component of
-`@osmoz/brand`. The manager keeps the last theme it received
-(`saveThemeEvent` in `.storybook/theme/theme-event.ts`) and applies it as it starts, so a reload
-never flashes Storybook's own theme. `.storybook/manager/manager-style.ts` colors
-with the active theme what no theme variable reaches, by Storybook's own
-markup: the selected sidebar item with the `accent` pair, the panel's tabs
-with `muted-foreground` and `primary`, the toolbar's breadcrumb and theme
-picker. It also sets the sidebar and toolbar spacing of the mockups: 24px
-around and between the sidebar's groups, a 56px toolbar with 40px side
-margins. `.storybook/docs/docs-container.css` does the same for the
-unselected label of the API table's boolean controls. Check both again on
-every Storybook upgrade.
-
-The toolbar, set by `.storybook/manager.tsx`, shows only the page's
-breadcrumb on the left and the theme picker on the right: every other tool,
-Storybook's or an addon's, is hidden (`.storybook/manager/hidden-tools.ts`). The picker
-offers the themes of the section's app and is not a Storybook global:
-changing a global re-renders the whole doc page and Storybook reloads it. Each section
-has its store in `.storybook/theme/theme-stores.ts`, built with `createThemeStore`
-of `@osmoz/preferences` and kept under `osmoz-storybook:theme` for Osmoz,
-`osmoz-storybook:<app>:theme` for an app; the preview follows it through
-the storage event. Until a choice is made, it follows the system.
-`manager.tsx` uses `createElement`, not JSX: Storybook builds the manager
-with the classic JSX transform, without React in scope.
-
-Blocks
-shared by the doc pages live in `.storybook/docs/blocks/`, one folder per block
-with its logic and tests, take their texts as props or children, and use only
-the contract tokens. `.storybook/preview.tsx` registers them, so a `.mdx`
-uses them without import:
-
-| Block                              | Shows                                                                                                                          |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `Guidelines`, `Guideline when="…"` | Each situation and the component it calls for: this one, or `use={OtherStories}` linked to its page; `preview` renders a story |
-| `States`, `State of={…}`           | Each state story, with the attributes read on its rendered element                                                             |
-| `Keyboard`, `Key keys={…}`         | Each key and its effect; `"Shift+Tab"` is a combination                                                                        |
-| `Tokens`, `Token name="…"`         | Each token and its role, with its value read in the doc page's theme, the section's                                            |
-
-A story that needs a layout to show, like a vertical `<hr>` in a row, wraps
-itself in a decorator marked `data-story-layout`: `States` reads the
-attributes of the element inside it.
-
-A block's root has the `sb-unstyled` class, so Storybook's own doc styles
-stay out of it.
-
-> [!WARNING]
-> One Storybook holds one app today. It resolves the `@/` alias and builds
-> with that app's Vite config, and two apps' themes define the same
-> `[data-theme]` names. A second app means one Storybook per app, composed
-> into the root one through Storybook's `refs`.
+👀 **Every prop in a story's API table has a description**, never in a code
+comment. A description says what a developer cannot read in the type: when to
+use the prop, what it changes, what it requires. It is written once: an app's
+story describes what its wrapper adds and points to the component's Osmoz page
+for the rest.
 
 👀 **A shared component gets its text from the app.** A component of
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
 prop, with no default, so each app passes its own wording and language.
 
-👀 **The visitor's preferences live in `@osmoz/preferences`**: one folder per
-preference, `theme/` and `i18n/`, each with its zustand store, and `persist/`
-for what they share: the storage that never throws, the persisted field and
-the sync with other tabs. A new preference gets its folder there and builds
-on `persist/`, never on its own storage code. `@osmoz/theme` holds only the
-design contract, `base.css`.
+👀 **The visitor's preferences live in `@osmoz/preferences`**, one folder per
+preference, never in an app's own storage code. `@osmoz/theme` holds only the
+design contract.
 
-A package exposes `src/` through `exports` patterns in its `package.json`, one
-per kind of file, never a list of files: `"./*": "./src/*.ts"` for code,
-`"./*": "./src/*.tsx"` for components, `"./*": "./src/*/*.tsx"` for
-components in their own folder (`@osmoz/ui`, whose `.ts` logic stays
-internal), `"./*": "./src/*"` for assets, `"./*.json": "./src/*.json"` or
-`"./*.css": "./src/*.css"` next to code for JSON configs or stylesheets. A consumer imports the file it needs: `@osmoz/<package>/<file>`.
-The `*` of a pattern spans folders too: `"./*": "./src/*.ts"` serves
-`@osmoz/preferences/theme/create-theme-store` from
-`src/theme/create-theme-store.ts`.
+👀 **A package exposes `src/` through `exports` patterns**, one per kind of
+file, never a list of files. A consumer imports the file it needs:
+`@osmoz/<package>/<file>`.
 
 ## Naming
 
@@ -270,31 +138,33 @@ import { env } from "@/config/env";
 import { OrderStatusBadge } from "./order-status-badge";
 ```
 
+👀 **In an app, `./` within a folder, `@/` across folders**, never `../`.
+The path then says where the file lives, a layer an import breaks shows in
+it, and moving a file only touches the imports that point to it. Code outside
+an app has no `@/` alias: it keeps relative paths.
+
 🔒 **Type-only imports use `import type`.** 🔒 **No circular dependency.**
 
 ## Ordering
 
 🔒 **Keys and members are sorted alphabetically**: object keys, interface and
 object type members, enum members and JSX props. `pnpm check:fix` sorts
-them for you (eslint-plugin-perfectionist, run by oxlint).
+them for you.
 
 - A blank line starts a new group: each group is sorted on its own, and the
-  groups keep their order. Use it for a real grouping, like the lint rules of
-  `vite.config.ts` by theme, not to escape the rule.
+  groups keep their order. Use it for a real grouping, not to escape the rule.
 - A spread stays where it is: keys are sorted on each side of it.
-- Arrays are never sorted, so an order that matters goes in an array, like
-  the `locales` of `createLocaleStore`.
+- Arrays are never sorted, so an order that matters goes in an array.
 - Union members are not sorted: write them in their natural order
   (`"sm" | "md" | "lg"`, `string | null`).
 
 🔒 **Lines stop at 100 characters**, enforced by the formatter (`printWidth`).
 It never splits a string: a long list of classes may go past it.
 
-🔒 **An object literal with 3 keys or more spans one line per key**, enforced
-by `@stylistic/object-curly-newline` (run by oxlint); `pnpm check:fix` breaks
-it for you. Below 3 keys, an object stays on one line unless it is already
-broken: the formatter keeps an object multi-line when a line break follows its
-opening brace.
+🔒 **An object literal with 3 keys or more spans one line per key**;
+`pnpm check:fix` breaks it for you. Below 3 keys, an object stays on one line
+unless it is already broken: the formatter keeps an object multi-line when a
+line break follows its opening brace.
 
 ## TypeScript
 
@@ -337,7 +207,8 @@ constant map read by its key, or an early return.
 🔒 **No mutation of a parameter**, its properties included. 👀 No mutation of a
 shared variable, no `delete`: build a new value.
 
-🔒 `console.log` is rejected. `console.warn` and `console.error` pass.
+👀 `console.log` is a lint warning: it does not fail `pnpm validate`, so it is
+removed before review. `console.warn` and `console.error` pass.
 
 ## React
 
@@ -359,9 +230,7 @@ syncing with something outside React.
 ## Texts and languages
 
 Every text an app shows comes from its message catalog, so a language can be
-added without touching a component. The `i18n/` folder of
-`@osmoz/preferences` holds the mechanism, each app holds its catalogs in
-`src/i18n/`.
+added without touching a component.
 
 🔒 **No text written in JSX.** A text child, or a string in `aria-label`,
 `aria-description`, `alt`, `title`, `placeholder` or `label`, fails the
@@ -378,29 +247,15 @@ A text built outside JSX, like a string passed to a function, is not caught:
 translation that misses or adds a key, since it is written
 `satisfies typeof <source>`.
 
-- **The source catalog** is the app's default language: `src/i18n/<locale>.ts`
-  exports a plain object named after its locale, nested by screen or feature.
-  A message is a string, or a function when it takes parameters:
-  `itemCount: (count: number): string => …`. Plurals use `Intl.PluralRules`
-  inside that function.
-- **Another language** is one file, `src/i18n/<locale>.ts`, typed
-  `satisfies typeof <source>`, added to the `catalogs` of
-  `src/i18n/use-locale-store.ts` and to its `locales`, which set the order
-  the languages are offered in. Each catalog has a test:
-  `emptyMessages(<catalog>)` is `[]`, so no message is left empty. It checks
-  only string messages: 👀 a message that is a function is checked on review.
-- **The language is a zustand store.** `createLocaleStore` starts on the
-  visitor's stored choice, kept under `<app>:locale` by zustand's `persist`,
-  else on the fallback: the browser's language is not followed. A blocked
-  storage never throws. The store sets `<html lang>`, follows a choice made in
-  another tab, and `setLocale` switches every text at once, without a reload.
-  `index.html` declares the fallback for the first paint.
-- **`createLocaleStore` returns a zustand hook**, which the app exports as
-  `useLocaleStore`. Components read their texts with the app's `useMessages`
-  hook, never from a catalog: `const messages = useMessages()`. It lives in
-  `src/i18n/use-messages.ts`, one line over the store, written in each app
-  rather than shared. A language switcher reads `locales` and `locale` from
-  `useLocaleStore`, and calls `setLocale`.
+- **A message** is a string, or a function when it takes parameters. Plurals
+  use `Intl.PluralRules` inside that function.
+- **Each language** is one file, typed against the source catalog, with a test
+  that no message is left empty. That test checks only string messages: 👀 a
+  message that is a function is checked on review.
+- **The language is the visitor's choice**, remembered per app, else the app's
+  fallback: the browser's language is not followed.
+- **Components read their texts through the app's hook**, never from a
+  catalog.
 - 👀 **Shared components take their texts as props**
   ([Architecture](#architecture)): the app passes them from its catalog.
   Punctuation belongs to the message too: `"(new tab)"`, not `({label})` in
@@ -432,14 +287,8 @@ project may add its own roles on top:
 The mark's tokens color the `@osmoz/brand` components; their values are set
 in [brand.md](brand.md).
 
-👀 **The Tailwind palette is removed.** `@osmoz/theme/base.css` resets
-`--color-*` and maps the contract to utilities, so `bg-primary` exists and
-`bg-blue-500` generates nothing. Every app imports it right after Tailwind:
-
-```css
-@import "tailwindcss";
-@import "@osmoz/theme/base.css";
-```
+👀 **The Tailwind palette is removed.** Only the contract generates color
+utilities, so `bg-primary` exists and `bg-blue-500` generates nothing.
 
 👀 **Sizes use Tailwind's default scales**: spacing, text, radius, shadow,
 breakpoints. An app gives them its identity by changing their values in its
@@ -458,18 +307,13 @@ its field.
 
 👀 **No arbitrary value** in a component: no `p-[13px]`, no `bg-[#fff]`.
 
-🔒 **Tailwind classes are sorted**, in `className`, `class` and `cn(…)`, in
-Tailwind's own order, without extra spaces or duplicates. `pnpm check:fix`
-and format on save do it for you. Each app's classes are sorted against its own
-theme file, so its own tokens sort in place: the root `vite.config.ts` finds
-every app of `apps/` and its `src/theme/theme.css` by itself.
+🔒 **Tailwind classes are sorted**, in Tailwind's own order, without extra
+spaces or duplicates. `pnpm check:fix` and format on save do it for you.
 
 👀 **Colors in OKLCH.** OKLCH keeps contrast predictable when deriving a
 variant.
 
-👀 **One theme file per app, at `src/theme/theme.css`.** The Tailwind class
-sorting reads it there: elsewhere, the app's own tokens sort as unknown
-classes.
+👀 **One theme file per app, at `src/theme/theme.css`.**
 
 ### Themes
 
@@ -484,15 +328,9 @@ A project can ship any number of themes, not only light and dark.
 - 👀 **No `dark:` variant**, nor any per-theme class in a component: a third
   theme would break it. Only tokens change between themes.
 - The default theme follows `prefers-color-scheme`; a manual choice is
-  remembered, per app, under `<app>:theme`.
-- 👀 **Theme logic comes from the `theme/` folder of `@osmoz/preferences`**,
-  never rewritten in an app. The
-  app declares its themes with `defineThemeOptions`, injects
-  `firstPaintScript` through `headScripts` in `vite.config.ts`, creates its
-  store with `createThemeStore`, which returns a zustand hook, and reads it
-  with a selector. The choice is kept under `<app>:theme` by zustand's
-  `persist`; the first-paint script reads that same entry before any
-  JavaScript of the app. Each app builds its own switcher on top.
+  remembered, per app.
+- 👀 **Theme logic comes from `@osmoz/preferences`**, never rewritten in an
+  app. Each app builds its own switcher on top.
 - Every theme meets the accessibility rules below on its own.
 
 ```css
@@ -537,22 +375,16 @@ a logical order, and a dialog traps and restores focus.
 `.ts` files of each workspace's `src/`. Each workspace checks its own threshold.
 
 👀 **Every `.ts` file has its test file**: `x.test.ts` sits next to `x.ts`.
-Exceptions: `*.test.ts`, `*.d.ts`, `*.config.ts`, `.storybook/main.ts`
-(Storybook's config) and generated code (`*.gen.ts`).
+Exceptions: `*.test.ts`, `*.d.ts`, tool configs and generated code (`*.gen.ts`).
 
 👀 **`.tsx` files get no unit test.** They render: logic worth testing moves to
 a `.ts` file next to them.
 
 🔒 **Components are tested by their stories.** Each story of
 `*.stories.tsx` is a test: its `play` function checks the behavior, never a
-class. `pnpm test:stories` runs them in Chromium and holds the `.tsx` of
-`@osmoz/ui` and of every `components/ui/` at 100% coverage, without the React
-Compiler, which adds branches no render can take. An uncovered branch is a
-missing story. The same run holds the `.ts` files of `.storybook/` at 100%,
-with their `.test.ts` next to them, in Chromium too. Other `.tsx` files will be covered by end-to-end tests.
-A package first imported by `.storybook/` goes in the `optimizeDeps.include`
-of `vitest.config.ts`: otherwise Vite finds it mid-run, reloads the browser,
-and a test times out on CI, which starts without its cache.
+class. They hold the `.tsx` of `@osmoz/ui` and of every `components/ui/` at 100%
+coverage: an uncovered branch is a missing story. Other `.tsx` files will be
+covered by end-to-end tests.
 
 👀 **Every bug fix starts with a failing test.**
 
@@ -652,17 +484,15 @@ actually run.
 
 ### Release
 
-Each app has its own SemVer version, tags, changelog and GitHub Releases. The
-shared packages `brand`, `config`, `preferences`, `theme` and `ui` are versioned the same way; the root and
-`scripts` are not. Nothing is released by hand: release-please computes it
-from the commits on `main` (`.github/workflows/release.yml`,
-`release-please-config.json`).
+Each app and shared package has its own SemVer version, tags, changelog and
+GitHub Releases; the root and `@osmoz/scripts` do not. Nothing is released by
+hand: release-please computes it from the commits on `main`.
 
 1. Every squash merge into `main` updates a **release pull request** per
-   workspace it touches, like `chore(main): release flex-playground 0.2.0`. It
-   holds the new version and the `CHANGELOG.md`.
-2. Merging it, squash like any other pull request, releases the workspace: tag
-   `flex-playground-v0.2.0` and a GitHub Release with its changelog.
+   workspace it touches, like `chore(main): release <app> 0.2.0`. It holds the
+   new version and the `CHANGELOG.md`.
+2. Merging it, squash like any other pull request, releases the workspace: a
+   tag `<app>-v0.2.0` and a GitHub Release with its changelog.
 
 The type of the pull request title, which becomes the squash commit, sets the
 bump:
@@ -674,15 +504,12 @@ bump:
 | `!` or `BREAKING CHANGE:`     | minor       | major        |
 | `chore`, `ci`, `docs`, others | none        | none         |
 
-- A release of `brand`, `config`, `preferences`, `theme` or `ui` bumps every app that depends on it with a
+- A release of a shared package bumps every app that depends on it with a
   patch. When the change is a feature of the app, the pull request touches the
   app too, and its `feat` title bumps the app with a minor.
 - 👀 To force a version, like `1.0.0`, add a `Release-As: 1.0.0` footer to the
   squash commit. It only applies to the workspaces the commit touches, and only
   to a commit that releases (`feat`, `fix`, `perf`, `revert` or breaking).
-- Release pull requests are opened by the repository's GitHub App, so the
-  `validate` check runs on them. It reads the `RELEASE_APP_CLIENT_ID` variable
-  and the `RELEASE_APP_PRIVATE_KEY` secret.
 
 ## Tickets
 
@@ -746,6 +573,7 @@ reviewer:
   styles it has its stories; a story's `play` checks behavior, never a class.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
+- In an app, `./` within a folder and `@/` across folders, never `../`.
 - Every `.ts` file has its `.test.ts`; every bug fix has a failing test first.
 - No test deleted, skipped or weakened to go green.
 - No `memo`, `useMemo`, `useCallback` without a measurement.

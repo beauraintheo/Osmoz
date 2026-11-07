@@ -36,8 +36,7 @@ pnpm dev
 | `pnpm storybook`       | The components' Storybook, on http://127.0.0.1:6006                     |
 | `pnpm storybook:build` | The Storybook's static build, in `storybook-static/`                    |
 
-`[app]` is a folder name of `apps/`, like `pnpm build flex-playground`. An
-unknown name fails and lists the apps.
+`[app]` is a folder name of `apps/`. An unknown name fails and lists the apps.
 
 - Without an app, `validate` covers the whole monorepo.
 - With an app, it covers the app **and the shared packages it depends on**:
@@ -263,16 +262,12 @@ export const Button = ({ className, ...props }: ButtonProps): ReactElement => (
    the branch. The merge publishes the Storybook.
 
 Every pull request runs `pnpm validate`, then `pnpm storybook:build`, in
-GitHub Actions (`.github/workflows/validate.yml`), with the Node version of `.node-version`
-and the pnpm version of `package.json`. The `main` ruleset requires its
-`validate` check on a branch up to date with `main`: a red check, or a branch
-behind `main`, blocks the merge.
+GitHub Actions. The `main` ruleset requires its `validate` check on a branch up
+to date with `main`: a red check, or a branch behind `main`, blocks the merge.
 
-Every merge into `main` builds the Storybook and publishes it on GitHub Pages
-(`.github/workflows/storybook.yml`), at
+Every merge into `main` publishes the Storybook on GitHub Pages, at
 [beauraintheo.github.io/Osmoz](https://beauraintheo.github.io/Osmoz/). A pull
-request publishes nothing. To republish without a merge, run the workflow by
-hand from the Actions tab, on `main`.
+request publishes nothing.
 
 > [!IMPORTANT]
 > Never disable a rule, skip a test, lower a threshold or use `--no-verify` to
@@ -282,28 +277,12 @@ hand from the Actions tab, on `main`.
 
 - **`pnpm check` proves little.** It formats and lints, but runs no typecheck and
   no tests. Only `pnpm validate` tells you the work is done.
-- **Coverage is 100%, not "high".** One uncovered branch fails `pnpm validate`.
-- **`console.log`, `any`, `as` casts, `!` and default exports are rejected** by
-  the linter. `console.warn` and `console.error` pass.
-- **Function declarations are rejected.** Write `const f = (): T => …`.
-- **Text written in JSX is rejected**, `aria-label` included. It comes from the
-  app's catalog, read with the app's `useMessages`: `{messages.app.name}`.
 - **`pnpm check:fix` reorders your imports, your Tailwind classes, and your
   keys and props** ([conventions.md](conventions.md#ordering)).
-  That is expected; a blank line keeps a group apart. In VS Code, saving a file does the same: install the recommended
-  Oxc extension, which runs Vite+'s formatter and linter with the root
-  `vite.config.ts`. After changing that config, run **Oxc: Restart oxfmt
-  Server**.
-- **`.ts` files have unit tests, `.tsx` components have stories.** The `.tsx`
-  of `@osmoz/ui` and of each app's `components/ui/` reach 100% coverage
-  through their stories' interaction tests. Those run without the React
-  Compiler, whose memoization adds branches no render can take. Other `.tsx`
-  files, like routes, are not covered yet.
+  That is expected; a blank line keeps a group apart. In VS Code, saving a file
+  does the same: install the recommended Oxc extension.
 - **Stories run in a real Chromium.** The first time, run
   `pnpm exec playwright install chromium-headless-shell`.
-- **`@osmoz/config` imports its own files with the `.ts` extension.** Node
-  loads it as is when Vite reads an app's `vite.config.ts`, and Node requires
-  the extension.
 
 ## 7. Next
 

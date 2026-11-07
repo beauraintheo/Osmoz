@@ -101,6 +101,7 @@ desktop, and the theme and the language are in the help dialog's settings.
 ### Initial state
 
 - 3 items, every property at its browser default, axes visible.
+- The container is 600 × 300 px.
 - On a later visit, the last state is restored.
 
 ### Container
@@ -113,8 +114,8 @@ desktop, and the theme and the language are in the help dialog's settings.
 | `justify-content` | `normal`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `start`, `end` | `normal` |
 | `align-items`     | `normal`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline`, `start`, `end`                           | `normal` |
 | `align-content`   | `normal`, `flex-start`, `flex-end`, `center`, `space-between`, `space-around`, `space-evenly`, `stretch`      | `normal` |
-| `row-gap`         | length, 0 to 48 px (proposed)                                                                                 | `0`      |
-| `column-gap`      | length, 0 to 48 px (proposed)                                                                                 | `0`      |
+| `row-gap`         | 0 to 48 px                                                                                                    | `0`      |
+| `column-gap`      | 0 to 48 px                                                                                                    | `0`      |
 
 `normal` is the browser's real default: it behaves as `flex-start` for
 `justify-content` and as `stretch` for the two others. It is listed so the
@@ -127,26 +128,28 @@ to reproduce wrapping and shrinking. Width 120 to 1200 px, height 80 to
 
 ### Items
 
-- Add, duplicate and remove items. With no item, the canvas says how to add
-  one.
+- Add, duplicate and remove items. A duplicate is inserted right after its
+  source. With no item, the canvas says how to add one.
 - Select an item by clicking it or with the keyboard, then edit it in the
   _Item_ tab.
-- 1 to 12 items (proposed). Item ids are never reused within a session.
+- 0 to 12 items. Item ids are never reused, even after an undo or after the
+  saved state is restored.
 
-| Property      | Values                                                            | Default |
-| ------------- | ----------------------------------------------------------------- | ------- |
-| `order`       | integer, -99 to 99 (proposed)                                     | `0`     |
-| `flex-grow`   | number ≥ 0, up to 99 (proposed)                                   | `0`     |
-| `flex-shrink` | number ≥ 0, up to 99 (proposed)                                   | `1`     |
-| `flex-basis`  | `auto`, `content`, length or percentage                           | `auto`  |
-| `align-self`  | `auto`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline` | `auto`  |
-| `width`       | `auto`, length                                                    | `auto`  |
-| `height`      | `auto`, length                                                    | `auto`  |
-| Content       | text, to test content sizing, 0 to 40 characters (proposed)       | empty   |
-| Font size     | length, to test `baseline` alignment                              | inherit |
+| Property      | Values                                                            | Default   |
+| ------------- | ----------------------------------------------------------------- | --------- |
+| `order`       | integer, -99 to 99                                                | `0`       |
+| `flex-grow`   | number, 0 to 99, to one decimal                                   | `0`       |
+| `flex-shrink` | number, 0 to 99, to one decimal                                   | `1`       |
+| `flex-basis`  | `auto`, `content`, length or percentage                           | `auto`    |
+| `align-self`  | `auto`, `stretch`, `flex-start`, `flex-end`, `center`, `baseline` | `auto`    |
+| `width`       | `auto`, length                                                    | `auto`    |
+| `height`      | `auto`, length                                                    | `auto`    |
+| Content       | text, to test content sizing, 0 to 40 characters                  | empty     |
+| Font size     | `inherit`, or 8 to 48 px, to test `baseline` alignment            | `inherit` |
 
-A length is a number followed by `px`, `%`, `rem`, `em`, `ch`, `vw` or `vh`,
-or `0`. Keywords are matched after trimming.
+A length is a number of 0 or more, decimals allowed, followed without a space
+by `px`, `%`, `rem`, `em`, `ch`, `vw` or `vh`, or `0`. Spaces around the
+value are trimmed, and keywords match whatever their case.
 
 Each item shows its index, so `order` and `*-reverse` are readable.
 
@@ -282,6 +285,7 @@ Motion shows what a value does; it never delays the result.
 | Invalid `flex-basis`, `width`, `height`        | Field marked invalid; canvas and code keep the last valid value; a message says what to type |
 | Field left invalid, then another item selected | The invalid text is dropped; the field shows the last valid value                            |
 | Stepper at its bound                           | The button past the bound is disabled                                                        |
+| Number typed out of range                      | Clamped to the nearest bound                                                                 |
 | Container size typed out of range              | Clamped to the bound when the field loses focus                                              |
 | Items bigger than the container                | They overflow the dashed frame, as in CSS; nothing is clipped                                |
 | Last item removed                              | Empty state with an add button; the code keeps `.container` alone                            |
@@ -351,9 +355,6 @@ the target. Scoped when Docs ships.
 
 ## Open questions
 
-- Bounds marked proposed: 12 items, `order` ±99, grow and shrink up to 99,
-  gaps up to 48 px, 40-character content.
-- Should `flex-grow` and `flex-shrink` accept decimals?
 - Values beyond the lists above: `left`, `right`, `safe`, `unsafe`,
   `first baseline`, `last baseline`, `self-start`, `self-end`; `min-content`,
   `max-content`, `fit-content` for sizes.

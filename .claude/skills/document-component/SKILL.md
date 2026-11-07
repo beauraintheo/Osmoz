@@ -18,7 +18,7 @@ Never run a git command that changes state.
 
 1. `packages/ui/src/<component>/<component>.tsx` must exist. If not, stop and say so.
 2. Find every app that wraps it: `apps/*/src/components/ui/<component>.tsx`.
-3. Each of those apps must be in `.storybook/main.ts` (its `stories`) and `.storybook/preview.tsx` (`STORY_SURFACES`), with its store in `.storybook/theme/theme-stores.ts` and its look in `.storybook/theme/theme-surface.tsx`. If one is missing, stop and say so: adding a second app raises the theme and `@/` alias collision documented in `docs/conventions.md`, and that choice is the user's.
+3. Each of those apps must be in `.storybook/main.ts` (its `stories`) and `.storybook/preview.tsx` (`STORY_SURFACES`), with its store in `.storybook/theme/theme-stores.ts` and its look in `.storybook/theme/theme-surface.tsx`. If one is missing, stop and say so: one Storybook holds one app today, because it resolves the `@/` alias with that app's Vite config and two apps' themes define the same `[data-theme]` names, and that choice is the user's.
 
 ## 2. Read what the component does
 

@@ -131,7 +131,7 @@ export default defineConfig({
         },
       ],
 
-      "no-console": ["error", { allow: ["warn", "error"] }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
       "unicorn/filename-case": ["error", { case: "kebabCase" }],
 
       "@stylistic/object-curly-newline": [

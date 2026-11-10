@@ -7,9 +7,9 @@ and why is in [spec.md](spec.md).
 
 - Fontsource (Geist, Geist Mono): bundles the fonts with the app, no
   third-party request.
-- Zod (planned): validates the layout state at its boundaries (browser
-  storage, and URLs from the Docs milestone). Added to the catalog by the first ticket that
-  needs it.
+- Zod: validates the layout state at its boundaries (browser storage, and
+  URLs from the Docs milestone). Its schema is derived from the property
+  descriptions of `domain/`, never written next to them.
 - `@osmoz/brand`: the Osmoz mark, for the signature; its O takes Flux's
   accent through `--osmoz-o` (docs/brand.md). `theme.css` imports
   `@osmoz/brand/brand.css` so Tailwind generates its classes.
@@ -32,8 +32,14 @@ src/
   routes/       TanStack Router file routes; thin, they only compose features
   features/     one folder per mode, its UI and logic: playground/, docs/,
                 exercises/
-  domain/       Flexbox knowledge shared by every mode: property descriptions,
-                layout state, CSS and HTML generation; plain TypeScript
+  domain/       Flexbox knowledge shared by every mode; plain TypeScript
+    length/          parsing and normalizing a typed length
+    property-kinds/  one helper per kind of property (keyword, number,
+                     length, number or keyword, text) and the number range
+                     they share; knows nothing of Flexbox
+    properties/      the Flexbox properties, built with those kinds: the
+                     container and item lists, their MDN links
+    layout/          the layout state, its schema and its transitions
   components/   shared UI with no domain knowledge, built from components/ui:
                 header, language and theme toggles
     ui/         Flux's design system: one styled version per @osmoz/ui
@@ -76,23 +82,31 @@ file.
 
 ## Where a file goes
 
-| Kind of file                 | Folder                | Example                   |
-| ---------------------------- | --------------------- | ------------------------- |
-| Page                         | `routes/`             | `home.tsx`                |
-| Mode component               | `features/<feature>/` | `flex-container-view.tsx` |
-| Mode logic or state          | `features/<feature>/` | `use-history.ts`          |
-| Property descriptions        | `domain/`             | `container-properties.ts` |
-| Layout state and its schema  | `domain/`             | `layout-state.ts`         |
-| Code generation              | `domain/`             | `to-css.ts`               |
-| Styled `@osmoz/ui` component | `components/ui/`      | `button.tsx`              |
-| Other shared UI component    | `components/`         | `lang-toggle.tsx`         |
-| Pure utility                 | `lib/`                | `cn.ts`                   |
-| Message catalog              | `i18n/`               | `fr.ts`                   |
+| Kind of file                 | Folder                   | Example                   |
+| ---------------------------- | ------------------------ | ------------------------- |
+| Page                         | `routes/`                | `home.tsx`                |
+| Mode component               | `features/<feature>/`    | `flex-container-view.tsx` |
+| Mode logic or state          | `features/<feature>/`    | `use-history.ts`          |
+| Length parsing               | `domain/length/`         | `parse-length.ts`         |
+| Kind of property             | `domain/property-kinds/` | `keyword-property.ts`     |
+| Property descriptions        | `domain/properties/`     | `container-properties.ts` |
+| Layout state and its schema  | `domain/layout/`         | `layout-state.ts`         |
+| Code generation              | `domain/`                | `to-css.ts`               |
+| Styled `@osmoz/ui` component | `components/ui/`         | `button.tsx`              |
+| Other shared UI component    | `components/`            | `lang-toggle.tsx`         |
+| Pure utility                 | `lib/`                   | `cn.ts`                   |
+| Message catalog              | `i18n/`                  | `fr.ts`                   |
 
-Properties are described in lists, one file per target (container, item). A
-property gets a file of its own only when it has logic of its own
-(`parse-flex-basis.ts`). Explanation texts are i18n messages, not domain
-data.
+Properties are described in lists, one file per target (container, item).
+Each entry is built by the helper of its kind (`keywordProperty`,
+`numberProperty`, `lengthProperty`, `numberOrKeywordProperty`,
+`textProperty`), which returns the property's Zod schema
+with its description attached, so `z.object` takes a list as it is. A kind
+gets its helper only when a property needs it. `property-kinds/` imports
+only Zod and `length/`; anything that names a Flexbox property goes in
+`properties/`. Explanation texts are i18n
+messages, not domain data. MDN links are derived from the property's name
+(`mdn-url.ts`), not stored.
 
 ## Theme
 

@@ -4,16 +4,25 @@ import { expect } from "storybook/test";
 import { Spinner } from "./spinner";
 
 const meta = {
+  args: { size: "default" },
   argTypes: {
     label: {
       control: "text",
       description: "Visually hidden. See Osmoz/Spinner.",
       table: { type: { summary: "ReactNode" } },
     },
-    size: { description: "The sizes of Flux/Icon, so the spinner can take an icon's place." },
+    size: {
+      control: "select",
+      description: "The sizes of Flux/Icon, so the spinner can take an icon's place.",
+    },
   },
   component: Spinner,
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    actions: { disable: true },
+    app: "flux",
+    controls: { disable: true },
+    layout: "fullscreen",
+  },
   tags: ["autodocs"],
   title: "Spinner",
 } satisfies Meta<typeof Spinner>;
@@ -22,7 +31,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Small: Story = {
   args: { size: "sm" },
@@ -31,8 +42,6 @@ export const Small: Story = {
 export const WithLabel: Story = {
   args: { label: "Loading" },
   play: async ({ canvas }): Promise<void> => {
-    const status = canvas.getByRole("status");
-
-    await expect(status.querySelector(".sr-only")).toHaveTextContent("Loading");
+    await expect(canvas.getByRole("status")).toHaveTextContent("Loading");
   },
 };

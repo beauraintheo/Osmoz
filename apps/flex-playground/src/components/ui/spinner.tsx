@@ -20,13 +20,7 @@ export const Spinner = ({
   <BaseSpinner
     {...props}
     className={cn("inline-flex items-center", className)}
-    icon={
-      <Icon
-        className="group-aria-busy/button:inline motion-safe:animate-spin"
-        icon={RiLoader4Line}
-        size={size}
-      />
-    }
+    icon={<Icon className="motion-safe:animate-spin" icon={RiLoader4Line} size={size} />}
     label={label === undefined ? undefined : <span className="sr-only">{label}</span>}
   />
 );

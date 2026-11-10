@@ -18,6 +18,7 @@ const meta = {
     ),
     label: "Undo",
     onClick: fn(),
+    type: "button",
   },
   argTypes: {
     disabled: {
@@ -32,7 +33,7 @@ const meta = {
     },
     icon: {
       control: false,
-      description: "The icon element, hidden from assistive technologies.",
+      description: "The icon element, a decorative `Icon` from the app. Never part of the name.",
     },
     label: {
       description: "The accessible name, read instead of the icon. From the app's catalog.",
@@ -44,13 +45,14 @@ const meta = {
       table: { type: { summary: "boolean" } },
     },
     type: {
-      control: "inline-radio",
+      control: "select",
       description: "See Button.",
       options: ["button", "submit", "reset"],
       table: { type: { summary: '"button" | "submit" | "reset"' } },
     },
   },
   component: IconButton,
+  parameters: { actions: { disable: true }, controls: { disable: true } },
   title: "IconButton",
 } satisfies Meta<typeof IconButton>;
 
@@ -59,11 +61,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ args, canvas, userEvent }): Promise<void> => {
     const button = canvas.getByRole("button", { name: "Undo" });
 
-    await expect(button).toHaveAttribute("aria-label", "Undo");
-    await expect(button.querySelector("[aria-hidden='true'] svg")).not.toBeNull();
+    await expect(button).toHaveAccessibleName("Undo");
 
     await userEvent.tab();
     await expect(button).toHaveFocus();
@@ -82,6 +84,7 @@ export const Disabled: Story = {
     await userEvent.tab();
     await expect(button).not.toHaveFocus();
   },
+  tags: ["!dev"],
 };
 
 export const Pending: Story = {
@@ -98,4 +101,5 @@ export const Pending: Story = {
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
   },
+  tags: ["!dev"],
 };

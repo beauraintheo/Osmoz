@@ -4,7 +4,7 @@ import { expect } from "storybook/test";
 import { Link } from "./link.tsx";
 
 const meta = {
-  args: { children: "Read the docs", href: "/docs" },
+  args: { children: "Read the docs", href: "#" },
   argTypes: {
     children: { description: "The link text, from the app's catalog." },
     href: { description: "The destination: a URL, or a path of the site." },
@@ -21,6 +21,7 @@ const meta = {
     },
   },
   component: Link,
+  parameters: { actions: { disable: true }, controls: { disable: true } },
   title: "Link",
 } satisfies Meta<typeof Link>;
 
@@ -29,10 +30,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ canvas, userEvent }): Promise<void> => {
     const link = canvas.getByRole("link", { name: "Read the docs" });
 
-    await expect(link).toHaveAttribute("href", "/docs");
+    await expect(link).toHaveAttribute("href", "#");
     await expect(link).not.toHaveAttribute("target");
 
     await userEvent.tab();
@@ -47,4 +49,5 @@ export const NewTab: Story = {
 
     await expect(link).toHaveAttribute("target", "_blank");
   },
+  tags: ["!dev"],
 };

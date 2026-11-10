@@ -152,12 +152,14 @@ div:has(> div > .sidebar-header) {
   color: ${tokens.accentForeground} !important;
 }
 
-.sidebar-item[data-selected="true"] [data-testid="context-menu"] {
+.sidebar-item[data-selected="true"] [data-testid="context-menu"],
+.sidebar-item[data-selected="true"] [data-testid="tree-change-status-button"] {
   background: ${tokens.accent} !important;
   color: ${tokens.mutedForeground} !important;
 }
 
-.sidebar-item [data-testid="context-menu"] svg {
+.sidebar-item [data-testid="context-menu"] svg,
+.sidebar-item [data-testid="tree-change-status-button"] svg {
   color: inherit !important;
 }
 
@@ -165,12 +167,15 @@ div:has(> div > .sidebar-header) {
   font-weight: 600;
 }
 
-.sidebar-item [data-testid="context-menu"] {
+.sidebar-item [data-testid="context-menu"],
+.sidebar-item [data-testid="tree-change-status-button"] {
   border-radius: 6px;
   box-shadow: none !important;
+  color: ${tokens.mutedForeground} !important;
 }
 
-.sidebar-item [data-testid="context-menu"]:hover {
+.sidebar-item [data-testid="context-menu"]:hover,
+.sidebar-item [data-testid="tree-change-status-button"]:hover {
   background: ${tokens.muted} !important;
   color: ${tokens.foreground} !important;
 }

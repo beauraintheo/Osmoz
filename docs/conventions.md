@@ -29,9 +29,12 @@ own `components/ui/`, by wrapping the `@osmoz/ui` component with its classes, so
 apps with different identities share the same behavior. A component goes to
 `@osmoz/ui` from its first use: the second-app rule above does not apply to it.
 
-👀 **Native elements first.** An `@osmoz/ui` component builds on the native
-element (`<button>`, `<dialog>`). A headless library comes in only where no
-native element fits, chosen with the first component that needs it.
+👀 **Base UI first, native otherwise.** An `@osmoz/ui` component wraps the
+[Base UI](https://base-ui.com) component that matches it, which brings its
+keyboard, focus and ARIA behavior. Where Base UI has none, it builds on the
+native element. `@osmoz/ui` adds only what the apps need on top, and keeps its
+own API: it does not expose Base UI's `render` prop, nor a `className` or
+`style` that is a function of the state, until a component needs one.
 
 👀 **One folder per `@osmoz/ui` component**, named after it, holding the
 component and, when it has logic beyond wiring, that logic and its tests.
@@ -59,6 +62,16 @@ comment. A description says what a developer cannot read in the type: when to
 use the prop, what it changes, what it requires. It is written once: an app's
 story describes what its wrapper adds and points to the component's Osmoz page
 for the rest.
+
+👀 **Only a component's first story is interactive.** It is named `Default`,
+in `@osmoz/ui` and in every app, and shows the component with its default
+props. Its controls and actions are enabled; every other story disables them,
+since it shows one fixed state.
+
+👀 **A state story of `@osmoz/ui` stays out of the sidebar** (`tags: ["!dev"]`).
+Without style, a state looks like the default: its story still runs its
+`play` test and shows on the doc page, where its attributes are read. An app's
+state stories stay in the sidebar, since its classes make each state visible.
 
 👀 **A shared component gets its text from the app.** A component of
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
@@ -393,6 +406,18 @@ covered by end-to-end tests.
 👀 **Never delete, weaken or skip a failing test, or lower a threshold, to make
 `validate` pass.**
 
+## Documentation
+
+👀 **Docs hold rules, never cases.** A page of `docs/`, a `CLAUDE.md`, a skill
+or a Storybook page states what holds for every component, app or ticket. It
+never lists components, records a ticket's progress, nor copies code or
+tokens that live in the source: it points to the source instead. A rule added
+to one of them is written the same way. A change that only adds a component,
+a token or a ticket's step never touches them.
+
+The one exception is a component's own doc page, which describes that
+component alone.
+
 ## Comments
 
 👀 **No noise comments.** A comment that paraphrases the code, labels a section
@@ -563,7 +588,7 @@ reviewer:
 - Code used by one app stays in it; shared code moves to `packages/*` on the
   second use, not before.
 - Interface components: behavior without classes in `@osmoz/ui`, classes in the
-  app's `components/ui/`; native elements before a headless library; one folder
+  app's `components/ui/`; Base UI first, native elements otherwise; one folder
   per `@osmoz/ui` component.
 - The Osmoz mark in `@osmoz/brand`, colored by the app's `--osmoz-o` and
   `--osmoz-cloud`; no router in `@osmoz/ui`.
@@ -571,6 +596,8 @@ reviewer:
   app passes it as props, without defaults.
 - Every `@osmoz/ui` component has its stories and doc page, and every app that
   styles it has its stories; a story's `play` checks behavior, never a class.
+- Only the first story is interactive; the state stories of `@osmoz/ui` stay
+  out of the sidebar.
 - One concern per file, named after its main export, no category suffix.
 - No re-export file: import from the defining file.
 - In an app, `./` within a folder and `@/` across folders, never `../`.
@@ -583,4 +610,6 @@ reviewer:
 - WCAG 2.2 AA: contrast, visible focus, opt-in motion, 24px targets, semantic
   HTML, labels and `alt`, keyboard access.
 - No noise comments.
+- Docs hold rules, never cases: no list of components, no ticket progress, no
+  copy of the source.
 - English commit subjects and PR titles, French PR descriptions and tickets.

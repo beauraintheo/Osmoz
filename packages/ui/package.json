@@ -12,6 +12,9 @@
     "test:coverage": "vp test run --coverage",
     "validate": "vp run check-types && vp run test:coverage"
   },
+  "dependencies": {
+    "@base-ui/react": "catalog:"
+  },
   "devDependencies": {
     "@osmoz/config": "workspace:*",
     "@testing-library/dom": "catalog:",

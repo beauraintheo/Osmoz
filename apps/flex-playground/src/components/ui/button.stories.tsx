@@ -6,7 +6,13 @@ import { Button } from "./button";
 import { Icon } from "./icon";
 
 const meta = {
-  args: { children: "Save", onClick: fn() },
+  args: {
+    children: "Save",
+    onClick: fn(),
+    size: "default",
+    type: "button",
+    variant: "secondary",
+  },
   argTypes: {
     children: { description: "See Osmoz/Button." },
     disabled: {
@@ -26,23 +32,27 @@ const meta = {
       table: { type: { summary: "boolean" } },
     },
     size: {
+      control: "select",
       description:
         "`sm` for dense toolbars. Both sizes grow on a coarse pointer, to stay touchable.",
     },
     type: {
-      control: "inline-radio",
+      control: "select",
       description: "See Osmoz/Button.",
       options: ["button", "submit", "reset"],
       table: { type: { summary: '"button" | "submit" | "reset"' } },
     },
     variant: {
+      control: "select",
       description:
         "`primary` for the main action of a view, `secondary` for the others, `ghost` for a quiet action in a toolbar.",
     },
   },
   component: Button,
   parameters: {
+    actions: { disable: true },
     app: "flux",
+    controls: { disable: true },
     layout: "fullscreen",
     tokens: {
       "accent-foreground": "Background of a primary action on hover.",
@@ -63,7 +73,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Secondary: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Primary: Story = {
   args: { variant: "primary" },
@@ -130,6 +142,11 @@ export const Usage: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+  tags: ["state"],
+};
+
+export const FocusableWhenDisabled: Story = {
+  args: { disabled: true, focusableWhenDisabled: true },
   tags: ["state"],
 };
 

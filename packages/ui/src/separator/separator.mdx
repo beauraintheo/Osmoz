@@ -6,10 +6,10 @@ import * as SeparatorStories from "./separator.stories";
 
 # Separator
 
-A native `<hr>` that separates two groups of content. It is announced as a
-separator, or hidden from assistive technologies when it is only decorative,
-and it exposes its orientation as `aria-orientation` and `data-orientation`
-so each app can draw it horizontal or vertical.
+Base UI's [Separator](https://base-ui.com/react/components/separator), a
+`<div role="separator">` that separates two groups of content. It exposes its
+orientation as `aria-orientation` and `data-orientation` so each app can draw
+it horizontal or vertical.
 
 <Canvas of={SeparatorStories.Default} />
 
@@ -20,7 +20,7 @@ so each app can draw it horizontal or vertical.
     Horizontal.
   </Guideline>
   <Guideline preview={SeparatorStories.Vertical} when="Between two groups of controls in a bar.">
-    Vertical, and `decorative` when the layout already groups them, like Flux's top bar.
+    Vertical, with `aria-hidden` when the layout already groups them.
   </Guideline>
 </Guidelines>
 
@@ -34,15 +34,12 @@ Not every separation needs one:
 ## States
 
 Each card renders its story and lists the attributes read on the rendered
-`<hr>`.
+`<div>`. The line is drawn by the story only: the component has no style.
 
 <States>
   <State of={SeparatorStories.Default}>Horizontal. Announced as a separator.</State>
   <State of={SeparatorStories.Vertical}>
     `orientation="vertical"`. Announced as a vertical separator.
-  </State>
-  <State of={SeparatorStories.Decorative}>
-    `decorative`, any `orientation`. Skipped by screen readers.
   </State>
 </States>
 
@@ -52,18 +49,17 @@ None: the separator is never focusable.
 
 ## Accessibility
 
-- The role is the native `separator` of `<hr>`, so no ARIA role is added.
-- `aria-orientation` is always set, since `<hr>` is horizontal by default and
-  a vertical one must say so.
-- `decorative` sets `role="none"`: screen readers skip it. Use it when the
-  layout already shows the grouping, so the separator adds nothing to hear.
-- `role` and `children` are not props: the role follows `decorative`, and
-  `<hr>` has no content.
+- Base UI sets `role="separator"` and `aria-orientation`, so a vertical
+  separator is announced as such.
+- A purely visual line, when the layout already shows the grouping, takes
+  `aria-hidden`: screen readers skip it.
+- `role` and `children` are not props: Base UI sets the role, and a separator
+  has no content.
 
 ## API
 
-The props of a native `<hr>`, minus `children` and `role`, plus `decorative`
-and `orientation`:
+The props of Base UI's Separator, minus `children`, `role` and `render`.
+`className` and `style` take a value, not a function of the state:
 
 <Controls of={SeparatorStories.Default} />
 
@@ -74,9 +70,9 @@ The component has no class. Each app, in its own
 
 - gives it its line color, like `border-border`: without it, the line takes
   `currentColor`;
-- draws the vertical orientation from its `orientation` prop. Tailwind's
-  preflight gives `<hr>` no height and a top border, so a vertical separator
-  needs `h-auto`, `self-stretch`, `border-t-0` and `border-l`.
+- draws each orientation from its `orientation` prop. The `<div>` has no
+  border of its own, so a horizontal separator needs `border-t`, and a
+  vertical one `border-l` and `self-stretch`.
 
 Pick those classes from the prop rather than with
 `data-[orientation=vertical]:` variants: a variant's attribute selector

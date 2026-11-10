@@ -15,8 +15,5 @@ interface IconProps extends ComponentProps<typeof BaseIcon> {
 }
 
 export const Icon = ({ className, size = "default", ...props }: IconProps): ReactElement => (
-  <BaseIcon
-    {...props}
-    className={cn("shrink-0 group-aria-busy/button:hidden", SIZE_CLASSES[size], className)}
-  />
+  <BaseIcon {...props} className={cn("shrink-0", SIZE_CLASSES[size], className)} />
 );

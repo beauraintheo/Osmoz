@@ -28,13 +28,7 @@ export const IconButton = ({
 }: IconButtonProps): ReactElement => (
   <BaseIconButton
     {...props}
-    className={cn(
-      BUTTON_CLASSES,
-      "*:flex",
-      SIZE_CLASSES[size],
-      BUTTON_VARIANT_CLASSES[variant],
-      className,
-    )}
+    className={cn(BUTTON_CLASSES, SIZE_CLASSES[size], BUTTON_VARIANT_CLASSES[variant], className)}
     icon={pending ? <Spinner size={size} /> : <Icon icon={icon} size={size} />}
     pending={pending}
   />

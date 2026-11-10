@@ -4,20 +4,15 @@ import { expect } from "storybook/test";
 
 import { Separator } from "./separator.tsx";
 
-const LAYOUTS = {
-  horizontal: { minWidth: "6rem", width: "100%" },
-  vertical: { display: "flex", height: "2rem" },
-} as const satisfies Record<string, CSSProperties>;
-
-const LINES = {
-  horizontal: { borderTop: "1px solid" },
-  vertical: { borderLeft: "1px solid" },
-} as const satisfies Record<string, CSSProperties>;
+const ORIENTATIONS = {
+  horizontal: { layout: { minWidth: "6rem", width: "100%" }, line: { borderTop: "1px solid" } },
+  vertical: { layout: { display: "flex", height: "2rem" }, line: { borderLeft: "1px solid" } },
+} as const satisfies Record<string, Record<"layout" | "line", CSSProperties>>;
 
 const inLayout: Decorator = (Story, { args }) => (
   <div
     data-story-layout=""
-    style={LAYOUTS[args.orientation === "vertical" ? "vertical" : "horizontal"]}
+    style={ORIENTATIONS[args.orientation === "vertical" ? "vertical" : "horizontal"].layout}
   >
     <Story />
   </div>
@@ -36,13 +31,8 @@ const meta = {
   },
   component: Separator,
   decorators: [inLayout],
-  parameters: { actions: { disable: true }, controls: { disable: true } },
-  render: ({ orientation, ...args }): ReactElement => (
-    <Separator
-      {...args}
-      orientation={orientation}
-      style={LINES[orientation === "vertical" ? "vertical" : "horizontal"]}
-    />
+  render: (args): ReactElement => (
+    <Separator {...args} style={ORIENTATIONS[args.orientation ?? "horizontal"].line} />
   ),
   title: "Separator",
 } satisfies Meta<typeof Separator>;

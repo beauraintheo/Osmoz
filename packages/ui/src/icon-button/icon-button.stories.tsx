@@ -52,7 +52,6 @@ const meta = {
     },
   },
   component: IconButton,
-  parameters: { actions: { disable: true }, controls: { disable: true } },
   title: "IconButton",
 } satisfies Meta<typeof IconButton>;
 

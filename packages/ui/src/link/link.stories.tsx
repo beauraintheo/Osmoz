@@ -21,7 +21,6 @@ const meta = {
     },
   },
   component: Link,
-  parameters: { actions: { disable: true }, controls: { disable: true } },
   title: "Link",
 } satisfies Meta<typeof Link>;
 

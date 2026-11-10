@@ -38,6 +38,8 @@ const preview: Preview = {
   decorators: [withThemeSurface],
   parameters: {
     a11y: { test: "error" },
+    actions: { disable: true },
+    controls: { disable: true },
     docs: {
       components: {
         Guideline,

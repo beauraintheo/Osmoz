@@ -59,7 +59,6 @@ const meta = {
     style: { table: { disable: true } },
   },
   component: Spinner,
-  parameters: { actions: { disable: true }, controls: { disable: true } },
   title: "Spinner",
 } satisfies Meta<typeof Spinner>;
 

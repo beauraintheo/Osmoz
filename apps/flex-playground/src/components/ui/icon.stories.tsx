@@ -21,9 +21,7 @@ const meta = {
   },
   component: Icon,
   parameters: {
-    actions: { disable: true },
     app: "flux",
-    controls: { disable: true },
     layout: "fullscreen",
   },
   tags: ["autodocs"],

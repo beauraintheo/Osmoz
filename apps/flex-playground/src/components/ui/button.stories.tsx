@@ -50,9 +50,7 @@ const meta = {
   },
   component: Button,
   parameters: {
-    actions: { disable: true },
     app: "flux",
-    controls: { disable: true },
     layout: "fullscreen",
     tokens: {
       "accent-foreground": "Background of a primary action on hover.",

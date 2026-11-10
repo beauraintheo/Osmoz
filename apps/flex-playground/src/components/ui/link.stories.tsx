@@ -47,9 +47,7 @@ const meta = {
   component: Link,
   decorators: [withRouter],
   parameters: {
-    actions: { disable: true },
     app: "flux",
-    controls: { disable: true },
     layout: "fullscreen",
   },
   tags: ["autodocs"],

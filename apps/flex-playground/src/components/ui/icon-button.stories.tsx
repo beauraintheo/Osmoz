@@ -50,9 +50,7 @@ const meta = {
   },
   component: IconButton,
   parameters: {
-    actions: { disable: true },
     app: "flux",
-    controls: { disable: true },
     layout: "fullscreen",
   },
   tags: ["autodocs"],

@@ -1,5 +1,7 @@
 import { z } from "zod/mini";
 
+import { componentName } from "../docs-link";
+
 const storyIndexSchema = z.object({
   entries: z.record(
     z.string(),
@@ -28,7 +30,10 @@ export const uiStoryId = (index: unknown, component: string): string | undefined
   }
 
   return Object.values(result.data.entries).find(
-    (entry) => entry.type === "story" && entry.title === `Osmoz/${component}`,
+    (entry) =>
+      entry.type === "story" &&
+      entry.title.startsWith("Osmoz/") &&
+      componentName(entry.title) === component,
   )?.id;
 };
 

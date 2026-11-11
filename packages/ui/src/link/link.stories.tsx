@@ -21,7 +21,7 @@ const meta = {
     },
   },
   component: Link,
-  title: "Link",
+  title: "Navigation/Link",
 } satisfies Meta<typeof Link>;
 
 export default meta;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { formatAttribute, readAttributes, sameAttributes, storyRoot } from "./read-attributes";
+import { readAttributes, sameAttributes, storyRoot } from "./read-attributes";
 
 const container = (html: string): HTMLDivElement => {
   const element = document.createElement("div");
@@ -16,6 +16,7 @@ const button = (): HTMLButtonElement => {
   element.setAttribute("type", "button");
   element.setAttribute("class", "native");
   element.setAttribute("style", "color: red");
+  element.dataset.testid = "save";
   element.setAttribute("disabled", "");
   element.setAttribute("aria-busy", "true");
 
@@ -47,6 +48,10 @@ describe("storyRoot", () => {
     expect(storyRoot(rendered)?.tagName).toBe("HR");
   });
 
+  it("reads an svg the story renders, never a wrapper", () => {
+    expect(storyRoot(container("<svg></svg>"))?.tagName).toBe("svg");
+  });
+
   it("reads nothing from a story that has not rendered yet", () => {
     expect(storyRoot(container(""))).toBeNull();
   });
@@ -57,7 +62,7 @@ describe("storyRoot", () => {
 });
 
 describe("readAttributes", () => {
-  it("reads every attribute but class and style, sorted by name", () => {
+  it("reads every attribute but class, style and the test id, sorted by name", () => {
     expect(readAttributes(button())).toEqual([
       { name: "aria-busy", value: "true" },
       { name: "disabled", value: "" },
@@ -86,15 +91,5 @@ describe("sameAttributes", () => {
 
   it("tells apart an added attribute", () => {
     expect(sameAttributes([], [{ name: "disabled", value: "" }])).toBe(false);
-  });
-});
-
-describe("formatAttribute", () => {
-  it("writes a valued attribute as in HTML", () => {
-    expect(formatAttribute({ name: "type", value: "button" })).toBe('type="button"');
-  });
-
-  it("writes a boolean attribute by its name alone", () => {
-    expect(formatAttribute({ name: "disabled", value: "" })).toBe("disabled");
   });
 });

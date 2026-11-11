@@ -38,6 +38,25 @@ describe("uiStoryId", () => {
     expect(uiStoryId(INDEX, "Button")).toBe("osmoz-button--default");
   });
 
+  it("finds the Osmoz component inside its group", () => {
+    const grouped = {
+      entries: {
+        "flux-actions-button--primary": {
+          id: "flux-actions-button--primary",
+          title: "Flux/Actions/Button",
+          type: "story",
+        },
+        "osmoz-actions-button--default": {
+          id: "osmoz-actions-button--default",
+          title: "Osmoz/Actions/Button",
+          type: "story",
+        },
+      },
+    };
+
+    expect(uiStoryId(grouped, "Button")).toBe("osmoz-actions-button--default");
+  });
+
   it("skips the doc entries, which carry no args", () => {
     expect(uiStoryId(DOCS_ONLY, "Link")).toBeUndefined();
   });

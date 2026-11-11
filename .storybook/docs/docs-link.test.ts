@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { componentName, docsPath, isPlainClick } from "./docs-link";
+import { componentName, docsPath, isPlainClick, storyAnchor } from "./docs-link";
 import type { Click } from "./docs-link";
 
 const PLAIN: Click = {
@@ -14,6 +14,12 @@ const PLAIN: Click = {
 describe("docsPath", () => {
   it("points to a component's doc page in Storybook's interface", () => {
     expect(docsPath("osmoz-link")).toBe("?path=/docs/osmoz-link--docs");
+  });
+});
+
+describe("storyAnchor", () => {
+  it("points to the id Storybook gives a story's canvas on its doc page", () => {
+    expect(storyAnchor("osmoz-button--pending")).toBe("#story--osmoz-button--pending");
   });
 });
 

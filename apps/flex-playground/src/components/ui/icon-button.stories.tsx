@@ -54,7 +54,7 @@ const meta = {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-  title: "IconButton",
+  title: "Actions/IconButton",
 } satisfies Meta<typeof IconButton>;
 
 export default meta;

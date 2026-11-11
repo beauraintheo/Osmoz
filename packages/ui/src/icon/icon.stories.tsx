@@ -37,7 +37,7 @@ const meta = {
     },
   },
   component: Icon,
-  title: "Icon",
+  title: "Display/Icon",
 } satisfies Meta<typeof Icon>;
 
 export default meta;
@@ -65,6 +65,7 @@ export const WithLabel: Story = {
 
 export const WithSvgProps: Story = {
   args: { id: "warning-icon" },
+  name: "With SVG props",
   play: async ({ canvas }): Promise<void> => {
     await expect(canvas.getByTestId("icon")).toHaveAttribute("id", "warning-icon");
   },

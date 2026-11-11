@@ -19,35 +19,40 @@ action runs.
 ## Usage
 
 <Guidelines>
-  <Guideline preview={ButtonStories.Default} when="To run an action with a visible text label.">
+  <Guideline when="To run an action with a visible text label.">
     Submit, save, open a dialog, toggle a mode.
   </Guideline>
-  <Guideline preview={LinkStories.Default} use={LinkStories} when="To go to another page or URL.">
+  <Guideline use={LinkStories} when="To go to another page or URL.">
     A button that navigates breaks middle-click, "open in a new tab" and the screen reader's links
     list.
   </Guideline>
-  <Guideline
-    preview={IconButtonStories.Default}
-    use={IconButtonStories}
-    when="When an icon alone shows the action."
-  >
-    It requires a text label, read by assistive technologies.
+  <Guideline use={IconButtonStories} when="When an icon alone shows the action.">
+    Its required `label` is read by assistive technologies.
   </Guideline>
 </Guidelines>
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<button>`.
+### Disabled
 
-<States>
-  <State of={ButtonStories.Default}>Focusable. Click runs.</State>
-  <State of={ButtonStories.Disabled}>`disabled`. Skipped by Tab. Click blocked.</State>
-  <State of={ButtonStories.FocusableWhenDisabled}>
-    `disabled` and `focusableWhenDisabled`. Focusable. Click blocked.
-  </State>
-  <State of={ButtonStories.Pending}>`pending`. Focusable. Click blocked.</State>
-</States>
+`disabled` removes the button from the tab order and blocks its click.
+
+<Canvas of={ButtonStories.Disabled} />
+
+### Focusable when disabled
+
+With `focusableWhenDisabled`, a disabled button stays in the tab order and
+sets `aria-disabled` instead of `disabled`: the user can reach it and learn why
+the action is unavailable. Its click and keys stay blocked.
+
+<Canvas of={ButtonStories.FocusableWhenDisabled} />
+
+### Pending
+
+`pending` marks the action as running: the button sets `aria-busy` and blocks
+its click.
+
+<Canvas of={ButtonStories.Pending} />
 
 A pending button stays focusable: the focus does not jump away while the
 action runs, and assistive technologies announce it as busy.
@@ -71,13 +76,29 @@ action runs, and assistive technologies announce it as busy.
 
 ## API
 
+### Props
+
 The props of Base UI's Button, minus `aria-busy`, `aria-disabled`, `render`
 and `nativeButton`, plus `pending`. `className` and `style` take a value, not
 a function of the state:
 
 <Controls of={ButtonStories.Default} />
 
-## Styling
+### Attributes
+
+The attributes the rendered `<button>` carries in each example. An app styles each
+state from them, never from a class:
+
+<Attributes
+  stories={[
+    ButtonStories.Default,
+    ButtonStories.Disabled,
+    ButtonStories.FocusableWhenDisabled,
+    ButtonStories.Pending,
+  ]}
+/>
+
+### Styling
 
 The component has no class. Each app styles it in its own
 `components/ui/button.tsx`, with a class for every state above:
@@ -88,16 +109,3 @@ Base UI sets `data-disabled` in every disabled state, focusable and pending
 included, while `disabled` and `:enabled` only see the native attribute. A
 hover style therefore goes behind `not-data-disabled:hover:`, or a focusable
 disabled button would still react to the pointer.
-
-The roles of the contract a styled button maps to, with their values in the
-Osmoz theme of this page, not of an app:
-
-<Tokens>
-  <Token name="primary">Background of the main action.</Token>
-  <Token name="primary-foreground">Its text and icon.</Token>
-  <Token name="accent-foreground">Its background on hover.</Token>
-  <Token name="card">Background of a secondary action.</Token>
-  <Token name="input">Its border.</Token>
-  <Token name="muted">Background of a secondary or quiet action on hover.</Token>
-  <Token name="ring">Focus outline.</Token>
-</Tokens>

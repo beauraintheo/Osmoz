@@ -1,0 +1,36 @@
+.osmoz-attributes th[scope="row"] {
+  font-weight: 400;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.osmoz-attribute-present {
+  color: var(--muted-foreground);
+}
+
+.osmoz-attributes .osmoz-attribute-stories {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.osmoz-attributes .osmoz-attribute-stories li {
+  display: inline;
+  margin: 0;
+}
+
+.osmoz-attributes .osmoz-attribute-stories li:not(:last-child)::after {
+  content: ", ";
+  color: var(--muted-foreground);
+}
+
+.osmoz-attributes .osmoz-attribute-stories a {
+  color: var(--muted-foreground);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .osmoz-attributes .osmoz-attribute-stories a:hover {
+    color: var(--foreground);
+  }
+}

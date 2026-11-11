@@ -22,7 +22,7 @@ const meta = {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-  title: "Spinner",
+  title: "Feedback/Spinner",
 } satisfies Meta<typeof Spinner>;
 
 export default meta;

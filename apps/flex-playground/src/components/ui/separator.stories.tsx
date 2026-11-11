@@ -28,7 +28,7 @@ const meta = {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-  title: "Separator",
+  title: "Display/Separator",
 } satisfies Meta<typeof Separator>;
 
 export default meta;

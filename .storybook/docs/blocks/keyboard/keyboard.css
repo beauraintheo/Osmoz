@@ -1,41 +1,27 @@
-.osmoz-keyboard {
-  margin: 24px 0 40px;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--card);
+.sbdocs-content .osmoz-keyboard :is(th, td) {
+  vertical-align: middle;
 }
 
-.osmoz-key {
-  display: grid;
-  grid-template-columns: 200px minmax(0, 1fr);
-  gap: 16px;
-  align-items: baseline;
-  padding: 16px 20px;
+.sbdocs-content .osmoz-keyboard :is(th, td):first-child {
+  width: 1%;
+  white-space: nowrap;
 }
 
-.osmoz-key + .osmoz-key {
-  border-top: 1px solid var(--border);
-}
-
-.osmoz-key dt {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 0;
-  padding: 0;
-}
-
-.osmoz-key dd {
-  margin: 0;
-  padding: 0;
+.sbdocs-content .osmoz-keyboard td {
   color: var(--muted-foreground);
+  font-size: 14px;
   line-height: 1.55;
 }
 
-.osmoz-key dd > p {
+.sbdocs-content .osmoz-keyboard td > p {
   margin: 0;
+  color: inherit;
+  font-size: inherit;
+}
+
+.osmoz-key-shortcuts {
+  display: inline-flex;
+  gap: 6px;
 }
 
 .osmoz-key kbd {
@@ -49,10 +35,11 @@
   border: 1px solid var(--border);
   border-bottom-width: 2px;
   border-radius: 6px;
-  background: var(--background);
+  background: var(--card);
   color: var(--foreground);
   font-family: ui-monospace, monospace;
   font-size: 12px;
+  font-weight: 400;
   line-height: 1;
 }
 
@@ -63,13 +50,6 @@
   background: none;
 }
 
-.osmoz-key-combination > kbd + kbd::before {
-  position: absolute;
-  margin-left: -15px;
-  color: var(--muted-foreground);
-  content: "+";
-}
-
 .osmoz-key-combination > kbd {
   position: relative;
 }
@@ -78,9 +58,9 @@
   margin-left: 10px;
 }
 
-@media (max-width: 640px) {
-  .osmoz-key {
-    grid-template-columns: 1fr;
-    gap: 6px;
-  }
+.osmoz-key-combination > kbd + kbd::before {
+  position: absolute;
+  margin-left: -15px;
+  color: var(--muted-foreground);
+  content: "+";
 }

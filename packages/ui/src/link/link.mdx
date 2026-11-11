@@ -16,34 +16,23 @@ opens a tab without saying so.
 ## Usage
 
 <Guidelines>
-  <Guideline preview={LinkStories.Default} when="To go to another page of the app." />
-  <Guideline preview={LinkStories.NewTab} when="To go to another site.">
-    Like the MDN page of a CSS property.
-  </Guideline>
-  <Guideline
-    preview={ButtonStories.Default}
-    use={ButtonStories}
-    when="To run an action on the page."
-  >
+  <Guideline when="To go to another page of the app." />
+  <Guideline when="To go to another site.">Like the MDN page of a CSS property.</Guideline>
+  <Guideline use={ButtonStories} when="To run an action on the page.">
     A link that acts breaks the expectation that it can be opened in a new tab, and is missing from
     the screen reader's buttons list.
   </Guideline>
 </Guidelines>
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<a>`.
+### New tab
 
-<States>
-  <State of={LinkStories.Default}>`href`. Focusable. Click follows the link.</State>
-  <State of={LinkStories.NewTab}>
-    `newTab` and `newTabHint`. Click opens a new tab. `newTabHint` follows the text.
-  </State>
-</States>
+`newTab` opens the destination in a new tab and requires `newTabHint`, added
+after the text. The hint is part of the link's accessible name: "Read the docs
+(new tab)". The app decides whether it is visible.
 
-`newTabHint` is part of the link's accessible name: "Read the docs (new tab)".
-The app decides whether it is visible.
+<Canvas of={LinkStories.NewTab} />
 
 `target` is not a prop: `newTab` is the only way to open a new tab.
 
@@ -67,11 +56,18 @@ destination must not receive the referrer.
 
 ## API
 
+### Props
+
 The props of a native `<a>`, minus `target`, plus `newTab` and `newTabHint`:
 
 <Controls of={LinkStories.Default} />
 
-## Styling
+### Attributes
+
+The component sets no `role`, `aria-*` or `data-*` attribute: a router link
+adds its own, below.
+
+### Styling
 
 The component has no class and knows no router. Each app, in its own
 `components/ui/link.tsx`:
@@ -83,14 +79,3 @@ The component has no class and knows no router. Each app, in its own
 
 A router link marks the link of the current page with `aria-current="page"`
 and `data-status="active"`: the app styles that state from either.
-
-The roles of the contract a styled link maps to, with their values in the
-Osmoz theme of this page, not of an app:
-
-<Tokens>
-  <Token name="primary">Text of a link inside a text.</Token>
-  <Token name="accent-foreground">Its text on hover.</Token>
-  <Token name="muted-foreground">Text of a quiet link.</Token>
-  <Token name="foreground">Its text on hover.</Token>
-  <Token name="ring">Focus outline.</Token>
-</Tokens>

@@ -104,7 +104,25 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    `@osmoz/ui` component and give it the app's classes with `cn`. Every state
    of the boards has its class.
 4. **Document it.** `/document-component <component>` in Claude Code drafts
-   its stories and doc page, following an existing component.
+   its stories and doc page, following an existing component. Its Osmoz page
+   follows one outline, after Base UI's:
+   - **Title and description**, then the `Default` story with its code shown.
+   - **Anatomy**, only for a component made of several parts: its import and
+     how its parts nest, in a `tsx` code block.
+   - **Usage**: when to use it, and which component to use instead.
+   - **Examples**: one per behavior, each a heading, a sentence and its story
+     with its code shown. Each story has its `play` test.
+   - **Keyboard**, **Accessibility**.
+   - **API**: its props (`Controls`); the `role`, `aria-*` and `data-*`
+     attributes it sets, read from its stories (`Attributes`), which each app
+     styles its states from; then what each app's wrapper adds, and the traps
+     of styling from those attributes. The contract roles an app maps it to
+     stay on that app's page.
+
+   The stories render with a neutral demo style, owned by the Storybook
+   (`.storybook/docs/demo/`): it reads the component's attributes, so each
+   state is visible while the code shown stays the API, without a class.
+
 5. **Use it.** Routes, features and the app's own components import the
    styled component from `components/ui/`, never `@osmoz/ui` directly.
 6. **Check it.** The rendered states match the boards, every action works with
@@ -151,6 +169,11 @@ request publishes nothing.
   does the same: install the recommended Oxc extension.
 - **Stories run in a real Chromium.** The first time, run
   `pnpm exec playwright install chromium-headless-shell`.
+- **A new Claude Code skill of the project is ignored by git** until it is
+  listed in `.gitignore`. Every folder of `.claude/skills/` is ignored, so the
+  skills a developer installs for themself stay out of the repo; the project's
+  own skills are the exceptions listed after it, `!.claude/skills/<skill>/`.
+  Add yours there, then check that `git status` shows it.
 
 ## 7. Next
 

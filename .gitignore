@@ -23,8 +23,15 @@ graphify-out/
 !.vscode/extensions.json
 .idea
 .claude/settings.local.json
-.claude/skills/impeccable/
+.claude/skills/*
+!.claude/skills/document-component/
+!.claude/skills/linear-ticket/
+!.claude/skills/new-app/
+!.claude/skills/pull-request/
+!.claude/skills/review/
 .claude/agents/impeccable-*.md
+.agents/
+skills-lock.json
 *.swp
 *.swo
 *~

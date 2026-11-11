@@ -3,10 +3,11 @@ export interface Attribute {
   value: string;
 }
 
-const HIDDEN = new Set(["class", "style"]);
+const HIDDEN = new Set(["class", "data-testid", "style"]);
 
 const isWrapper = (element: Element): boolean =>
-  element.hasAttribute("data-app-theme") || element.hasAttribute("data-story-layout");
+  element instanceof HTMLElement &&
+  (element.dataset.appTheme !== undefined || element.dataset.storyLayout !== undefined);
 
 export const storyRoot = (container: Element): Element | null => {
   const root = Array.from(container.children).find((child) => child.tagName !== "STYLE") ?? null;
@@ -21,6 +22,3 @@ export const readAttributes = (element: Element): Attribute[] =>
 
 export const sameAttributes = (first: Attribute[], second: Attribute[]): boolean =>
   JSON.stringify(first) === JSON.stringify(second);
-
-export const formatAttribute = ({ name, value }: Attribute): string =>
-  value === "" ? name : `${name}="${value}"`;

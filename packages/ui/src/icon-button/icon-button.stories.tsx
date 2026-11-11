@@ -1,24 +1,26 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { ReactElement } from "react";
 import { expect, fn } from "storybook/test";
 
 import { IconButton } from "./icon-button.tsx";
 
+const UndoIcon = (): ReactElement => (
+  <svg fill="none" height="16" style={{ display: "block" }} viewBox="0 0 24 24" width="16">
+    <path
+      d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
 const meta = {
   args: {
-    icon: (
-      <svg fill="none" height="16" style={{ display: "block" }} viewBox="0 0 24 24" width="16">
-        <path
-          d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"
-          stroke="currentColor"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-        />
-      </svg>
-    ),
+    icon: <UndoIcon />,
     label: "Undo",
     onClick: fn(),
-    type: "button",
   },
   argTypes: {
     disabled: {
@@ -48,11 +50,14 @@ const meta = {
       control: "select",
       description: "See Button.",
       options: ["button", "submit", "reset"],
-      table: { type: { summary: '"button" | "submit" | "reset"' } },
+      table: {
+        defaultValue: { summary: '"button"' },
+        type: { summary: '"button" | "submit" | "reset"' },
+      },
     },
   },
   component: IconButton,
-  title: "IconButton",
+  title: "Actions/IconButton",
 } satisfies Meta<typeof IconButton>;
 
 export default meta;

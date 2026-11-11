@@ -17,38 +17,32 @@ and not an unnamed graphic.
 ## Usage
 
 <Guidelines>
-  <Guideline
-    preview={IconButtonStories.Default}
-    when="For a frequent action that its icon makes obvious."
-  >
+  <Guideline when="For a frequent action that its icon makes obvious.">
     Undo, redo, help, reset a property.
   </Guideline>
-  <Guideline preview={IconButtonStories.Default} when="Where space is short.">
-    A toolbar, a row of a list.
-  </Guideline>
-  <Guideline
-    preview={ButtonStories.Default}
-    use={ButtonStories}
-    when="When the action is not obvious without text."
-  >
+  <Guideline when="Where space is short.">A toolbar, a row of a list.</Guideline>
+  <Guideline use={ButtonStories} when="When the action is not obvious without text.">
     With an `Icon` next to its text.
   </Guideline>
-  <Guideline preview={LinkStories.Default} use={LinkStories} when="To go to another page or URL.">
+  <Guideline use={LinkStories} when="To go to another page or URL.">
     A button that navigates breaks middle-click, "open in a new tab" and the screen reader's links
     list.
   </Guideline>
 </Guidelines>
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<button>`.
+### Disabled
 
-<States>
-  <State of={IconButtonStories.Default}>Focusable. Click runs.</State>
-  <State of={IconButtonStories.Disabled}>`disabled`. Skipped by Tab. Click blocked.</State>
-  <State of={IconButtonStories.Pending}>`pending`. Focusable. Click blocked.</State>
-</States>
+`disabled` removes the button from the tab order and blocks its click.
+
+<Canvas of={IconButtonStories.Disabled} />
+
+### Pending
+
+`pending` sets `aria-busy`, blocks the click and keeps the button focusable.
+
+<Canvas of={IconButtonStories.Pending} />
 
 `IconButton` renders a `Button`, so it has every state of `Button`, including
 **disabled but focusable** (`focusableWhenDisabled`), documented on its page.
@@ -73,27 +67,25 @@ In every state, the accessible name stays the `label`.
 
 ## API
 
+### Props
+
 The props of `Button`, minus `aria-label` and `children`, plus `icon` and
 `label`:
 
 <Controls of={IconButtonStories.Default} />
 
-## Styling
+### Attributes
+
+The attributes the rendered `<button>` carries in each example. An app styles each
+state from them, never from a class:
+
+<Attributes
+  stories={[IconButtonStories.Default, IconButtonStories.Disabled, IconButtonStories.Pending]}
+/>
+
+### Styling
 
 The component has no class. Each app styles it in its own
 `components/ui/icon-button.tsx`: a square size for the button and its icon, and
 the same state classes as `Button`. See each app's section of this Storybook for
 its look.
-
-The roles of the contract a styled icon button maps to, with their values in
-the Osmoz theme of this page, not of an app:
-
-<Tokens>
-  <Token name="muted">Background of a quiet button on hover.</Token>
-  <Token name="primary">Background of the main action.</Token>
-  <Token name="primary-foreground">Its icon.</Token>
-  <Token name="accent-foreground">Its background on hover.</Token>
-  <Token name="card">Background of a secondary action.</Token>
-  <Token name="input">Its border.</Token>
-  <Token name="ring">Focus outline.</Token>
-</Tokens>

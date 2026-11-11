@@ -41,7 +41,7 @@ export const AppComponentPage = (): ReactElement => {
   const { csfFile, preparedMeta } = useOf("meta", ["meta"]);
   const [lookup, setLookup] = useState<UiLookup>({ status: "loading" });
   const { current: component, parents } = breadcrumbParts(preparedMeta.title);
-  const app = parents.join("/");
+  const [app = ""] = parents;
   const meta: ModuleExport = csfFile.moduleExports.default;
   const stories = context.componentStories();
   const { argTypes } = context.storyById();
@@ -155,7 +155,7 @@ export const AppComponentPage = (): ReactElement => {
       {usage === undefined ? null : (
         <>
           <Heading>{PAGE_MESSAGES.usage.title}</Heading>
-          <Canvas of={usage.moduleExport} sourceState="shown" />
+          <Canvas of={usage.moduleExport} />
         </>
       )}
 

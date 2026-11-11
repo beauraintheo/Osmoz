@@ -1,6 +1,6 @@
 ---
 name: document-component
-description: Documents a component of @osmoz/ui in the Storybook — its behavior stories with interaction tests, the styled stories of every app that wraps it, and its doc page built on the Storybook's blocks (why it exists, usage guidelines, states, keyboard, accessibility, tokens). Reads the code, gets the plan approved, drafts the files, runs the checks. Does not commit. Triggers: "document a component", "write the stories", "documente le composant", "fais les stories", /document-component.
+description: Documents a component of @osmoz/ui in the Storybook — its behavior stories with interaction tests, the styled stories of every app that wraps it, and its doc page built on the Storybook's blocks, after Base UI's outline (default demo with its code, anatomy, usage, examples with their code, keyboard, accessibility, API with props, attributes and styling). Reads the code, gets the plan approved, drafts the files, runs the checks. Does not commit. Triggers: "document a component", "write the stories", "documente le composant", "fais les stories", /document-component.
 argument-hint: "<component>"
 ---
 
@@ -45,10 +45,12 @@ Stories <app> (habillage) :
 
 Doc :
 - Pourquoi : <one sentence>
+- Anatomie : <its parts and how they nest, or "aucune, une seule partie">
 - Usage : <one line per situation> → <this component, or the one to use instead>
-- États : <one line per state story> → <props, focus, click or announcement>
+- Exemples : <one line per story but Default> → <the behavior it shows>
 - Clavier : <keys and effects, or "aucun, jamais focusable">
-- Tokens : <contract roles the app's wrappers use, or "aucun, currentColor">
+- Attributs : <the stories the API's Attributes block reads>
+- Habillage : <what each wrapper adds, and the traps of styling from the attributes>
 
 Questions : <what the code does not settle, or —>
 ```
@@ -60,15 +62,18 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 **Behavior stories**, `packages/ui/src/<component>/<component>.stories.tsx`:
 
 - One story per state the component exposes, named after the state (`Disabled`, `Pending`), and `Default` first.
-- `title` is the component's name in PascalCase (`"IconButton"`): `.storybook/main.ts` prefixes it with `Osmoz`, and each app's stories with the app's name. The same `title` in every app's file.
+- `title` is the component's group, then its name in PascalCase (`"Actions/IconButton"`): `.storybook/main.ts` prefixes it with `Osmoz`, and each app's stories with the app's name. The same `title` in every app's file. The groups are the ones listed in `storySort` of `.storybook/preview.tsx`; a component that fits none of them is a question for the user, and a new group goes there too.
 - Texts go through `args`, never as JSX text: the linter rejects it. Use short English placeholders (`"Save"`).
 - Every story has a `play` test that checks behavior only: the role, the accessible name, ARIA and `data-*` attributes, focus with `userEvent.tab()`, keys, clicks that run or are blocked. Never a class, never a style.
-- Every story shows something in the doc page: an icon passed as a prop draws a real path, never an empty `<svg>`. An element that renders empty or flat without a layout, like a separator, gets a decorator marked `data-story-layout` that gives it one, with inline styles: `States` reads past it.
+- Every story shows something in the doc page: an icon passed as a prop draws a real path, never an empty `<svg>`. An element that renders empty or flat without a layout, like a separator, gets a decorator marked `data-story-layout` that gives it one, with inline styles: `Attributes` reads past it.
 - Callbacks are `fn()` in the meta's `args`, and a blocked action asserts `not.toHaveBeenCalled()`.
 - The first story is named `Default` and shows the default props, in every app's file too.
 - Only the first story is interactive: `.storybook/preview.tsx` disables actions and controls for every story, and the first story sets `parameters: { actions: { disable: false }, controls: { disable: false } }`. This holds in every app's file too.
-- Every story but the first gets `tags: ["!dev"]`: unstyled, it looks like the default, so it stays out of the sidebar. It still runs its `play` test and shows in the doc page's `States`. Never in an app's file.
-- A prop that picks one value among several, like `variant`, `size` or `type`, gets `control: "select"`, never a radio, with `options` when Storybook does not infer them. Its default value goes in the meta's `args`, so the select shows it. This holds in every app's file too.
+- Every story but the first gets `tags: ["!dev"]`, so it stays out of the sidebar. It still runs its `play` test and shows on the doc page as an example. Never in an app's file.
+- A story whose generated name misreads its export, like an acronym (`WithSvgProps`), gets a `name` in sentence case (`"With SVG props"`): the API's `Attributes` block shows it.
+- The code shown under each story is generated from its `args`. Event handlers are hidden from it (`.storybook/docs/snippet-props.ts`); any other arg shows, so a story sets only what its example is about.
+- The stories render with the Storybook's neutral demo style, `.storybook/docs/demo/demo.css`, which reads the component's attributes. A component whose states it does not draw yet gets its rules there, from its `data-*` and ARIA attributes, never a class.
+- A prop that picks one value among several, like `variant`, `size` or `type`, gets `control: "select"`, never a radio, with `options` when Storybook does not infer them. Its default value goes in `table.defaultValue`, never in `args`: an arg shows in the code under each story, and that code shows only what the example sets. This holds in every app's file too.
 - Every prop of the API table gets a `description` in the meta's `argTypes`: when to use it, what it changes, what it requires, never its type in words. A prop the table misses, often an inherited native one like `disabled`, gets its entry with a `control` and `table.type.summary`. A prop that only lays out the story, like `style`, gets `table: { disable: true }`.
 
 **Styled stories**, one file per app, `apps/<app>/src/components/ui/<component>.stories.tsx`:
@@ -81,13 +86,16 @@ End with: "Je rédige ? (ou indique les modifications)". Write nothing without e
 
 **Doc page**, `packages/ui/src/<component>/<component>.mdx`, in English. The blocks come from `.storybook/docs/blocks/` and are registered in `.storybook/preview.tsx`: never import them. No Markdown table. The sections, in this order:
 
-1. **Title and why it exists**, then the canvas of the `Default` story.
-2. **Usage**: a `<Guidelines>` block, one `<Guideline when="…">` per situation, its reason or examples as children. The situations that call for this component come first, without `use`. Each situation that calls for another one names it with `use={OtherStories}`, its stories imported, which links to its page. `preview={Stories.<First>}` renders the component the situation calls for.
-3. **States**: one sentence saying the cards list the attributes read on the rendered element, then a `<States>` block, one `<State of={Stories.<State>}>` per story that shows a state, in the stories' order. Its children say the props that set it and its behavior: focus, click, announcement. Never restate an attribute the block already reads. A story that tests something other than a state, like a forwarded prop, gets no card. What holds in every state follows the block, as prose.
-4. **Keyboard**: a `<Keyboard>` block, one `<Key keys={["Tab"]}>` per key, its effect as children, `"Shift+Tab"` for a combination. A component that is never focusable gets no block, only "None: the <component> is never focusable."
-5. **Accessibility**: a list.
-6. **API**: the props it extends, Base UI's component or the native element, minus and plus, then `Controls`.
-7. **Styling**: which classes each app needs for each state, then one sentence and a `<Tokens>` block, one `<Token name="…">` per contract role the apps' wrappers use, its role as children; the value is read in the Osmoz theme of the doc page. A component whose wrappers use no contract role gets no block, and the section says where its color comes from, usually `currentColor`.
+1. **Title and why it exists**, then `<Canvas of={Stories.Default} />`.
+2. **Anatomy**, only for a component made of several parts: a fenced `tsx` block with its import from `@osmoz/ui/<component>` and how its parts nest, each part on its own line, no prop. A component of a single part has no section.
+3. **Usage**: a `<Guidelines>` block, one `<Guideline when="…">` per situation, its reason as a short child sentence. The situations that call for this component come first, without `use`. Each situation that calls for another one names it with `use={OtherStories}`, its stories imported, which links to its page.
+4. **Examples**: one `###` heading per story but `Default`, in the stories' order, named after the behavior. Under it, one or two sentences on the props that set it and its behavior (focus, click, announcement), then `<Canvas of={Stories.<Story>} />`. What holds beyond the example follows its canvas, as prose.
+5. **Keyboard**: a `<Keyboard>` block, one `<Key keys={["Tab"]}>` per key, its effect as children, `"Shift+Tab"` for a combination. A component that is never focusable gets no block, only "None: the <component> is never focusable."
+6. **Accessibility**: a list.
+7. **API**, in three `###` parts:
+   - **Props**: the props it extends, Base UI's component or the native element, minus and plus, then `Controls`.
+   - **Attributes**: one sentence saying an app styles each state from them, then `<Attributes stories={[…]} />`, listing every story that shows a state: the block reads the `role`, `aria-*` and `data-*` attributes on each rendered element and links each value to its example. A component that sets none says so in one sentence instead.
+   - **Styling**: what each app's wrapper adds (its file, the variants it picks, the classes a state needs) and the traps of styling from these attributes. No token: each app's page lists the roles it maps to, with their values in its theme. Where the color comes from when no class sets it, usually `currentColor`, in one sentence.
 
 Every claim in the doc is backed by the code or by a `play` test. If a claim cannot be checked, it goes to the questions instead.
 

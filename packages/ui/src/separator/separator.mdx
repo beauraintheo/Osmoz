@@ -16,10 +16,8 @@ it horizontal or vertical.
 ## Usage
 
 <Guidelines>
-  <Guideline preview={SeparatorStories.Default} when="Between two parts of the same block.">
-    Horizontal.
-  </Guideline>
-  <Guideline preview={SeparatorStories.Vertical} when="Between two groups of controls in a bar.">
+  <Guideline when="Between two parts of the same block.">Horizontal.</Guideline>
+  <Guideline when="Between two groups of controls in a bar.">
     Vertical, with `aria-hidden` when the layout already groups them.
   </Guideline>
 </Guidelines>
@@ -31,17 +29,15 @@ Not every separation needs one:
   `<section>`, which already structures the content.
 - To outline a block: use a `border` class on its container.
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<div>`. The line is drawn by the story only: the component has no style.
+### Vertical
 
-<States>
-  <State of={SeparatorStories.Default}>Horizontal. Announced as a separator.</State>
-  <State of={SeparatorStories.Vertical}>
-    `orientation="vertical"`. Announced as a vertical separator.
-  </State>
-</States>
+`orientation="vertical"` sets `aria-orientation` and `data-orientation` to
+`vertical`: the separator is announced as vertical, and the app draws it as a
+vertical line.
+
+<Canvas of={SeparatorStories.Vertical} />
 
 ## Keyboard
 
@@ -58,12 +54,21 @@ None: the separator is never focusable.
 
 ## API
 
+### Props
+
 The props of Base UI's Separator, minus `children`, `role` and `render`.
 `className` and `style` take a value, not a function of the state:
 
 <Controls of={SeparatorStories.Default} />
 
-## Styling
+### Attributes
+
+The attributes the rendered `<div>` carries in each example. An app styles each
+state from them, never from a class:
+
+<Attributes stories={[SeparatorStories.Default, SeparatorStories.Vertical]} />
+
+### Styling
 
 The component has no class. Each app, in its own
 `components/ui/separator.tsx`:
@@ -79,10 +84,3 @@ Pick those classes from the prop rather than with
 outweighs a plain class, so a caller's `className="h-5"` would lose to it. A
 fixed height also needs `self-center`, since `self-stretch` with a set height
 aligns the line to the start.
-
-The role of the contract a styled separator maps to, with its value in the
-Osmoz theme of this page, not of an app:
-
-<Tokens>
-  <Token name="border">Color of the line.</Token>
-</Tokens>

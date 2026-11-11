@@ -2,6 +2,8 @@ export type Click = Pick<MouseEvent, "altKey" | "button" | "ctrlKey" | "metaKey"
 
 export const docsPath = (id: string): string => `?path=/docs/${id}--docs`;
 
+export const storyAnchor = (id: string): string => `#story--${id}`;
+
 export const componentName = (title: string): string => title.slice(title.lastIndexOf("/") + 1);
 
 export const isPlainClick = ({ altKey, button, ctrlKey, metaKey, shiftKey }: Click): boolean =>

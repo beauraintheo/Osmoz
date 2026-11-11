@@ -1,5 +1,6 @@
 import type { ReactElement, ReactNode } from "react";
 
+import { KEYBOARD_MESSAGES } from "./keyboard-messages";
 import { splitShortcut } from "./split-shortcut";
 
 import "./keyboard.css";
@@ -32,16 +33,26 @@ const Shortcut = ({ shortcut }: ShortcutProps): ReactElement => {
 };
 
 export const Keyboard = ({ children }: KeyboardProps): ReactElement => (
-  <dl className="osmoz-keyboard sb-unstyled">{children}</dl>
+  <table className="osmoz-keyboard">
+    <thead>
+      <tr>
+        <th scope="col">{KEYBOARD_MESSAGES.columns.key}</th>
+        <th scope="col">{KEYBOARD_MESSAGES.columns.action}</th>
+      </tr>
+    </thead>
+    <tbody>{children}</tbody>
+  </table>
 );
 
 export const Key = ({ children, keys }: KeyProps): ReactElement => (
-  <div className="osmoz-key">
-    <dt>
-      {keys.map((shortcut) => (
-        <Shortcut key={shortcut} shortcut={shortcut} />
-      ))}
-    </dt>
-    <dd>{children}</dd>
-  </div>
+  <tr className="osmoz-key">
+    <th scope="row">
+      <span className="osmoz-key-shortcuts">
+        {keys.map((shortcut) => (
+          <Shortcut key={shortcut} shortcut={shortcut} />
+        ))}
+      </span>
+    </th>
+    <td>{children}</td>
+  </tr>
 );

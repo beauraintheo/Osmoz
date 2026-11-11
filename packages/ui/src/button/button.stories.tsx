@@ -7,7 +7,6 @@ const meta = {
   args: {
     children: "Save",
     onClick: fn(),
-    type: "button",
   },
   argTypes: {
     children: {
@@ -35,11 +34,14 @@ const meta = {
       description:
         "Defaults to `button`, so the button never submits its form by accident. Pass `submit` on purpose.",
       options: ["button", "submit", "reset"],
-      table: { type: { summary: '"button" | "submit" | "reset"' } },
+      table: {
+        defaultValue: { summary: '"button"' },
+        type: { summary: '"button" | "submit" | "reset"' },
+      },
     },
   },
   component: Button,
-  title: "Button",
+  title: "Actions/Button",
 } satisfies Meta<typeof Button>;
 
 export default meta;

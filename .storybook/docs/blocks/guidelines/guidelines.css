@@ -1,144 +1,48 @@
-.osmoz-guidelines {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(136px, max-content) max-content;
-  margin: 24px 0 40px;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: var(--card);
-  list-style: none;
+.sbdocs-content .osmoz-guidelines td {
+  vertical-align: middle;
 }
 
-.osmoz-guidelines .osmoz-guideline {
-  display: grid;
-  grid-column: 1 / -1;
-  grid-template-columns: subgrid;
-  column-gap: 20px;
-  align-items: center;
-  margin: 0;
-  padding: 18px 20px;
+.sbdocs-content .osmoz-guidelines :is(th, td):last-child {
+  width: 1%;
+  padding-right: 0;
+  white-space: nowrap;
 }
 
-.osmoz-guideline + .osmoz-guideline {
-  border-top: 1px solid var(--border);
-}
-
-.osmoz-guideline-case {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  max-width: 62ch;
-}
-
-.osmoz-guidelines .osmoz-guideline-when {
-  margin: 0;
-  color: var(--foreground);
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.45;
-}
-
-.osmoz-guideline-why {
-  color: var(--muted-foreground);
+.sbdocs-content .osmoz-guidelines :is(.osmoz-guideline-when, .osmoz-guideline-why, p) {
   font-size: 14px;
   line-height: 1.55;
 }
 
-.osmoz-guideline-why > p {
+.osmoz-guideline-when {
+  color: var(--foreground);
+}
+
+.osmoz-guideline-why {
+  color: var(--muted-foreground);
+}
+
+.osmoz-guideline-why::before {
+  content: " ";
+}
+
+.sbdocs-content .osmoz-guideline-why > p {
+  display: inline;
   margin: 0;
+  color: inherit;
 }
 
-.osmoz-guideline-answer {
-  display: contents;
-}
-
-.osmoz-guideline-preview {
-  display: flex;
-  grid-column: 2;
-  align-items: center;
-  justify-content: center;
-  min-height: 56px;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 8px 12px;
-  box-sizing: border-box;
-  border-radius: 10px;
-  background: var(--muted);
-}
-
-.osmoz-guideline-preview .sb-story {
-  flex: 1;
-  margin: 0;
-}
-
-.osmoz-guideline-preview .sb-story > [data-name] {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.osmoz-guidelines .osmoz-guideline-verdict {
-  display: inline-flex;
-  grid-column: 3;
-  justify-self: start;
-  gap: 6px;
-  align-items: center;
-  height: 28px;
-  padding: 0 10px;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  font-family: ui-monospace, monospace;
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.osmoz-guidelines .osmoz-guideline-verdict code {
+.sbdocs-content .osmoz-guideline-verdict,
+.sbdocs-content .osmoz-guideline-verdict code {
   padding: 0;
   border: 0;
   background: none;
-  color: inherit;
-  font: inherit;
+  color: var(--foreground);
+  font-family: ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.osmoz-guidelines a.osmoz-guideline-verdict {
-  background: var(--accent);
-  color: var(--accent-foreground);
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-
-.osmoz-guidelines a.osmoz-guideline-verdict:hover code {
-  text-decoration: underline;
-}
-
-.osmoz-guidelines a.osmoz-guideline-verdict:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
-}
-
-@media (max-width: 640px) {
-  .osmoz-guidelines {
-    grid-template-columns: minmax(136px, max-content) minmax(0, 1fr);
-  }
-
-  .osmoz-guidelines .osmoz-guideline {
-    row-gap: 12px;
-  }
-
-  .osmoz-guideline-case {
-    grid-column: 1 / -1;
-  }
-
-  .osmoz-guideline-preview {
-    grid-column: 1;
-  }
-
-  .osmoz-guidelines .osmoz-guideline-verdict {
-    grid-column: 2;
-  }
+.sbdocs-content a.osmoz-guideline-verdict,
+.sbdocs-content a.osmoz-guideline-verdict code {
+  color: var(--primary);
 }

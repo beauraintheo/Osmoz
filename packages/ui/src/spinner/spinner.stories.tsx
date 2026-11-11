@@ -11,7 +11,7 @@ const SPIN_STYLE = `
 
 @media (prefers-reduced-motion: no-preference) {
   .story-spinner-arc {
-    animation: story-spinner-turn 1s linear infinite;
+    animation: story-spinner-turn 0.75s linear infinite;
     transform-origin: center;
   }
 }
@@ -38,14 +38,7 @@ const LoadingSvg = (): ReactElement => (
 );
 
 const meta = {
-  args: {
-    icon: <LoadingSvg />,
-    style: {
-      alignItems: "center",
-      display: "inline-flex",
-      gap: "0.25rem",
-    },
-  },
+  args: { icon: <LoadingSvg /> },
   argTypes: {
     icon: {
       control: false,
@@ -56,10 +49,9 @@ const meta = {
       description:
         "Turns the spinner into a `status` region that announces this text. Without it, the spinner is decorative.",
     },
-    style: { table: { disable: true } },
   },
   component: Spinner,
-  title: "Spinner",
+  title: "Feedback/Spinner",
 } satisfies Meta<typeof Spinner>;
 
 export default meta;

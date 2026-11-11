@@ -1,15 +1,18 @@
 import type { Decorator, Preview } from "@storybook/react-vite";
 
 import { AppComponentPage } from "./docs/app-component-page/app-component-page";
+import { Attributes } from "./docs/blocks/attributes/attributes";
 import { Guideline, Guidelines } from "./docs/blocks/guidelines/guidelines";
 import { Key, Keyboard } from "./docs/blocks/keyboard/keyboard";
-import { State, States } from "./docs/blocks/states/states";
 import { Token, Tokens } from "./docs/blocks/tokens/tokens";
 import { DocsContainer } from "./docs/docs-container";
+import { showInSnippet } from "./docs/snippet-props";
 import { sectionOf } from "./theme/theme-stores";
 import type { Section } from "./theme/theme-stores";
 import { ThemeSurface } from "./theme/theme-surface";
 import type { Variant } from "./theme/theme-surface";
+
+import "./docs/demo/demo.css";
 
 type ViewMode = "docs" | "story";
 
@@ -41,22 +44,36 @@ const preview: Preview = {
     actions: { disable: true },
     controls: { disable: true },
     docs: {
+      canvas: { sourceState: "shown" },
       components: {
+        Attributes,
         Guideline,
         Guidelines,
         Key,
         Keyboard,
-        State,
-        States,
         Token,
         Tokens,
       },
       container: DocsContainer,
       page: AppComponentPage,
     },
+    jsx: { filterProps: showInSnippet },
     options: {
       storySort: {
-        order: ["Osmoz", ["Introduction", "Using a component", "Brand"], "Flux", ["Introduction"]],
+        order: [
+          "Osmoz",
+          [
+            "Introduction",
+            "Using a component",
+            "Brand",
+            "Actions",
+            "Navigation",
+            "Feedback",
+            "Display",
+          ],
+          "Flux",
+          ["Introduction", "Actions", "Navigation", "Feedback", "Display"],
+        ],
       },
     },
   },

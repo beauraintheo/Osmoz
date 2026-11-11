@@ -16,37 +16,29 @@ that screen readers announce.
 ## Usage
 
 <Guidelines>
-  <Guideline
-    preview={SpinnerStories.Default}
-    when="Next to an element that already announces the wait."
-  >
+  <Guideline when="Next to an element that already announces the wait.">
     Without a label, like the spinner inside a pending `Button`.
   </Guideline>
-  <Guideline preview={SpinnerStories.WithLabel} when="For a wait no button carries.">
-    With a label, like an area that loads.
-  </Guideline>
-  <Guideline
-    preview={ButtonStories.Pending}
-    use={ButtonStories}
-    when="When the wait is a button's action running."
-  >
+  <Guideline when="For a wait no button carries.">With a label, like an area that loads.</Guideline>
+  <Guideline use={ButtonStories} when="When the wait is a button's action running.">
     `pending` on `Button` or `IconButton` shows the spinner and sets `aria-busy`.
   </Guideline>
 </Guidelines>
 
 For a progress that can be measured, use the native `<progress>` element.
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<span>`.
+### With a label
 
-<States>
-  <State of={SpinnerStories.Default}>No `label`. Hidden from assistive technologies.</State>
-  <State of={SpinnerStories.WithLabel}>
-    `label`. A status region: `label` is announced, the icon is hidden.
-  </State>
-</States>
+`label` turns the spinner into a status region: `label` is announced, the icon
+stays hidden.
+
+<Canvas of={SpinnerStories.WithLabel} />
+
+A live region announces what changes after it appears. A spinner mounted with
+its label at once may not be announced by every screen reader. This limit is
+not covered by a test.
 
 ## Keyboard
 
@@ -59,18 +51,23 @@ None: the spinner is never focusable.
 - The icon is always hidden from assistive technologies. Only `label` is read.
 - `role` and `children` are not props: the role follows `label`.
 
-A live region announces what changes after it appears. A spinner mounted with
-its label at once may not be announced by every screen reader. This limit is
-not covered by a test.
-
 ## API
+
+### Props
 
 The props of a native `<span>`, minus `children` and `role`, plus `icon` and
 `label`:
 
 <Controls of={SpinnerStories.Default} />
 
-## Styling
+### Attributes
+
+The attributes the rendered `<span>` carries in each example. An app styles each
+state from them, never from a class:
+
+<Attributes stories={[SpinnerStories.Default, SpinnerStories.WithLabel]} />
+
+### Styling
 
 The component has no class and no icon. Each app, in its own
 `components/ui/spinner.tsx`:
@@ -79,5 +76,4 @@ The component has no class and no icon. Each app, in its own
   motion is opt-in;
 - gives `label` its look, usually inside an `sr-only` span.
 
-It uses no role of the contract: the icon takes `currentColor`, the color of
-the text around it.
+The icon takes `currentColor`, the color of the text around it.

@@ -51,7 +51,7 @@ const meta = {
     layout: "fullscreen",
   },
   tags: ["autodocs"],
-  title: "Link",
+  title: "Navigation/Link",
 } satisfies Meta<typeof Link>;
 
 export default meta;

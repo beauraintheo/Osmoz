@@ -29,6 +29,11 @@ own `components/ui/`, by wrapping the `@osmoz/ui` component with its classes, so
 apps with different identities share the same behavior. A component goes to
 `@osmoz/ui` from its first use: the second-app rule above does not apply to it.
 
+👀 **A component belongs to `@osmoz/ui`** when it matches a Base UI component,
+or when it enforces an accessibility guarantee that Base UI leaves to the
+caller, like a required label. Anything else is the app's own component, built
+from `components/ui/`.
+
 👀 **Base UI first, native otherwise.** An `@osmoz/ui` component wraps the
 [Base UI](https://base-ui.com) component that matches it, which brings its
 keyboard, focus and ARIA behavior. Where Base UI has none, it builds on the
@@ -69,9 +74,14 @@ props. Its controls and actions are enabled; every other story disables them,
 since it shows one fixed state.
 
 👀 **A state story of `@osmoz/ui` stays out of the sidebar** (`tags: ["!dev"]`).
-Without style, a state looks like the default: its story still runs its
-`play` test and shows on the doc page, where its attributes are read. An app's
-state stories stay in the sidebar, since its classes make each state visible.
+It still runs its `play` test and shows on the doc page as an example, and its
+attributes are read in the API section. An app's state stories stay in the
+sidebar, since its classes make each state visible.
+
+👀 **An Osmoz page follows one outline**, set in
+[getting-started.md](getting-started.md#4-create-a-component): its default
+story and each example show their code, and its API lists the attributes the
+component sets.
 
 👀 **A shared component gets its text from the app.** A component of
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
@@ -596,6 +606,8 @@ reviewer:
   app passes it as props, without defaults.
 - Every `@osmoz/ui` component has its stories and doc page, and every app that
   styles it has its stories; a story's `play` checks behavior, never a class.
+- A component joins `@osmoz/ui` only if it matches a Base UI component or
+  enforces an accessibility guarantee; its Osmoz page follows the outline.
 - Only the first story is interactive; the state stories of `@osmoz/ui` stay
   out of the sidebar.
 - One concern per file, named after its main export, no category suffix.

@@ -18,39 +18,34 @@ so every icon of the app follows the same scale.
 ## Usage
 
 <Guidelines>
-  <Guideline
-    preview={IconStories.Default}
-    when="Next to a text that already says what the icon means."
-  >
+  <Guideline when="Next to a text that already says what the icon means.">
     Decorative, like an icon inside a `Button`.
   </Guideline>
-  <Guideline
-    preview={IconStories.WithLabel}
-    when="When the icon carries a meaning no text repeats."
-  >
+  <Guideline when="When the icon carries a meaning no text repeats.">
     With a `label`, like a warning sign.
   </Guideline>
-  <Guideline
-    preview={IconButtonStories.Default}
-    use={IconButtonStories}
-    when="For an action shown by an icon alone."
-  >
+  <Guideline use={IconButtonStories} when="For an action shown by an icon alone.">
     It names the action, not the image.
   </Guideline>
-  <Guideline preview={SpinnerStories.Default} use={SpinnerStories} when="To show a wait.">
+  <Guideline use={SpinnerStories} when="To show a wait.">
     It becomes a status region when the wait needs announcing.
   </Guideline>
 </Guidelines>
 
-## States
+## Examples
 
-Each card renders its story and lists the attributes read on the rendered
-`<svg>`.
+### With a label
 
-<States>
-  <State of={IconStories.Default}>No `label`. Never announced.</State>
-  <State of={IconStories.WithLabel}>`label`. Announced as an image named `label`.</State>
-</States>
+`label` gives the icon the `img` role, named by that text. Its content is not
+read, only `label`.
+
+<Canvas of={IconStories.WithLabel} />
+
+### SVG props
+
+Every other prop goes to the icon component, like an `id`.
+
+<Canvas of={IconStories.WithSvgProps} />
 
 ## Keyboard
 
@@ -66,6 +61,8 @@ None: the icon is never focusable.
 
 ## API
 
+### Props
+
 The props of a native `<svg>`, minus `aria-hidden`, `aria-label`, `children`
 and `role`, plus `icon` and `label`. `icon` is the icon component itself, not
 an element: `icon={RiSaveLine}`. The component renders it, with no wrapper,
@@ -74,10 +71,16 @@ and passes it every other prop. Any component that accepts the props of an
 
 <Controls of={IconStories.Default} />
 
-## Styling
+### Attributes
+
+The attributes the rendered `<svg>` carries in each example. An app styles each
+state from them, never from a class:
+
+<Attributes stories={[IconStories.Default, IconStories.WithLabel]} />
+
+### Styling
 
 The component has no class. Each app, in its own `components/ui/icon.tsx`,
 picks its icon library and gives the icon its sizes, one per `size`.
 
-It uses no role of the contract: the icon takes `currentColor`, the color of
-the text around it.
+The icon takes `currentColor`, the color of the text around it.

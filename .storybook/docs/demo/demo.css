@@ -1,0 +1,68 @@
+:where([data-theme^="osmoz-"] .sb-story, #storybook-root [data-theme^="osmoz-"]) {
+  & button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid var(--input);
+    border-radius: 0.5rem;
+    background: var(--card);
+    color: var(--card-foreground);
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    & button:not([data-disabled]):hover {
+      background: var(--muted);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    & button {
+      transition:
+        background-color 150ms ease,
+        transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    & button:not([data-disabled]):active {
+      transform: scale(0.97);
+    }
+  }
+
+  & button[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  & button[aria-busy="true"] {
+    cursor: progress;
+  }
+
+  & a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  & :is(button, a):focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  & [role="separator"][data-orientation="horizontal"] {
+    border-top: 1px solid var(--border);
+  }
+
+  & [role="separator"][data-orientation="vertical"] {
+    align-self: stretch;
+    border-left: 1px solid var(--border);
+  }
+
+  & [role="status"] {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}

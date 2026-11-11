@@ -9,6 +9,6 @@ interface IconButtonProps extends Omit<ComponentProps<typeof Button>, "aria-labe
 
 export const IconButton = ({ icon, label, ...props }: IconButtonProps): ReactElement => (
   <Button {...props} aria-label={label}>
-    <span aria-hidden="true">{icon}</span>
+    {icon}
   </Button>
 );

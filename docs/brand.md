@@ -60,7 +60,7 @@ more.
 ## Osmoz theme
 
 `@osmoz/brand/osmoz-theme.css` dresses what speaks for Osmoz itself, not for
-an app: the design system's Storybook today, the portfolio later. It fills the
+an app, like the design system's Storybook or the portfolio. It fills the
 whole token contract of [conventions.md](conventions.md#tokens), from the
 colors above: the cream and night grounds, the wordmark as text, the cloud as
 the accent.
@@ -172,13 +172,5 @@ The app's `favicon.svg` is `osmoz-symbol.svg` with the O fills changed, and
 its `apple-touch-icon.png` is `osmoz-app-icon.svg` with the light O fill
 changed, rendered at 180 px.
 
-| App  | O light   | O dark    | Contrast on its ground |
-| ---- | --------- | --------- | ---------------------- |
-| Flux | `#00778D` | `#56D2DF` | 4.84:1 · 9.73:1        |
-
-## Not done yet
-
-- The wordmark outlined to paths.
-- The `.ico` 32 px fallback, for browsers without SVG favicons.
-- An app's favicon generated from `osmoz-symbol.svg` and its accent, instead of
-  derived by hand.
+Each app records its O colors, light and dark, with their contrast, in the
+Theme section of its `CLAUDE.md`.

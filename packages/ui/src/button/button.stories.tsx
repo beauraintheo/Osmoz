@@ -4,7 +4,11 @@ import { expect, fn } from "storybook/test";
 import { Button } from "./button.tsx";
 
 const meta = {
-  args: { children: "Save", onClick: fn() },
+  args: {
+    children: "Save",
+    onClick: fn(),
+    type: "button",
+  },
   argTypes: {
     children: {
       description:
@@ -27,7 +31,7 @@ const meta = {
         "The action is running: sets `aria-busy`, blocks the action and keeps the focus on the button.",
     },
     type: {
-      control: "inline-radio",
+      control: "select",
       description:
         "Defaults to `button`, so the button never submits its form by accident. Pass `submit` on purpose.",
       options: ["button", "submit", "reset"],
@@ -43,6 +47,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ args, canvas, userEvent }): Promise<void> => {
     const button = canvas.getByRole("button");
 
@@ -64,6 +69,7 @@ export const Disabled: Story = {
     await userEvent.tab();
     await expect(button).not.toHaveFocus();
   },
+  tags: ["!dev"],
 };
 
 export const FocusableWhenDisabled: Story = {
@@ -81,6 +87,7 @@ export const FocusableWhenDisabled: Story = {
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
   },
+  tags: ["!dev"],
 };
 
 export const Pending: Story = {
@@ -97,4 +104,5 @@ export const Pending: Story = {
     await userEvent.click(button);
     await expect(args.onClick).not.toHaveBeenCalled();
   },
+  tags: ["!dev"],
 };

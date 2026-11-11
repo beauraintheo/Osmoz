@@ -8,9 +8,11 @@ import * as ButtonStories from "./button.stories";
 
 # Button
 
-A native `<button>` that triggers an action on the page. It adds two states the
-native element lacks: **pending**, while the action runs, and **disabled but
-focusable**, so a disabled action can still be reached and explained.
+Base UI's [Button](https://base-ui.com/react/components/button), a native
+`<button>` that triggers an action on the page. It adds two states the native
+element lacks: **disabled but focusable**, from Base UI, so a disabled action
+can still be reached and explained, and **pending**, from Osmoz, while the
+action runs.
 
 <Canvas of={ButtonStories.Default} />
 
@@ -69,16 +71,23 @@ action runs, and assistive technologies announce it as busy.
 
 ## API
 
-The props of a native `<button>`, minus `aria-busy` and `aria-disabled`, plus:
+The props of Base UI's Button, minus `aria-busy`, `aria-disabled`, `render`
+and `nativeButton`, plus `pending`. `className` and `style` take a value, not
+a function of the state:
 
 <Controls of={ButtonStories.Default} />
 
 ## Styling
 
 The component has no class. Each app styles it in its own
-`components/ui/button.tsx`, with a class for every state above: `disabled:`,
-`aria-disabled:`, `aria-busy:`, `focus-visible:`. See each app's section of
+`components/ui/button.tsx`, with a class for every state above:
+`data-disabled:`, `aria-busy:`, `focus-visible:`. See each app's section of
 this Storybook for its look.
+
+Base UI sets `data-disabled` in every disabled state, focusable and pending
+included, while `disabled` and `:enabled` only see the native attribute. A
+hover style therefore goes behind `not-data-disabled:hover:`, or a focusable
+disabled button would still react to the pointer.
 
 The roles of the contract a styled button maps to, with their values in the
 Osmoz theme of this page, not of an app:

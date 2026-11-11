@@ -44,7 +44,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Decorative: Story = {
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ canvas }): Promise<void> => {
     await expect(canvas.queryByRole("img")).toBeNull();
     await expect(canvas.getByTestId("icon")).toHaveAttribute("aria-hidden", "true");
@@ -59,6 +60,7 @@ export const WithLabel: Story = {
     await expect(icon).toBe(canvas.getByTestId("icon"));
     await expect(icon).not.toHaveAttribute("aria-hidden");
   },
+  tags: ["!dev"],
 };
 
 export const WithSvgProps: Story = {
@@ -66,4 +68,5 @@ export const WithSvgProps: Story = {
   play: async ({ canvas }): Promise<void> => {
     await expect(canvas.getByTestId("icon")).toHaveAttribute("id", "warning-icon");
   },
+  tags: ["!dev"],
 };

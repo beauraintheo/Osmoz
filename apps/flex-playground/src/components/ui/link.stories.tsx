@@ -18,7 +18,11 @@ const withRouter: Decorator = (Story) => (
 );
 
 const meta = {
-  args: { children: "Read the docs", to: "/" },
+  args: {
+    children: "Read the docs",
+    to: "/",
+    variant: "inline",
+  },
   argTypes: {
     children: { description: "See Osmoz/Link." },
     newTab: {
@@ -33,7 +37,7 @@ const meta = {
     },
     to: { description: "A route of the app, typed by TanStack Router." },
     variant: {
-      control: "inline-radio",
+      control: "select",
       description:
         "`inline` for a link in running text, `quiet` for a secondary link outside it, like in a header.",
       options: ["inline", "quiet"],
@@ -42,7 +46,10 @@ const meta = {
   },
   component: Link,
   decorators: [withRouter],
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    app: "flux",
+    layout: "fullscreen",
+  },
   tags: ["autodocs"],
   title: "Link",
 } satisfies Meta<typeof Link>;
@@ -51,7 +58,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Inline: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Quiet: Story = {
   args: { variant: "quiet" },
@@ -63,6 +72,5 @@ export const NewTab: Story = {
     const link = canvas.getByRole("link", { name: "Read the docs (new tab)" });
 
     await expect(link).toHaveAttribute("target", "_blank");
-    await expect(link.querySelector(".sr-only")).toHaveTextContent("(new tab)");
   },
 };

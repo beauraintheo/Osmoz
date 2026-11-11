@@ -10,14 +10,10 @@ const inRow: Decorator = (Story) => (
 );
 
 const meta = {
+  args: { orientation: "horizontal" },
   argTypes: {
-    decorative: {
-      control: "boolean",
-      description: "See Osmoz/Separator.",
-      table: { type: { summary: "boolean" } },
-    },
     orientation: {
-      control: "inline-radio",
+      control: "select",
       description: "`vertical` stretches to the height of its row. See Osmoz/Separator.",
       options: ["horizontal", "vertical"],
       table: {
@@ -27,7 +23,10 @@ const meta = {
     },
   },
   component: Separator,
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    app: "flux",
+    layout: "fullscreen",
+  },
   tags: ["autodocs"],
   title: "Separator",
 } satisfies Meta<typeof Separator>;
@@ -36,7 +35,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Horizontal: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Vertical: Story = {
   args: { orientation: "vertical" },
@@ -46,14 +47,5 @@ export const Vertical: Story = {
 
     await expect(separator).toHaveAttribute("aria-orientation", "vertical");
     await expect(separator).toHaveAttribute("data-orientation", "vertical");
-  },
-};
-
-export const Decorative: Story = {
-  args: { decorative: true, orientation: "vertical" },
-  decorators: [inRow],
-  play: async ({ canvas, canvasElement }): Promise<void> => {
-    await expect(canvas.queryByRole("separator")).toBeNull();
-    await expect(canvasElement.querySelector("hr")).toHaveAttribute("data-orientation", "vertical");
   },
 };

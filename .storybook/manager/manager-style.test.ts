@@ -53,24 +53,31 @@ describe("managerStyle", () => {
     expect(colorOf(item)).toBe("rgb(237, 232, 255)");
   });
 
-  it("keeps the context menu of the selected item on the accent, without a glow", () => {
-    const button = styled(
-      '<div class="sidebar-item" data-selected="true"><button data-testid="context-menu"></button></div>',
-    ).querySelector("button");
-    const styles = button === null ? undefined : getComputedStyle(button);
+  it.each(["context-menu", "tree-change-status-button"])(
+    "keeps the %s button of the selected item on the accent, without a glow",
+    (testId) => {
+      const button = styled(
+        `<div class="sidebar-item" data-selected="true"><button data-testid="${testId}"></button></div>`,
+      ).querySelector("button");
+      const styles = button === null ? undefined : getComputedStyle(button);
 
-    expect(styles?.backgroundColor).toBe("rgb(37, 43, 94)");
-    expect(styles?.boxShadow).toBe("none");
-  });
+      expect(styles?.backgroundColor).toBe("rgb(37, 43, 94)");
+      expect(styles?.boxShadow).toBe("none");
+    },
+  );
 
-  it("keeps the context menu icon of the selected item muted, like the other items", () => {
-    const button = styled(
-      '<div class="sidebar-item" data-selected="true"><button data-testid="context-menu"><svg></svg></button></div>',
-    ).querySelector("button");
+  it.each(["true", "false"])(
+    "keeps the icons of the item's buttons muted when selected is %s",
+    (selected) => {
+      const buttons = styled(
+        `<div class="sidebar-item" data-selected="${selected}"><button data-testid="context-menu"><svg></svg></button><button data-testid="tree-change-status-button"><svg></svg></button></div>`,
+      ).querySelectorAll("button");
 
-    expect(colorOf(button)).toBe("rgb(160, 168, 184)");
-    expect(colorOf(button?.querySelector("svg") ?? null)).toBe("rgb(160, 168, 184)");
-  });
+      expect(
+        [...buttons].flatMap((button) => [colorOf(button), colorOf(button.querySelector("svg"))]),
+      ).toEqual(Array.from({ length: 4 }, () => "rgb(160, 168, 184)"));
+    },
+  );
 
   it("spaces every group of the sidebar but the first by 24px", () => {
     const host = styled(

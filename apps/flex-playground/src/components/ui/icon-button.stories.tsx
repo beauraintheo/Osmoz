@@ -9,6 +9,9 @@ const meta = {
     icon: RiArrowGoBackLine,
     label: "Undo",
     onClick: fn(),
+    size: "default",
+    type: "button",
+    variant: "ghost",
   },
   argTypes: {
     disabled: {
@@ -33,19 +36,23 @@ const meta = {
       description: "Replaces the icon with the spinner. See Osmoz/Button.",
       table: { type: { summary: "boolean" } },
     },
-    size: { description: "See Flux/Button." },
+    size: { control: "select", description: "See Flux/Button." },
     type: {
-      control: "inline-radio",
+      control: "select",
       description: "See Osmoz/Button.",
       options: ["button", "submit", "reset"],
       table: { type: { summary: '"button" | "submit" | "reset"' } },
     },
     variant: {
+      control: "select",
       description: "`ghost` by default, the usual look of a toolbar action. See Flux/Button.",
     },
   },
   component: IconButton,
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    app: "flux",
+    layout: "fullscreen",
+  },
   tags: ["autodocs"],
   title: "IconButton",
 } satisfies Meta<typeof IconButton>;
@@ -54,7 +61,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Ghost: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Secondary: Story = {
   args: { variant: "secondary" },
@@ -70,6 +79,11 @@ export const Small: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+  tags: ["state"],
+};
+
+export const FocusableWhenDisabled: Story = {
+  args: { disabled: true, focusableWhenDisabled: true },
   tags: ["state"],
 };
 

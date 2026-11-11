@@ -5,7 +5,7 @@ import { expect } from "storybook/test";
 import { Icon } from "./icon";
 
 const meta = {
-  args: { icon: RiAlertLine },
+  args: { icon: RiAlertLine, size: "default" },
   argTypes: {
     icon: { control: false, description: "A Remix icon component. See Osmoz/Icon." },
     label: {
@@ -14,12 +14,16 @@ const meta = {
       table: { type: { summary: "string" } },
     },
     size: {
+      control: "select",
       description:
         "`default` grows on a coarse pointer, next to touch-sized controls. `sm` keeps its size.",
     },
   },
   component: Icon,
-  parameters: { app: "flux", layout: "fullscreen" },
+  parameters: {
+    app: "flux",
+    layout: "fullscreen",
+  },
   tags: ["autodocs"],
   title: "Icon",
 } satisfies Meta<typeof Icon>;
@@ -28,7 +32,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
+};
 
 export const Small: Story = {
   args: { size: "sm" },

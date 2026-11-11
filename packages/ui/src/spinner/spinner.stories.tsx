@@ -67,6 +67,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ canvas }): Promise<void> => {
     await expect(canvas.queryByRole("status")).toBeNull();
     await expect(canvas.getByTestId("icon").parentElement).toHaveAttribute("aria-hidden", "true");
@@ -81,4 +82,5 @@ export const WithLabel: Story = {
     await expect(status).toHaveTextContent("Loading");
     await expect(canvas.getByTestId("icon").parentElement).toHaveAttribute("aria-hidden", "true");
   },
+  tags: ["!dev"],
 };

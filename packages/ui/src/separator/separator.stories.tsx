@@ -1,32 +1,39 @@
 import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import type { CSSProperties, ReactElement } from "react";
 import { expect } from "storybook/test";
 
 import { Separator } from "./separator.tsx";
 
-const inBlock: Decorator = (Story) => (
-  <div data-story-layout="" style={{ minWidth: "6rem", width: "100%" }}>
-    <Story />
-  </div>
-);
+const ORIENTATIONS = {
+  horizontal: { layout: { minWidth: "6rem", width: "100%" }, line: { borderTop: "1px solid" } },
+  vertical: { layout: { display: "flex", height: "2rem" }, line: { borderLeft: "1px solid" } },
+} as const satisfies Record<string, Record<"layout" | "line", CSSProperties>>;
 
-const inRow: Decorator = (Story) => (
-  <div data-story-layout="" style={{ display: "flex", height: "2rem" }}>
+const inLayout: Decorator = (Story, { args }) => (
+  <div
+    data-story-layout=""
+    style={ORIENTATIONS[args.orientation === "vertical" ? "vertical" : "horizontal"].layout}
+  >
     <Story />
   </div>
 );
 
 const meta = {
-  args: {},
+  args: { orientation: "horizontal" },
   argTypes: {
-    decorative: {
-      description: "Hides the line from assistive technologies, for a purely visual split.",
-    },
     orientation: {
+      control: "select",
       description:
-        "Set as `data-orientation` for the app's style, and as `aria-orientation` unless decorative.",
+        "Set as `aria-orientation` and `data-orientation`, so the app draws the line in the right direction. Defaults to `horizontal`.",
+      options: ["horizontal", "vertical"],
+      table: { type: { summary: '"horizontal" | "vertical"' } },
     },
   },
   component: Separator,
+  decorators: [inLayout],
+  render: (args): ReactElement => (
+    <Separator {...args} style={ORIENTATIONS[args.orientation ?? "horizontal"].line} />
+  ),
   title: "Separator",
 } satisfies Meta<typeof Separator>;
 
@@ -35,7 +42,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  decorators: [inBlock],
+  parameters: { actions: { disable: false }, controls: { disable: false } },
   play: async ({ canvas }): Promise<void> => {
     const separator = canvas.getByRole("separator");
 
@@ -46,24 +53,11 @@ export const Default: Story = {
 
 export const Vertical: Story = {
   args: { orientation: "vertical" },
-  decorators: [inRow],
   play: async ({ canvas }): Promise<void> => {
     const separator = canvas.getByRole("separator");
 
     await expect(separator).toHaveAttribute("aria-orientation", "vertical");
     await expect(separator).toHaveAttribute("data-orientation", "vertical");
   },
-};
-
-export const Decorative: Story = {
-  args: { decorative: true, orientation: "vertical" },
-  decorators: [inRow],
-  play: async ({ canvas, canvasElement }): Promise<void> => {
-    const separator = canvasElement.querySelector("hr");
-
-    await expect(canvas.queryByRole("separator")).toBeNull();
-    await expect(separator).toHaveAttribute("role", "none");
-    await expect(separator).not.toHaveAttribute("aria-orientation");
-    await expect(separator).toHaveAttribute("data-orientation", "vertical");
-  },
+  tags: ["!dev"],
 };

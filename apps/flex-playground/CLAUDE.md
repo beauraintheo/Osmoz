@@ -18,12 +18,10 @@ and why is in [spec.md](spec.md).
   too.
 - `@osmoz/ui`: interface components without style; Flux styles each one it
   uses in `components/ui/`.
-- Remix Icon (`@remixicon/react`): the app's icons, line style, passed as
-  components to `components/ui/icon.tsx`, which holds their sizes
-  (`<Icon icon={RiSaveLine} />`), placed anywhere in a `Button`'s content, or
-  to `IconButton` through its `icon` prop. A pending `Button` shows its
-  spinner first and hides its icons, its text stays. Free for apps and design systems; its
-  license only forbids selling the icons on their own.
+- Remix Icon (`@remixicon/react`): the app's icons, line style, always
+  passed as components to `components/ui/icon.tsx`, which holds their sizes.
+  Free for apps and design systems; its license only forbids selling the
+  icons on their own.
 
 ## Structure
 
@@ -34,14 +32,12 @@ src/
                 exercises/
   domain/       Flexbox knowledge shared by every mode; plain TypeScript
     length/          parsing and normalizing a typed length
-    property-kinds/  one helper per kind of property (keyword, number,
-                     length, number or keyword, text) and the number range
-                     they share; knows nothing of Flexbox
+    property-kinds/  one helper per kind of property, and what the kinds
+                     share; knows nothing of Flexbox
     properties/      the Flexbox properties, built with those kinds: the
                      container and item lists, their MDN links
     layout/          the layout state, its schema and its transitions
-  components/   shared UI with no domain knowledge, built from components/ui:
-                header, language and theme toggles
+  components/   shared UI with no domain knowledge, built from components/ui
     ui/         Flux's design system: one styled version per @osmoz/ui
                 component with its stories, and nothing that knows the
                 app; introduction.mdx, the Flux section's entry page in
@@ -69,8 +65,9 @@ file.
 - `domain` may import `lib`, never React nor any other folder of the app.
 - `components` may import `components/ui`, `lib` and `@osmoz/brand`, never
   `features`, `domain` nor `routes`.
-- `components/ui` may import `lib` and `@osmoz/ui` only: no store, no
-  catalog, no other component of the app. Its texts come in as props.
+- `components/ui` may import `lib`, `@osmoz/ui` and the other files of
+  `components/ui`: no store, no catalog, no component outside it. Its texts
+  come in as props.
 - `routes`, `features` and `components` use the styled components of
   `components/ui/`, never `@osmoz/ui` directly.
 - `lib` imports nothing from the app.
@@ -98,10 +95,8 @@ file.
 | Message catalog              | `i18n/`                  | `fr.ts`                   |
 
 Properties are described in lists, one file per target (container, item).
-Each entry is built by the helper of its kind (`keywordProperty`,
-`numberProperty`, `lengthProperty`, `numberOrKeywordProperty`,
-`textProperty`), which returns the property's Zod schema
-with its description attached, so `z.object` takes a list as it is. A kind
+Each entry is built by the helper of its kind (`<kind>Property`), which
+returns the property's Zod schema with its description attached, so `z.object` takes a list as it is. A kind
 gets its helper only when a property needs it. `property-kinds/` imports
 only Zod and `length/`; anything that names a Flexbox property goes in
 `properties/`. Explanation texts are i18n
@@ -111,29 +106,14 @@ messages, not domain data. MDN links are derived from the property's name
 ## Theme
 
 - File: `src/theme/theme.css`
-- Themes: `light`, `dark`, from board F-01 of the OSM-13 canvas, declared in
-  `src/theme/theme-options.ts` and stored under `flux:theme`. `vite.config.ts`
-  injects the first-paint script of `@osmoz/preferences`;
-  `src/theme/use-theme-store.ts` creates the app's single theme store, a
-  zustand hook imported by `main.tsx` before rendering. Without JavaScript,
-  `light` applies.
-- Switcher: a light/dark toggle in the header on desktop only
-  (`components/theme-toggle.tsx`). It switches from the resolved theme to
-  the other one and stores that choice instead of `system`. The system /
-  light / dark choice in Help › Settings waits for the help dialog (OSM-42).
-- Aliases shared by both themes: `card-foreground`, `popover-foreground` and
-  `secondary-foreground` are `foreground`, `popover` is `card`, `secondary`
-  is `muted`, `ring` and `osmoz-o` are `primary`. `osmoz-cloud` takes the
-  Osmoz cloud color of each theme (docs/brand.md).
-- Roles beyond the contract: `item`, `item-foreground`, `item-border`,
-  `axis-cross`, `code-keyword`, `code-value`.
-- Typography roles, from the OSM-13 canvas: `title` (app and dialog titles,
-  with `font-mono`), `body` (running text), `control` (buttons, fields,
-  property names), `label` (field and group labels, with `font-mono`),
-  `overline` (section titles, with `uppercase`), `code` (generated code),
-  `canvas` (item text), `tile` (value tile labels). Their sizes are in
-  `theme.css` and on boards C-01 and C-02. A role keeps the same size on
-  every screen.
+- Themes: `light`, `dark`, from the mockups, declared in
+  `src/theme/theme-options.ts` and stored under `flux:theme`. Without
+  JavaScript, `light` applies.
+- Tokens: the contract's aliases, the roles beyond the contract and the
+  typography roles are declared in `theme.css`, the single source. A role
+  keeps the same size on every screen.
+- Osmoz mark: the O is `primary`, `#00778D` in light (4.84:1) and `#56D2DF`
+  in dark (9.73:1) on the reference grounds (docs/brand.md).
 - 4 px grid: spacing, sizes (heights, widths, icons) and line heights are
   multiples of 4 px, so no half step of the Tailwind scale (`gap-1.5`,
   `px-2.5`). Font sizes and radii stay outside the grid.
@@ -155,16 +135,9 @@ messages, not domain data. MDN links are derived from the property's name
 ## Languages
 
 - Catalogs: `fr`, the source and the fallback, and `en`, in `src/i18n/`.
-  `src/i18n/use-locale-store.ts` creates the app's single language store, a
-  zustand hook imported by `main.tsx` before rendering, and
-  `src/i18n/use-messages.ts` reads the current catalog from it. Until the visitor
-  picks a language, Flux is in French, whatever the browser's language; the
+  Until the visitor picks a language, Flux is in French, whatever the browser's language; the
   choice is stored under `flux:locale`. `index.html` declares `lang="fr"`.
-- Switcher (OSM-13 canvas): a Français / English choice group in Help ›
-  Settings, the same on desktop and mobile (D-05, M-05), and a FR/EN toggle
-  in the header on desktop only (D-01). Each language is named in itself.
-  The header toggle is built (`components/lang-toggle.tsx`); the Help ›
-  Settings group waits for the help dialog (OSM-42).
+- Each language is named in itself in every switcher.
 
 ## Commands
 

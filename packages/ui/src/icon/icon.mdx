@@ -13,13 +13,13 @@ or announced as an image with a name. Without a `label`, it is decorative. With 
 it becomes an image that screen readers announce. The app gives it its sizes,
 so every icon of the app follows the same scale.
 
-<Canvas of={IconStories.Decorative} />
+<Canvas of={IconStories.Default} />
 
 ## Usage
 
 <Guidelines>
   <Guideline
-    preview={IconStories.Decorative}
+    preview={IconStories.Default}
     when="Next to a text that already says what the icon means."
   >
     Decorative, like an icon inside a `Button`.
@@ -48,7 +48,7 @@ Each card renders its story and lists the attributes read on the rendered
 `<svg>`.
 
 <States>
-  <State of={IconStories.Decorative}>No `label`. Never announced.</State>
+  <State of={IconStories.Default}>No `label`. Never announced.</State>
   <State of={IconStories.WithLabel}>`label`. Announced as an image named `label`.</State>
 </States>
 
@@ -72,7 +72,7 @@ an element: `icon={RiSaveLine}`. The component renders it, with no wrapper,
 and passes it every other prop. Any component that accepts the props of an
 `<svg>` fits, so the package depends on no icon library.
 
-<Controls of={IconStories.WithLabel} />
+<Controls of={IconStories.Default} />
 
 ## Styling
 

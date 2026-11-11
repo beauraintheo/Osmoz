@@ -4,8 +4,8 @@ import type { ComponentProps, ReactElement } from "react";
 import { cn } from "@/lib/cn";
 
 const ORIENTATION_CLASSES = {
-  horizontal: "",
-  vertical: "h-auto self-stretch border-t-0 border-l",
+  horizontal: "border-t",
+  vertical: "self-stretch border-l",
 } as const;
 
 type StyledSeparatorProps = ComponentProps<typeof BaseSeparator>;

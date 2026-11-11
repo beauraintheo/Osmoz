@@ -43,7 +43,7 @@ export const Header = (): ReactElement => {
 
       <IconButton icon={RiQuestionLine} label={messages.header.help} variant="ghost" />
 
-      <Separator className="h-5 self-center max-lg:hidden" decorative orientation="vertical" />
+      <Separator aria-hidden className="h-5 self-center max-lg:hidden" orientation="vertical" />
 
       <OsmozSignature label={messages.signature.label} newTabLabel={messages.link.newTab} />
     </header>

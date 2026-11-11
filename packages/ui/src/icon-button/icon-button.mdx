@@ -9,9 +9,8 @@ import * as IconButtonStories from "./icon-button.stories";
 # IconButton
 
 A `Button` whose action is shown by an icon alone. It requires a text `label`,
-which becomes its accessible name, and hides the icon from assistive
-technologies, so a screen reader announces "Undo, button" and not an unnamed
-graphic.
+which becomes its accessible name, so a screen reader announces "Undo, button"
+and not an unnamed graphic.
 
 <Canvas of={IconButtonStories.Default} />
 
@@ -68,7 +67,9 @@ In every state, the accessible name stays the `label`.
   its catalog.
 - `label` is required and `aria-label` and `children` are not props: the name
   cannot be left out or overridden.
-- The icon is wrapped in `<span aria-hidden="true">`: it is never announced.
+- The icon is never announced: `aria-label` replaces the button's content as
+  its name, and a button's content is not read on its own. The app passes a
+  decorative `Icon` all the same.
 
 ## API
 
@@ -81,8 +82,7 @@ The props of `Button`, minus `aria-label` and `children`, plus `icon` and
 
 The component has no class. Each app styles it in its own
 `components/ui/icon-button.tsx`: a square size for the button and its icon, and
-the same state classes as `Button` (`disabled:`, `aria-disabled:`,
-`aria-busy:`, `focus-visible:`). See each app's section of this Storybook for
+the same state classes as `Button`. See each app's section of this Storybook for
 its look.
 
 The roles of the contract a styled icon button maps to, with their values in

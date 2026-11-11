@@ -1,19 +1,12 @@
-import type { ComponentProps, ReactElement } from "react";
+import { Separator as BaseSeparator } from "@base-ui/react/separator";
+import type { ComponentProps, CSSProperties, ReactElement } from "react";
 
-interface SeparatorProps extends Omit<ComponentProps<"hr">, "children" | "role"> {
-  decorative?: boolean;
-  orientation?: "horizontal" | "vertical";
+interface SeparatorProps extends Omit<
+  ComponentProps<typeof BaseSeparator>,
+  "children" | "className" | "render" | "role" | "style"
+> {
+  className?: string;
+  style?: CSSProperties;
 }
 
-export const Separator = ({
-  decorative = false,
-  orientation = "horizontal",
-  ...props
-}: SeparatorProps): ReactElement => (
-  <hr
-    {...props}
-    aria-orientation={decorative ? undefined : orientation}
-    data-orientation={orientation}
-    role={decorative ? "none" : undefined}
-  />
-);
+export const Separator = (props: SeparatorProps): ReactElement => <BaseSeparator {...props} />;

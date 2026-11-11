@@ -20,6 +20,8 @@ const LABELS = {
   small: "Small",
 } as const;
 
+const PARENT = "parent";
+
 const meta = {
   args: {
     children: LABELS.save,
@@ -229,23 +231,22 @@ export const LongLabel: Story = {
       },
     },
   },
-  play: async ({ canvas, canvasElement }): Promise<void> => {
-    const parent = canvasElement.querySelector("[data-parent]")?.getBoundingClientRect().width;
+  play: async ({ canvas }): Promise<void> => {
+    const parent = canvas.getByTestId(PARENT).getBoundingClientRect().width;
     const buttons = canvas.getAllByRole("button", { name: LABELS.long });
-    const icon = buttons[1]?.querySelector("svg")?.getBoundingClientRect();
+    const sizes = buttons.map((button) => ({
+      fits: button.scrollHeight === button.clientHeight,
+      ...button.getBoundingClientRect().toJSON(),
+    }));
 
-    await expect(buttons).toHaveLength(2);
-    await Promise.all(
-      buttons.map(async (button) => {
-        await expect(button.getBoundingClientRect().width).toBeLessThanOrEqual(parent ?? 0);
-        await expect(button.getBoundingClientRect().height).toBeGreaterThan(32);
-        await expect(button.scrollHeight).toBe(button.clientHeight);
-      }),
-    );
-    await expect(icon?.width).toBe(16);
+    await expect(sizes).toHaveLength(2);
+    await expect(sizes.every(({ width }) => width <= parent)).toBe(true);
+    await expect(sizes.every(({ height }) => height > 32)).toBe(true);
+    await expect(sizes.every(({ fits }) => fits)).toBe(true);
+    await expect(buttons[1]?.querySelector("svg")?.getBoundingClientRect().width).toBe(16);
   },
   render: (): ReturnType<typeof Button> => (
-    <div className="flex w-40 flex-col items-start gap-2" data-parent>
+    <div className="flex w-40 flex-col items-start gap-2" data-testid={PARENT}>
       <Button>{LABELS.long}</Button>
       <Button>
         <Icon icon={RiSaveLine} />
@@ -265,17 +266,18 @@ export const TruncatedLabel: Story = {
       },
     },
   },
-  play: async ({ canvas, canvasElement }): Promise<void> => {
-    const parent = canvasElement.querySelector("[data-parent]")?.getBoundingClientRect().width;
+  play: async ({ canvas }): Promise<void> => {
+    const parent = canvas.getByTestId(PARENT).getBoundingClientRect().width;
     const button = canvas.getByRole("button", { name: LABELS.long });
+    const { height, width } = button.getBoundingClientRect();
     const label = button.querySelector("span");
 
-    await expect(button.getBoundingClientRect().width).toBeLessThanOrEqual(parent ?? 0);
-    await expect(button.getBoundingClientRect().height).toBe(32);
+    await expect(width).toBeLessThanOrEqual(parent);
+    await expect(height).toBe(32);
     await expect(label?.scrollWidth).toBeGreaterThan(label?.clientWidth ?? 0);
   },
   render: (): ReturnType<typeof Button> => (
-    <div className="w-40" data-parent>
+    <div className="w-40" data-testid={PARENT}>
       <Button>
         <Icon icon={RiSaveLine} />
         <span className="min-w-0 truncate">{LABELS.long}</span>

@@ -1,13 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import {
-  addedProps,
-  importSnippet,
-  pageStories,
-  pageTokens,
-  storyDescription,
-  uiStoryId,
-} from "./page-data";
+import { addedProps, importSnippet, pageStories, pageTokens, uiStoryId } from "./page-data";
 
 const INDEX = {
   entries: {
@@ -122,26 +115,22 @@ describe("pageTokens", () => {
 });
 
 describe("importSnippet", () => {
-  it("imports the component from its file in components/ui", () => {
-    expect(importSnippet("Button")).toBe('import { Button } from "@/components/ui/button";');
+  it("imports the component from the file next to its stories", () => {
+    expect(
+      importSnippet("IconButton", {
+        fileName: "./apps/flex-playground/src/components/ui/icon-button.stories.tsx",
+      }),
+    ).toBe('import { IconButton } from "@/components/ui/icon-button";');
   });
 
-  it("names the file in kebab-case", () => {
-    expect(importSnippet("IconButton")).toBe(
-      'import { IconButton } from "@/components/ui/icon-button";',
-    );
-  });
-});
-
-describe("storyDescription", () => {
-  it("reads the description of the story", () => {
-    expect(storyDescription({ docs: { description: { story: "Three looks." } } })).toBe(
-      "Three looks.",
-    );
+  it("writes nothing for stories outside an app's src", () => {
+    expect(
+      importSnippet("Button", { fileName: "./packages/ui/button/button.stories.tsx" }),
+    ).toBeUndefined();
   });
 
-  it("reads nothing when the story has no description", () => {
-    expect(storyDescription({ docs: {} })).toBeUndefined();
+  it("writes nothing without the stories' file name", () => {
+    expect(importSnippet("Button", {})).toBeUndefined();
   });
 });
 

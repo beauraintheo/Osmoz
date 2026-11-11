@@ -11,7 +11,6 @@ const LABELS = {
 } as const;
 
 const meta = {
-  args: {},
   argTypes: {
     orientation: {
       control: "select",

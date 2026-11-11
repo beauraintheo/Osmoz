@@ -13,11 +13,11 @@ const storyIndexSchema = z.object({
   ),
 });
 
-const descriptionSchema = z.object({
-  docs: z.object({ description: z.object({ story: z.string() }) }),
-});
+const fileNameSchema = z.object({ fileName: z.string() });
 
 const tokensSchema = z.object({ tokens: z.record(z.string(), z.string()) });
+
+const STORIES_FILE = /\/src\/(.+)\.stories\.tsx$/;
 
 export interface PageToken {
   name: string;
@@ -28,13 +28,13 @@ interface TaggedStory {
   tags: string[];
 }
 
-export interface PageStories<T extends TaggedStory> {
+interface PageStories<T extends TaggedStory> {
   default: T | undefined;
   edgeCases: T[];
   examples: T[];
 }
 
-export const EDGE_CASE_TAG = "edge-case";
+const EDGE_CASE_TAG = "edge-case";
 
 export const pageStories = <T extends TaggedStory>(stories: readonly T[]): PageStories<T> => {
   const [first, ...rest] = stories;
@@ -74,14 +74,9 @@ export const pageTokens = (parameters: unknown): PageToken[] => {
     : [];
 };
 
-export const importSnippet = (component: string): string => {
-  const file = component.replaceAll(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
+export const importSnippet = (component: string, parameters: unknown): string | undefined => {
+  const result = fileNameSchema.safeParse(parameters);
+  const path = result.success ? STORIES_FILE.exec(result.data.fileName)?.[1] : undefined;
 
-  return `import { ${component} } from "@/components/ui/${file}";`;
-};
-
-export const storyDescription = (parameters: unknown): string | undefined => {
-  const result = descriptionSchema.safeParse(parameters);
-
-  return result.success ? result.data.docs.description.story : undefined;
+  return path === undefined ? undefined : `import { ${component} } from "@/${path}";`;
 };

@@ -1,9 +1,9 @@
 import {
   ArgTypes,
   Canvas,
+  Description,
   DocsContext,
   Heading,
-  Markdown,
   Source,
   Subheading,
   Title,
@@ -17,14 +17,7 @@ import { breadcrumbParts } from "../../manager/breadcrumb-parts";
 import { sentenceCase } from "../blocks/attributes/sentence-case";
 import { Token, Tokens } from "../blocks/tokens/tokens";
 import { DocsAnchor } from "../docs-anchor";
-import {
-  addedProps,
-  importSnippet,
-  pageStories,
-  pageTokens,
-  storyDescription,
-  uiStoryId,
-} from "./page-data";
+import { addedProps, importSnippet, pageStories, pageTokens, uiStoryId } from "./page-data";
 import { PAGE_MESSAGES } from "./page-messages";
 
 interface UiComponent {
@@ -43,17 +36,13 @@ const Examples = ({ stories, title }: ExamplesProps): ReactElement | null =>
   stories.length === 0 ? null : (
     <>
       <Heading>{title}</Heading>
-      {stories.map((story) => {
-        const description = storyDescription(story.parameters);
-
-        return (
-          <div key={story.id}>
-            <Subheading>{sentenceCase(story.name)}</Subheading>
-            {description === undefined ? null : <Markdown>{description}</Markdown>}
-            <Canvas of={story.moduleExport} />
-          </div>
-        );
-      })}
+      {stories.map((story) => (
+        <div key={story.id}>
+          <Subheading>{sentenceCase(story.name)}</Subheading>
+          <Description of={story.moduleExport} />
+          <Canvas of={story.moduleExport} />
+        </div>
+      ))}
     </>
   );
 
@@ -66,6 +55,7 @@ export const AppComponentPage = (): ReactElement => {
   const { argTypes } = context.storyById();
   const stories = pageStories(context.componentStories());
   const tokens = pageTokens(preparedMeta.parameters);
+  const snippet = importSnippet(component, preparedMeta.parameters);
   const uiPage = PAGE_MESSAGES.intro.uiPage(component);
 
   useEffect(() => {
@@ -119,7 +109,7 @@ export const AppComponentPage = (): ReactElement => {
           {PAGE_MESSAGES.intro.contract} <DocsAnchor id={ui.id}>{uiPage}</DocsAnchor>
         </p>
       )}
-      <Source code={importSnippet(component)} dark language="tsx" />
+      {snippet === undefined ? null : <Source code={snippet} dark language="tsx" />}
       {stories.default === undefined ? null : <Canvas of={stories.default.moduleExport} />}
 
       <Examples stories={stories.examples} title={PAGE_MESSAGES.examples.title} />

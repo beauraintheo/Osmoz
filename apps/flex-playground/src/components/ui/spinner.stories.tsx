@@ -10,7 +10,6 @@ const LABELS = {
 } as const;
 
 const meta = {
-  args: {},
   argTypes: {
     label: {
       control: "text",

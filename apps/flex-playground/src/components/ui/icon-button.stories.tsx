@@ -6,7 +6,6 @@ import { IconButton } from "./icon-button";
 
 const LABELS = {
   delete: "Delete",
-  disabled: "Redo",
   focusable: "Delete item",
   pending: "Saving",
   redo: "Redo",
@@ -123,7 +122,7 @@ export const States: Story = {
   play: async ({ canvas }): Promise<void> => {
     const pending = canvas.getByRole("button", { name: LABELS.pending });
 
-    await expect(canvas.getByRole("button", { name: LABELS.disabled })).toBeDisabled();
+    await expect(canvas.getByRole("button", { name: LABELS.redo })).toBeDisabled();
     await expect(canvas.getByRole("button", { name: LABELS.focusable })).toHaveAttribute(
       "aria-disabled",
       "true",
@@ -133,7 +132,7 @@ export const States: Story = {
   },
   render: (): ReturnType<typeof IconButton> => (
     <div className="flex items-center gap-2">
-      <IconButton disabled icon={RiArrowGoForwardLine} label={LABELS.disabled} />
+      <IconButton disabled icon={RiArrowGoForwardLine} label={LABELS.redo} />
       <IconButton disabled focusableWhenDisabled icon={RiDeleteBinLine} label={LABELS.focusable} />
       <IconButton icon={RiArrowGoBackLine} label={LABELS.pending} pending />
     </div>

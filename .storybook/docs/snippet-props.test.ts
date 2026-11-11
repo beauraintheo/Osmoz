@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { showInSnippet } from "./snippet-props";
+import { functionName, showInSnippet } from "./snippet-props";
 
 describe("showInSnippet", () => {
   it("shows a prop the story sets", () => {
@@ -21,5 +21,23 @@ describe("showInSnippet", () => {
 
   it("shows a prop whose name only starts with on", () => {
     expect(showInSnippet(true, "once")).toBe(true);
+  });
+});
+
+describe("functionName", () => {
+  it("names a component passed as a prop, as the code would", () => {
+    const RiSaveLine = (): null => null;
+
+    expect(functionName(RiSaveLine)).toBe("RiSaveLine");
+  });
+
+  it("hides a name the bundler shortened, which the code never shows", () => {
+    const Qx = (): null => null;
+
+    expect(functionName(Qx)).toBe("…");
+  });
+
+  it("hides a value that is not a function", () => {
+    expect(functionName("RiSaveLine")).toBe("…");
   });
 });

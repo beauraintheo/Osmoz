@@ -102,16 +102,22 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
    `.test.ts`. Its texts come from the app, as props.
 3. **Style it** in `apps/<app>/src/components/ui/<component>.tsx`: wrap the
    `@osmoz/ui` component and give it the app's classes with `cn`. Every state
-   of the boards has its class.
+   of the boards has its class. List its edge cases before you style it, like
+   a label too long for its parent or a state that must not move the layout:
+   each becomes a story tagged `edge-case`, whose `play` test proves the look
+   holds ([conventions.md](conventions.md#architecture)).
 4. **Document it.** `/document-component <component>` in Claude Code drafts
    its stories and doc page, following an existing component. Its Osmoz page
    follows one outline, after Base UI's:
-   - **Title and description**, then the `Default` story with its code shown.
+   - **Title and description**, then the `Default` story with its code.
    - **Anatomy**, only for a component made of several parts: its import and
      how its parts nest, in a `tsx` code block.
    - **Usage**: when to use it, and which component to use instead.
    - **Examples**: one per behavior, each a heading, a sentence and its story
-     with its code shown. Each story has its `play` test.
+     with its code. Each story has its `play` test.
+   - **Edge cases**: the same shape, one per edge case of the behavior, like
+     a prop that overrides another or an empty text. Its story is tagged
+     `edge-case` and its `play` test proves the behavior holds.
    - **Keyboard**, **Accessibility**.
    - **API**: its props (`Controls`); the `role`, `aria-*` and `data-*`
      attributes it sets, read from its stories (`Attributes`), which each app
@@ -121,7 +127,7 @@ shared, and its look in the app ([conventions.md](conventions.md#architecture)).
 
    The stories render with a neutral demo style, owned by the Storybook
    (`.storybook/docs/demo/`): it reads the component's attributes, so each
-   state is visible while the code shown stays the API, without a class.
+   state is visible while the code stays the API, without a class.
 
 5. **Use it.** Routes, features and the app's own components import the
    styled component from `components/ui/`, never `@osmoz/ui` directly.

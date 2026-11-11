@@ -8,7 +8,7 @@ interface IconProps extends Omit<SvgProps, "aria-hidden" | "aria-label" | "role"
 }
 
 export const Icon = ({ icon: Svg, label, ...props }: IconProps): ReactElement =>
-  label === undefined ? (
+  label === undefined || label === "" ? (
     <Svg {...props} aria-hidden />
   ) : (
     <Svg {...props} aria-label={label} role="img" />

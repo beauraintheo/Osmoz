@@ -52,13 +52,14 @@ export const Token = ({ children, name }: TokenProps): ReactElement => {
   }, [name]);
 
   return (
-    <li className="osmoz-token" ref={item}>
-      <span
-        aria-hidden="true"
-        className="osmoz-token-swatch"
-        data-color={token.color}
-        style={token.color ? { background: token.value } : undefined}
-      />
+    <li className="osmoz-token" data-color={token.color} ref={item}>
+      {token.color ? (
+        <span
+          aria-hidden="true"
+          className="osmoz-token-swatch"
+          style={{ background: token.value }}
+        />
+      ) : null}
       <span className="osmoz-token-name">
         <code>{variable}</code>
         <span className="osmoz-token-value">{token.value}</span>

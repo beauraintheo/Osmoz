@@ -29,9 +29,8 @@
   box-shadow: inset 0 0 0 1px var(--border);
 }
 
-.osmoz-token-swatch[data-color="false"] {
-  border: 1px dashed var(--border);
-  box-shadow: none;
+.osmoz-tokens .osmoz-token[data-color="false"] {
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
 }
 
 .osmoz-token-name {
@@ -70,7 +69,11 @@
     grid-template-columns: 40px minmax(0, 1fr);
   }
 
-  .osmoz-token-role {
+  .osmoz-tokens .osmoz-token[data-color="false"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .osmoz-token[data-color="true"] .osmoz-token-role {
     grid-column: 2;
   }
 }

@@ -5,13 +5,25 @@ import { expect, fn } from "storybook/test";
 import { Button } from "./button";
 import { Icon } from "./icon";
 
+const LABELS = {
+  copyCss: "Copy CSS",
+  copyHtml: "Copy HTML",
+  disabled: "Disabled",
+  focusable: "Focusable",
+  ghost: "Ghost",
+  long: "Export the whole layout as CSS",
+  next: "Next",
+  primary: "Primary",
+  save: "Save",
+  saving: "Saving",
+  secondary: "Secondary",
+  small: "Small",
+} as const;
+
 const meta = {
   args: {
-    children: "Save",
+    children: LABELS.save,
     onClick: fn(),
-    size: "default",
-    type: "button",
-    variant: "secondary",
   },
   argTypes: {
     children: { description: "See Osmoz/Button." },
@@ -75,96 +87,230 @@ export const Default: Story = {
   parameters: { actions: { disable: false }, controls: { disable: false } },
 };
 
-export const Primary: Story = {
-  args: { variant: "primary" },
-};
-
-export const Ghost: Story = {
-  args: { variant: "ghost" },
-};
-
-export const Small: Story = {
-  args: { size: "sm" },
-};
-
-export const WithIcon: Story = {
-  play: async ({ canvas }): Promise<void> => {
-    const button = canvas.getByRole("button", { name: "Save" });
-
-    await expect(button.querySelector("svg[aria-hidden='true']")).not.toBeNull();
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "`primary` for the main action of a view, `secondary`, the default, for the others, `ghost` for a quiet action in a toolbar.",
+      },
+    },
   },
-  render: ({ children, ...args }): ReturnType<typeof Button> => (
-    <Button {...args}>
-      <Icon icon={RiSaveLine} />
-      {children}
-    </Button>
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(3);
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button variant="primary">{LABELS.primary}</Button>
+      <Button variant="secondary">{LABELS.secondary}</Button>
+      <Button variant="ghost">{LABELS.ghost}</Button>
+    </div>
   ),
 };
 
-export const WithIconAtEnd: Story = {
-  args: { children: "Next" },
-  play: async ({ canvas }): Promise<void> => {
-    const button = canvas.getByRole("button", { name: "Next" });
-
-    await expect(button.lastElementChild).toHaveAttribute("aria-hidden", "true");
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "`sm` for dense toolbars. Both sizes grow on a coarse pointer, to stay touchable.",
+      },
+    },
   },
-  render: ({ children, ...args }): ReturnType<typeof Button> => (
-    <Button {...args}>
-      {children}
-      <Icon icon={RiArrowRightLine} />
-    </Button>
-  ),
-};
-
-const COPY_HTML = "Copy HTML";
-
-export const Usage: Story = {
-  args: { children: "Copy CSS", variant: "primary" },
   play: async ({ canvas }): Promise<void> => {
     await expect(canvas.getAllByRole("button")).toHaveLength(2);
   },
-  render: ({ children, ...args }): ReturnType<typeof Button> => (
-    <div className="flex gap-2">
-      <Button {...args}>
-        <Icon icon={RiFileCopyLine} />
-        {children}
-      </Button>
-      <Button>
-        <Icon icon={RiFileCopyLine} />
-        {COPY_HTML}
-      </Button>
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button>{LABELS.save}</Button>
+      <Button size="sm">{LABELS.small}</Button>
     </div>
   ),
-  tags: ["usage"],
 };
 
-export const Disabled: Story = {
-  args: { disabled: true },
-  tags: ["state"],
-};
-
-export const FocusableWhenDisabled: Story = {
-  args: { disabled: true, focusableWhenDisabled: true },
-  tags: ["state"],
-};
-
-export const Pending: Story = {
-  args: { pending: true, variant: "primary" },
+export const States: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Disabled, disabled but still focusable, and pending. A pending button shows the spinner in place of its icon.",
+      },
+    },
+  },
   play: async ({ canvas }): Promise<void> => {
-    const button = canvas.getByRole("button", { name: "Save" });
+    await expect(canvas.getByRole("button", { name: LABELS.disabled })).toBeDisabled();
+    await expect(canvas.getByRole("button", { name: LABELS.focusable })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
 
-    const [spinner, icon] = button.children;
+    const pending = canvas.getByRole("button", { name: LABELS.saving });
+    const [spinner, icon] = pending.children;
 
-    await expect(button).toHaveAttribute("aria-busy", "true");
-    await expect(button).toHaveTextContent("Save");
+    await expect(pending).toHaveAttribute("aria-busy", "true");
     await expect(spinner).toBeVisible();
     await expect(icon).not.toBeVisible();
   },
-  render: ({ children, ...args }): ReturnType<typeof Button> => (
-    <Button {...args}>
-      <Icon icon={RiSaveLine} />
-      {children}
-    </Button>
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button disabled>{LABELS.disabled}</Button>
+      <Button disabled focusableWhenDisabled>
+        {LABELS.focusable}
+      </Button>
+      <Button pending variant="primary">
+        <Icon icon={RiSaveLine} />
+        {LABELS.saving}
+      </Button>
+    </div>
   ),
-  tags: ["state"],
+};
+
+export const WithIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "An icon goes before the label, or after it for an action that moves forward. It is decorative: the label names the action.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    const save = canvas.getByRole("button", { name: LABELS.save });
+    const next = canvas.getByRole("button", { name: LABELS.next });
+
+    await expect(save.firstElementChild).toHaveAttribute("aria-hidden", "true");
+    await expect(next.lastElementChild).toHaveAttribute("aria-hidden", "true");
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button>
+        <Icon icon={RiSaveLine} />
+        {LABELS.save}
+      </Button>
+      <Button>
+        {LABELS.next}
+        <Icon icon={RiArrowRightLine} />
+      </Button>
+    </div>
+  ),
+};
+
+export const InAToolbar: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "One primary action per view, next to secondary ones: the export bar of the generated code.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(2);
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex gap-2">
+      <Button variant="primary">
+        <Icon icon={RiFileCopyLine} />
+        {LABELS.copyCss}
+      </Button>
+      <Button>
+        <Icon icon={RiFileCopyLine} />
+        {LABELS.copyHtml}
+      </Button>
+    </div>
+  ),
+};
+
+export const LongLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "In a narrow parent, the label wraps and the button grows taller to hold it. The icon keeps its size.",
+      },
+    },
+  },
+  play: async ({ canvas, canvasElement }): Promise<void> => {
+    const parent = canvasElement.querySelector("[data-parent]")?.getBoundingClientRect().width;
+    const buttons = canvas.getAllByRole("button", { name: LABELS.long });
+    const icon = buttons[1]?.querySelector("svg")?.getBoundingClientRect();
+
+    await expect(buttons).toHaveLength(2);
+    await Promise.all(
+      buttons.map(async (button) => {
+        await expect(button.getBoundingClientRect().width).toBeLessThanOrEqual(parent ?? 0);
+        await expect(button.getBoundingClientRect().height).toBeGreaterThan(32);
+        await expect(button.scrollHeight).toBe(button.clientHeight);
+      }),
+    );
+    await expect(icon?.width).toBe(16);
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex w-40 flex-col items-start gap-2" data-parent>
+      <Button>{LABELS.long}</Button>
+      <Button>
+        <Icon icon={RiSaveLine} />
+        {LABELS.long}
+      </Button>
+    </div>
+  ),
+  tags: ["edge-case"],
+};
+
+export const TruncatedLabel: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Where a label must stay on one line, like in a toolbar, wrap it in a `truncate` span: it ends with an ellipsis and the button keeps its height. The accessible name stays whole.",
+      },
+    },
+  },
+  play: async ({ canvas, canvasElement }): Promise<void> => {
+    const parent = canvasElement.querySelector("[data-parent]")?.getBoundingClientRect().width;
+    const button = canvas.getByRole("button", { name: LABELS.long });
+    const label = button.querySelector("span");
+
+    await expect(button.getBoundingClientRect().width).toBeLessThanOrEqual(parent ?? 0);
+    await expect(button.getBoundingClientRect().height).toBe(32);
+    await expect(label?.scrollWidth).toBeGreaterThan(label?.clientWidth ?? 0);
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="w-40" data-parent>
+      <Button>
+        <Icon icon={RiSaveLine} />
+        <span className="min-w-0 truncate">{LABELS.long}</span>
+      </Button>
+    </div>
+  ),
+  tags: ["edge-case"],
+};
+
+export const PendingKeepsItsWidth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "With an icon, the spinner takes the icon's place: the button keeps its width while the action runs, and nothing around it moves.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    const [idle, pending] = canvas.getAllByRole("button", { name: LABELS.save });
+
+    await expect(pending).toHaveAttribute("aria-busy", "true");
+    await expect(pending?.getBoundingClientRect().width).toBe(idle?.getBoundingClientRect().width);
+  },
+  render: (): ReturnType<typeof Button> => (
+    <div className="flex flex-col items-start gap-2">
+      <Button variant="primary">
+        <Icon icon={RiSaveLine} />
+        {LABELS.save}
+      </Button>
+      <Button pending variant="primary">
+        <Icon icon={RiSaveLine} />
+        {LABELS.save}
+      </Button>
+    </div>
+  ),
+  tags: ["edge-case"],
 };

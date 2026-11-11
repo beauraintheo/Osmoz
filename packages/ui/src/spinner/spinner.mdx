@@ -40,6 +40,15 @@ A live region announces what changes after it appears. A spinner mounted with
 its label at once may not be announced by every screen reader. This limit is
 not covered by a test.
 
+## Edge cases
+
+### Inside a pending button
+
+Without `label`, the spinner stays hidden from assistive technologies: the
+button's name and its `aria-busy` say it, and nothing is announced twice.
+
+<Canvas of={SpinnerStories.InsideAPendingButton} />
+
 ## Keyboard
 
 None: the spinner is never focusable.

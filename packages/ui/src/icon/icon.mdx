@@ -47,6 +47,15 @@ Every other prop goes to the icon component, like an `id`.
 
 <Canvas of={IconStories.WithSvgProps} />
 
+## Edge cases
+
+### Empty label
+
+An empty `label` counts as none: the icon stays decorative, never an image
+without a name.
+
+<Canvas of={IconStories.EmptyLabel} />
+
 ## Keyboard
 
 None: the icon is never focusable.

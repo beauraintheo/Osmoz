@@ -1,16 +1,31 @@
-import { ArgTypes, Canvas, DocsContext, Heading, Title, useOf } from "@storybook/addon-docs/blocks";
-import { composeStory } from "@storybook/react-vite";
+import {
+  ArgTypes,
+  Canvas,
+  DocsContext,
+  Heading,
+  Markdown,
+  Source,
+  Subheading,
+  Title,
+  useOf,
+} from "@storybook/addon-docs/blocks";
 import { useContext, useEffect, useState } from "react";
 import type { ReactElement } from "react";
-import type { ModuleExport } from "storybook/internal/types";
+import type { PreparedStory } from "storybook/internal/types";
 
 import { breadcrumbParts } from "../../manager/breadcrumb-parts";
+import { sentenceCase } from "../blocks/attributes/sentence-case";
 import { Token, Tokens } from "../blocks/tokens/tokens";
 import { DocsAnchor } from "../docs-anchor";
-import { addedProps, argOptions, pageTokens, uiStoryId } from "./page-data";
+import {
+  addedProps,
+  importSnippet,
+  pageStories,
+  pageTokens,
+  storyDescription,
+  uiStoryId,
+} from "./page-data";
 import { PAGE_MESSAGES } from "./page-messages";
-
-import "./app-component-page.css";
 
 interface UiComponent {
   argTypes: Readonly<Record<string, unknown>>;
@@ -19,36 +34,37 @@ interface UiComponent {
 
 type UiLookup = { status: "loading" } | { status: "done"; ui: UiComponent | undefined };
 
-interface CellProps {
-  args: Readonly<Record<string, unknown>>;
-  meta: ModuleExport;
-  story: ModuleExport;
+interface ExamplesProps {
+  stories: PreparedStory[];
+  title: string;
 }
 
-const REST = {};
+const Examples = ({ stories, title }: ExamplesProps): ReactElement | null =>
+  stories.length === 0 ? null : (
+    <>
+      <Heading>{title}</Heading>
+      {stories.map((story) => {
+        const description = storyDescription(story.parameters);
 
-const Cell = ({ args, meta, story }: CellProps): ReactElement => {
-  const render = composeStory(story, meta);
-
-  return <div className="osmoz-matrix-cell">{render(args)}</div>;
-};
-
-const variantArgs = (variant: string | undefined): Readonly<Record<string, unknown>> =>
-  variant === undefined ? {} : { variant };
+        return (
+          <div key={story.id}>
+            <Subheading>{sentenceCase(story.name)}</Subheading>
+            {description === undefined ? null : <Markdown>{description}</Markdown>}
+            <Canvas of={story.moduleExport} />
+          </div>
+        );
+      })}
+    </>
+  );
 
 export const AppComponentPage = (): ReactElement => {
   const context = useContext(DocsContext);
-  const { csfFile, preparedMeta } = useOf("meta", ["meta"]);
+  const { preparedMeta } = useOf("meta", ["meta"]);
   const [lookup, setLookup] = useState<UiLookup>({ status: "loading" });
   const { current: component, parents } = breadcrumbParts(preparedMeta.title);
   const [app = ""] = parents;
-  const meta: ModuleExport = csfFile.moduleExports.default;
-  const stories = context.componentStories();
   const { argTypes } = context.storyById();
-  const states = stories.filter((story) => story.tags.includes("state"));
-  const usage = stories.find((story) => story.tags.includes("usage"));
-  const variants = argOptions(argTypes.variant);
-  const sizes = argOptions(argTypes.size);
+  const stories = pageStories(context.componentStories());
   const tokens = pageTokens(preparedMeta.parameters);
   const uiPage = PAGE_MESSAGES.intro.uiPage(component);
 
@@ -103,67 +119,18 @@ export const AppComponentPage = (): ReactElement => {
           {PAGE_MESSAGES.intro.contract} <DocsAnchor id={ui.id}>{uiPage}</DocsAnchor>
         </p>
       )}
+      <Source code={importSnippet(component)} dark language="tsx" />
+      {stories.default === undefined ? null : <Canvas of={stories.default.moduleExport} />}
 
-      <Heading>{PAGE_MESSAGES.matrix.title}</Heading>
-      <div className="osmoz-matrix sb-unstyled">
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">{PAGE_MESSAGES.matrix.variant}</th>
-              <th scope="col">{PAGE_MESSAGES.matrix.rest}</th>
-              {states.map((state) => (
-                <th key={state.id} scope="col">
-                  {state.name}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {(variants.length === 0 ? [undefined] : variants).map((variant) => (
-              <tr key={variant ?? component}>
-                <th scope="row">
-                  <code>{variant ?? component}</code>
-                </th>
-                <td>
-                  <Cell args={variantArgs(variant)} meta={meta} story={REST} />
-                </td>
-                {states.map((state) => (
-                  <td key={state.id}>
-                    <Cell args={variantArgs(variant)} meta={meta} story={state.moduleExport} />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {sizes.length === 0 ? null : (
-        <>
-          <Heading>{PAGE_MESSAGES.sizes.title}</Heading>
-          <ul className="osmoz-sizes sb-unstyled">
-            {sizes.map((size) => (
-              <li key={size}>
-                <Cell args={{ size }} meta={meta} story={REST} />
-                <code>{size}</code>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {usage === undefined ? null : (
-        <>
-          <Heading>{PAGE_MESSAGES.usage.title}</Heading>
-          <Canvas of={usage.moduleExport} />
-        </>
-      )}
+      <Examples stories={stories.examples} title={PAGE_MESSAGES.examples.title} />
+      <Examples stories={stories.edgeCases} title={PAGE_MESSAGES.edgeCases.title} />
 
       {ui === undefined ? null : (
         <>
-          <Heading>{PAGE_MESSAGES.addedProps.title(app)}</Heading>
+          <Heading>{PAGE_MESSAGES.api.title}</Heading>
+          <Subheading>{PAGE_MESSAGES.api.addedProps(app)}</Subheading>
           {added.length === 0 ? (
-            <p>{PAGE_MESSAGES.addedProps.none(app, component)}</p>
+            <p>{PAGE_MESSAGES.api.none(app, component)}</p>
           ) : (
             <ArgTypes include={added} />
           )}
@@ -172,7 +139,7 @@ export const AppComponentPage = (): ReactElement => {
 
       {tokens.length === 0 ? null : (
         <>
-          <Heading>{PAGE_MESSAGES.tokens.title}</Heading>
+          <Subheading>{PAGE_MESSAGES.tokens.title}</Subheading>
           <p>{PAGE_MESSAGES.tokens.intro}</p>
           <Tokens>
             {tokens.map(({ name, role }) => (

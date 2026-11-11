@@ -13,9 +13,9 @@ describe("PAGE_MESSAGES", () => {
     expect(PAGE_MESSAGES.intro.uiPage("Button")).toBe("Osmoz/Button");
   });
 
-  it("names the app in the props section", () => {
-    expect(PAGE_MESSAGES.addedProps.title("Flux")).toBe("Props added by Flux");
-    expect(PAGE_MESSAGES.addedProps.none("Flux", "Separator")).toBe(
+  it("names the app in the API section", () => {
+    expect(PAGE_MESSAGES.api.addedProps("Flux")).toBe("Props added by Flux");
+    expect(PAGE_MESSAGES.api.none("Flux", "Separator")).toBe(
       "Flux adds no prop: every prop comes from the Osmoz Separator.",
     );
   });

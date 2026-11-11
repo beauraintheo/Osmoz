@@ -108,3 +108,46 @@ export const Pending: Story = {
   },
   tags: ["!dev"],
 };
+
+export const PendingWinsOverDisabled: Story = {
+  args: {
+    disabled: false,
+    focusableWhenDisabled: false,
+    pending: true,
+  },
+  play: async ({ args, canvas, userEvent }): Promise<void> => {
+    const button = canvas.getByRole("button");
+
+    await expect(button).toHaveAttribute("aria-busy", "true");
+    await expect(button).toHaveAttribute("aria-disabled", "true");
+
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+
+    await userEvent.click(button);
+    await expect(args.onClick).not.toHaveBeenCalled();
+  },
+  tags: ["!dev", "edge-case"],
+};
+
+const submitForm = fn();
+
+export const NeverSubmitsItsForm: Story = {
+  play: async ({ args, canvas, userEvent }): Promise<void> => {
+    await userEvent.click(canvas.getByRole("button"));
+
+    await expect(args.onClick).toHaveBeenCalledOnce();
+    await expect(submitForm).not.toHaveBeenCalled();
+  },
+  render: (args): ReturnType<typeof Button> => (
+    <form
+      onSubmit={(event) => {
+        event.preventDefault();
+        submitForm();
+      }}
+    >
+      <Button {...args} />
+    </form>
+  ),
+  tags: ["!dev", "edge-case"],
+};

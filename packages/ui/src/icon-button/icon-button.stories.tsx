@@ -107,3 +107,36 @@ export const Pending: Story = {
   },
   tags: ["!dev"],
 };
+
+const ICON_NAME = "Arrow";
+
+const LabeledIcon = (): ReactElement => (
+  <svg
+    aria-label={ICON_NAME}
+    fill="none"
+    height="16"
+    role="img"
+    style={{ display: "block" }}
+    viewBox="0 0 24 24"
+    width="16"
+  >
+    <path
+      d="M9 14 4 9l5-5M4 9h10.5a5.5 5.5 0 0 1 0 11H11"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+    />
+  </svg>
+);
+
+export const NameStaysTheLabel: Story = {
+  args: { icon: <LabeledIcon />, pending: true },
+  play: async ({ canvas }): Promise<void> => {
+    const button = canvas.getByRole("button");
+
+    await expect(button).toHaveAccessibleName("Undo");
+    await expect(button).toHaveAttribute("aria-busy", "true");
+  },
+  tags: ["!dev", "edge-case"],
+};

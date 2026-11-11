@@ -1,16 +1,17 @@
-import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect } from "storybook/test";
 
 import { Separator } from "./separator";
 
-const inRow: Decorator = (Story) => (
-  <div className="flex h-8 items-center gap-3">
-    <Story />
-  </div>
-);
+const LABELS = {
+  container: "Container",
+  css: "CSS",
+  html: "HTML",
+  item: "Item",
+} as const;
 
 const meta = {
-  args: { orientation: "horizontal" },
+  args: {},
   argTypes: {
     orientation: {
       control: "select",
@@ -37,15 +38,63 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   parameters: { actions: { disable: false }, controls: { disable: false } },
+  render: (args): ReturnType<typeof Separator> => (
+    <div className="w-64">
+      <Separator {...args} />
+    </div>
+  ),
 };
 
-export const Vertical: Story = {
-  args: { orientation: "vertical" },
-  decorators: [inRow],
+export const Orientations: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "`horizontal` between stacked blocks, `vertical` between items of a row.",
+      },
+    },
+  },
   play: async ({ canvas }): Promise<void> => {
+    const separators = canvas.getAllByRole("separator");
+
+    await expect(separators).toHaveLength(2);
+    await expect(separators[1]).toHaveAttribute("aria-orientation", "vertical");
+  },
+  render: (): ReturnType<typeof Separator> => (
+    <div className="flex w-64 flex-col gap-3 text-control">
+      <span>{LABELS.container}</span>
+      <Separator orientation="horizontal" />
+      <div className="flex h-6 items-center gap-3">
+        <span>{LABELS.css}</span>
+        <Separator orientation="vertical" />
+        <span>{LABELS.html}</span>
+      </div>
+    </div>
+  ),
+};
+
+export const StretchesToItsRow: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A vertical separator takes the height of its row, even when the row centers its items.",
+      },
+    },
+  },
+  play: async ({ canvas, canvasElement }): Promise<void> => {
+    const row = canvasElement.querySelector("[data-row]");
     const separator = canvas.getByRole("separator");
 
-    await expect(separator).toHaveAttribute("aria-orientation", "vertical");
-    await expect(separator).toHaveAttribute("data-orientation", "vertical");
+    await expect(separator.getBoundingClientRect().height).toBe(
+      row?.getBoundingClientRect().height,
+    );
   },
+  render: (): ReturnType<typeof Separator> => (
+    <div className="flex h-12 items-center gap-3 text-control" data-row>
+      <span>{LABELS.item}</span>
+      <Separator orientation="vertical" />
+      <span>{LABELS.item}</span>
+    </div>
+  ),
+  tags: ["edge-case"],
 };

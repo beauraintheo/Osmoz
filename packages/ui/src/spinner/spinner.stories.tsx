@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ReactElement } from "react";
 import { expect } from "storybook/test";
 
+import { Button } from "../button/button.tsx";
 import { Spinner } from "./spinner.tsx";
 
 const SPIN_STYLE = `
@@ -75,4 +76,23 @@ export const WithLabel: Story = {
     await expect(canvas.getByTestId("icon").parentElement).toHaveAttribute("aria-hidden", "true");
   },
   tags: ["!dev"],
+};
+
+const SAVE = "Save";
+
+export const InsideAPendingButton: Story = {
+  play: async ({ canvas }): Promise<void> => {
+    const button = canvas.getByRole("button");
+
+    await expect(button).toHaveAccessibleName(SAVE);
+    await expect(button).toHaveAttribute("aria-busy", "true");
+    await expect(canvas.queryByRole("status")).toBeNull();
+  },
+  render: (args): ReactElement => (
+    <Button pending>
+      <Spinner {...args} />
+      {SAVE}
+    </Button>
+  ),
+  tags: ["!dev", "edge-case"],
 };

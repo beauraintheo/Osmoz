@@ -57,6 +57,22 @@ its click.
 A pending button stays focusable: the focus does not jump away while the
 action runs, and assistive technologies announce it as busy.
 
+## Edge cases
+
+### Pending wins over disabled
+
+`pending` keeps the button busy and focusable, whatever `disabled` and
+`focusableWhenDisabled` say: a running action never leaves the tab order.
+
+<Canvas of={ButtonStories.PendingWinsOverDisabled} />
+
+### Never submits its form
+
+Inside a form, a button without `type` runs its action and leaves the form
+alone, since `type` defaults to `"button"`.
+
+<Canvas of={ButtonStories.NeverSubmitsItsForm} />
+
 ## Keyboard
 
 <Keyboard>

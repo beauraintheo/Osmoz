@@ -48,6 +48,15 @@ and not an unnamed graphic.
 **disabled but focusable** (`focusableWhenDisabled`), documented on its page.
 In every state, the accessible name stays the `label`.
 
+## Edge cases
+
+### The name stays the label
+
+An icon that carries its own name does not change the button's: `label` is
+read, while pending too.
+
+<Canvas of={IconButtonStories.NameStaysTheLabel} />
+
 ## Keyboard
 
 <Keyboard>

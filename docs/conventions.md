@@ -60,7 +60,17 @@ adds `<component>.stories.tsx` next to its `components/ui/<component>.tsx`.
 `/document-component` drafts all three.
 
 👀 **An app's component page is generated from its stories**, never written
-in MDX.
+in MDX. It follows the Osmoz outline: the `Default` story under the import
+from `components/ui/`, then one example per story in the file's order, each
+titled after the story with its `parameters.docs.description.story` as
+sentence, then the stories tagged `edge-case` in their own section, then the
+props the app adds and the meta's `tokens`.
+
+👀 **An app's stories are grouped by look**: one `Variants` story renders
+every variant, one `Sizes` story every size, one `States` story every state,
+each with a `play` test that checks what it renders. Then one story per use
+worth showing, and one per edge case of the look (`tags: ["edge-case"]`), like
+a label too long for its parent: its `play` test proves the look holds.
 
 👀 **Every prop in a story's API table has a description**, never in a code
 comment. A description says what a developer cannot read in the type: when to
@@ -75,13 +85,13 @@ since it shows one fixed state.
 
 👀 **A state story of `@osmoz/ui` stays out of the sidebar** (`tags: ["!dev"]`).
 It still runs its `play` test and shows on the doc page as an example, and its
-attributes are read in the API section. An app's state stories stay in the
-sidebar, since its classes make each state visible.
+attributes are read in the API section. An app's stories stay in the
+sidebar, since its classes make each look visible.
 
 👀 **An Osmoz page follows one outline**, set in
 [getting-started.md](getting-started.md#4-create-a-component): its default
-story and each example show their code, and its API lists the attributes the
-component sets.
+story and each example come with their code, hidden until the reader opens
+it, and its API lists the attributes the component sets.
 
 👀 **A shared component gets its text from the app.** A component of
 `@osmoz/ui` or `@osmoz/brand` writes no user-facing text: it takes it as a
@@ -606,6 +616,10 @@ reviewer:
   app passes it as props, without defaults.
 - Every `@osmoz/ui` component has its stories and doc page, and every app that
   styles it has its stories; a story's `play` checks behavior, never a class.
+- An app's stories are grouped by look (`Variants`, `Sizes`, `States`).
+  Every component has its edge cases (`tags: ["edge-case"]`), each proved by
+  its `play` test: those of its behavior in `@osmoz/ui`, those of its look in
+  each app.
 - A component joins `@osmoz/ui` only if it matches a Base UI component or
   enforces an accessibility guarantee; its Osmoz page follows the outline.
 - Only the first story is interactive; the state stories of `@osmoz/ui` stay

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vite-plus/test";
 
-import { addedProps, argOptions, pageTokens, uiStoryId } from "./page-data";
+import { addedProps, importSnippet, pageStories, pageTokens, uiStoryId } from "./page-data";
 
 const INDEX = {
   entries: {
@@ -89,24 +89,6 @@ describe("addedProps", () => {
   });
 });
 
-describe("argOptions", () => {
-  it("reads the options of a prop, in their order", () => {
-    expect(argOptions({ name: "variant", options: ["ghost", "primary", "secondary"] })).toEqual([
-      "ghost",
-      "primary",
-      "secondary",
-    ]);
-  });
-
-  it("reads no option for a prop without a fixed set of values", () => {
-    expect(argOptions({ name: "children" })).toEqual([]);
-  });
-
-  it("reads no option for a prop the component does not have", () => {
-    expect(argOptions(undefined)).toEqual([]);
-  });
-});
-
 describe("pageTokens", () => {
   it("lists each token the stories declare, with its role", () => {
     expect(
@@ -129,5 +111,62 @@ describe("pageTokens", () => {
 
   it("lists nothing when a role is not a text", () => {
     expect(pageTokens({ tokens: { primary: 1 } })).toEqual([]);
+  });
+});
+
+describe("importSnippet", () => {
+  it("imports the component from the file next to its stories", () => {
+    expect(
+      importSnippet("IconButton", {
+        fileName: "./apps/flex-playground/src/components/ui/icon-button.stories.tsx",
+      }),
+    ).toBe('import { IconButton } from "@/components/ui/icon-button";');
+  });
+
+  it("writes nothing for stories outside an app's src", () => {
+    expect(
+      importSnippet("Button", { fileName: "./packages/ui/button/button.stories.tsx" }),
+    ).toBeUndefined();
+  });
+
+  it("writes nothing without the stories' file name", () => {
+    expect(importSnippet("Button", {})).toBeUndefined();
+  });
+});
+
+describe("pageStories", () => {
+  const story = (name: string, tags: string[] = []): { name: string; tags: string[] } => ({
+    name,
+    tags,
+  });
+
+  it("splits the stories into the sections of the page, in their order", () => {
+    const stories = [
+      story("Default"),
+      story("Variants"),
+      story("Long label", ["edge-case"]),
+      story("Sizes"),
+      story("Narrow parent", ["edge-case"]),
+    ];
+
+    expect(pageStories(stories)).toEqual({
+      default: story("Default"),
+      edgeCases: [story("Long label", ["edge-case"]), story("Narrow parent", ["edge-case"])],
+      examples: [story("Variants"), story("Sizes")],
+    });
+  });
+
+  it("always shows the first story on top, whatever its tags", () => {
+    expect(pageStories([story("Default", ["edge-case"])]).default).toEqual(
+      story("Default", ["edge-case"]),
+    );
+  });
+
+  it("leaves every section empty without stories", () => {
+    expect(pageStories([])).toEqual({
+      default: undefined,
+      edgeCases: [],
+      examples: [],
+    });
   });
 });

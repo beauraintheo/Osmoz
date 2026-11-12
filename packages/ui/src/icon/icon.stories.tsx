@@ -33,7 +33,7 @@ const meta = {
     },
     label: {
       description:
-        "Makes the icon meaningful: role `img`, named by this text. Without it, the icon is decorative and hidden from assistive technologies.",
+        "Makes the icon meaningful: role `img`, named by this text. Without it, or empty, the icon is decorative and hidden from assistive technologies.",
     },
   },
   component: Icon,
@@ -70,4 +70,13 @@ export const WithSvgProps: Story = {
     await expect(canvas.getByTestId("icon")).toHaveAttribute("id", "warning-icon");
   },
   tags: ["!dev"],
+};
+
+export const EmptyLabel: Story = {
+  args: { label: "" },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.queryByRole("img")).toBeNull();
+    await expect(canvas.getByTestId("icon")).toHaveAttribute("aria-hidden", "true");
+  },
+  tags: ["!dev", "edge-case"],
 };

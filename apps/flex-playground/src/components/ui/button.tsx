@@ -6,7 +6,7 @@ import { cn } from "@/lib/cn";
 import { Spinner } from "./spinner";
 
 export const BUTTON_CLASSES =
-  "inline-flex cursor-pointer items-center justify-center border text-control font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-disabled:opacity-45 aria-busy:cursor-progress data-disabled:not-aria-busy:cursor-not-allowed";
+  "inline-flex max-w-full cursor-pointer items-center justify-center border text-center text-control font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-disabled:opacity-45 aria-busy:cursor-progress data-disabled:not-aria-busy:cursor-not-allowed";
 
 export const BUTTON_VARIANT_CLASSES = {
   ghost: "border-transparent bg-transparent not-data-disabled:hover:bg-muted",
@@ -17,8 +17,8 @@ export const BUTTON_VARIANT_CLASSES = {
 
 const SIZE_CLASSES = {
   default:
-    "h-8 gap-2 rounded-md px-3 pointer-coarse:h-11 pointer-coarse:rounded-lg pointer-coarse:px-4",
-  sm: "h-6 gap-1 rounded-md px-1 pointer-coarse:h-9 pointer-coarse:px-3",
+    "min-h-8 gap-2 rounded-md px-3 py-1 pointer-coarse:min-h-11 pointer-coarse:rounded-lg pointer-coarse:px-4",
+  sm: "min-h-6 gap-1 rounded-md px-1 pointer-coarse:min-h-9 pointer-coarse:px-3",
 } as const;
 
 interface ButtonProps extends ComponentProps<typeof BaseButton> {

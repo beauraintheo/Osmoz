@@ -6,7 +6,7 @@ import { Guideline, Guidelines } from "./docs/blocks/guidelines/guidelines";
 import { Key, Keyboard } from "./docs/blocks/keyboard/keyboard";
 import { Token, Tokens } from "./docs/blocks/tokens/tokens";
 import { DocsContainer } from "./docs/docs-container";
-import { showInSnippet } from "./docs/snippet-props";
+import { functionName, showInSnippet } from "./docs/snippet-props";
 import { sectionOf } from "./theme/theme-stores";
 import type { Section } from "./theme/theme-stores";
 import { ThemeSurface } from "./theme/theme-surface";
@@ -44,7 +44,7 @@ const preview: Preview = {
     actions: { disable: true },
     controls: { disable: true },
     docs: {
-      canvas: { sourceState: "shown" },
+      canvas: { sourceState: "hidden" },
       components: {
         Attributes,
         Guideline,
@@ -56,8 +56,9 @@ const preview: Preview = {
       },
       container: DocsContainer,
       page: AppComponentPage,
+      source: { type: "dynamic" },
     },
-    jsx: { filterProps: showInSnippet },
+    jsx: { filterProps: showInSnippet, functionValue: functionName },
     options: {
       storySort: {
         order: [

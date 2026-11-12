@@ -1,17 +1,22 @@
-import { RiArrowGoBackLine } from "@remixicon/react";
+import { RiArrowGoBackLine, RiArrowGoForwardLine, RiDeleteBinLine } from "@remixicon/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { expect, fn } from "storybook/test";
 
 import { IconButton } from "./icon-button";
 
+const LABELS = {
+  delete: "Delete",
+  focusable: "Delete item",
+  pending: "Saving",
+  redo: "Redo",
+  undo: "Undo",
+} as const;
+
 const meta = {
   args: {
     icon: RiArrowGoBackLine,
-    label: "Undo",
+    label: LABELS.undo,
     onClick: fn(),
-    size: "default",
-    type: "button",
-    variant: "ghost",
   },
   argTypes: {
     disabled: {
@@ -65,35 +70,113 @@ export const Default: Story = {
   parameters: { actions: { disable: false }, controls: { disable: false } },
 };
 
-export const Secondary: Story = {
-  args: { variant: "secondary" },
-};
-
-export const Primary: Story = {
-  args: { variant: "primary" },
-};
-
-export const Small: Story = {
-  args: { size: "sm" },
-};
-
-export const Disabled: Story = {
-  args: { disabled: true },
-  tags: ["state"],
-};
-
-export const FocusableWhenDisabled: Story = {
-  args: { disabled: true, focusableWhenDisabled: true },
-  tags: ["state"],
-};
-
-export const Pending: Story = {
-  args: { pending: true },
-  play: async ({ canvas }): Promise<void> => {
-    const button = canvas.getByRole("button", { name: "Undo" });
-
-    await expect(button).toHaveAttribute("aria-busy", "true");
-    await expect(button.querySelectorAll("svg")).toHaveLength(1);
+export const Variants: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The looks of Flux/Button. `ghost`, the default, for a toolbar; `secondary` or `primary` when the action stands alone.",
+      },
+    },
   },
-  tags: ["state"],
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(3);
+  },
+  render: (): ReturnType<typeof IconButton> => (
+    <div className="flex items-center gap-2">
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} variant="ghost" />
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} variant="secondary" />
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} variant="primary" />
+    </div>
+  ),
+};
+
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "The sizes of Flux/Button: square, and larger on a coarse pointer.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(2);
+  },
+  render: (): ReturnType<typeof IconButton> => (
+    <div className="flex items-center gap-2">
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} variant="secondary" />
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} size="sm" variant="secondary" />
+    </div>
+  ),
+};
+
+export const States: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Disabled, disabled but still focusable, and pending: the spinner replaces the icon.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    const pending = canvas.getByRole("button", { name: LABELS.pending });
+
+    await expect(canvas.getByRole("button", { name: LABELS.redo })).toBeDisabled();
+    await expect(canvas.getByRole("button", { name: LABELS.focusable })).toHaveAttribute(
+      "aria-disabled",
+      "true",
+    );
+    await expect(pending).toHaveAttribute("aria-busy", "true");
+    await expect(pending.querySelectorAll("svg")).toHaveLength(1);
+  },
+  render: (): ReturnType<typeof IconButton> => (
+    <div className="flex items-center gap-2">
+      <IconButton disabled icon={RiArrowGoForwardLine} label={LABELS.redo} />
+      <IconButton disabled focusableWhenDisabled icon={RiDeleteBinLine} label={LABELS.focusable} />
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.pending} pending />
+    </div>
+  ),
+};
+
+export const InAToolbar: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: "Ghost icon buttons side by side: the history controls of the playground.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    await expect(canvas.getAllByRole("button")).toHaveLength(3);
+  },
+  render: (): ReturnType<typeof IconButton> => (
+    <div className="flex items-center gap-1">
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} />
+      <IconButton icon={RiArrowGoForwardLine} label={LABELS.redo} />
+      <IconButton icon={RiDeleteBinLine} label={LABELS.delete} />
+    </div>
+  ),
+};
+
+export const StaysSquare: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "In a row that stretches its children, the button keeps its square size instead of growing to the row's height.",
+      },
+    },
+  },
+  play: async ({ canvas }): Promise<void> => {
+    const { height, width } = canvas.getByRole("button").getBoundingClientRect();
+
+    await expect(height).toBe(width);
+  },
+  render: (): ReturnType<typeof IconButton> => (
+    <div className="flex h-16 items-stretch">
+      <IconButton icon={RiArrowGoBackLine} label={LABELS.undo} variant="secondary" />
+    </div>
+  ),
+  tags: ["edge-case"],
 };

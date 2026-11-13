@@ -6,6 +6,7 @@ import type { ThemeVars } from "storybook/theming";
 
 import { docsPath } from "../docs/docs-link";
 import { brandTitle } from "../manager/brand-title";
+import { paintPreview } from "./preview-paint";
 import { THEME_EVENT } from "./theme-event";
 import type { ThemeEvent } from "./theme-event";
 import { THEME_STORES } from "./theme-stores";
@@ -103,6 +104,7 @@ export const ThemeSurface = ({ children, section, variant }: ThemeSurfaceProps):
     };
 
     setTheme(docsTheme(tokens));
+    paintPreview(document.documentElement, tokens);
     addons.getChannel().emit(THEME_EVENT, event);
   }, [look, resolved, section, variant]);
 

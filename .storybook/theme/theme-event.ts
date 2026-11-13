@@ -1,13 +1,12 @@
 import { safeStorage } from "@osmoz/preferences/persist/safe-storage";
 import { z } from "zod/mini";
 
+import { THEME_EVENT_KEY as KEY } from "./preview-paint";
 import { isSection } from "./theme-stores";
 import type { Section } from "./theme-stores";
 import { themeTokensSchema } from "./theme-tokens";
 
 export const THEME_EVENT = "osmoz/theme";
-
-const KEY = "osmoz-storybook:manager-theme";
 
 const themeEventSchema = z.object({
   brandTitle: z.string(),

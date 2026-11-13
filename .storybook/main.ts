@@ -1,6 +1,8 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import remarkGfm from "remark-gfm";
 
+import { previewHead } from "./theme/preview-paint";
+
 const STORY_FILES = "**/*.@(mdx|stories.tsx)";
 
 const config: StorybookConfig = {
@@ -20,6 +22,7 @@ const config: StorybookConfig = {
     disableTelemetry: true,
   },
   framework: "@storybook/react-vite",
+  previewHead,
   stories: [
     {
       directory: "./pages",

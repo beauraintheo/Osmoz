@@ -1,11 +1,10 @@
 import { RiGlobalLine } from "@remixicon/react";
 import type { ReactElement } from "react";
 
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
 import { useLocaleStore } from "@/i18n/use-locale-store";
 import { useMessages } from "@/i18n/use-messages";
-
-import { Button } from "./ui/button";
-import { Icon } from "./ui/icon";
 
 export const LangToggle = (): ReactElement | null => {
   const messages = useMessages();

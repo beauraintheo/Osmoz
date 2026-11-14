@@ -1,28 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
+import { WorkspaceLayout } from "@/components/layout/workspace-layout";
 import { useMessages } from "@/i18n/use-messages";
 
 const Home = (): ReactElement => {
   const messages = useMessages();
 
   return (
-    <div className="flex flex-1 flex-col lg:min-h-0 lg:flex-row">
-      <aside
-        aria-label={messages.playground.controls}
-        className="min-h-48 border-b border-border bg-card lg:min-h-0 lg:w-90 lg:shrink-0 lg:border-r lg:border-b-0"
-      />
-
-      <section
-        aria-label={messages.playground.canvas}
-        className="order-first h-70 shrink-0 border-b border-border lg:order-0 lg:h-auto lg:min-w-0 lg:flex-1 lg:border-b-0"
-      />
-
-      <aside
-        aria-label={messages.playground.code}
-        className="min-h-48 flex-1 border-border bg-card lg:min-h-0 lg:w-100 lg:flex-none lg:shrink-0 lg:border-l"
-      />
-    </div>
+    <WorkspaceLayout
+      canvasLabel={messages.playground.canvas}
+      controlsLabel={messages.playground.controls}
+      panelLabel={messages.playground.code}
+    />
   );
 };
 

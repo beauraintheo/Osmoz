@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 import { defineConfig } from "vite-plus";
 
+import { screenLintOverride } from "./packages/config/src/screen-lint-override.ts";
 import { APPS_DIR, listApps } from "./packages/scripts/src/list-apps.ts";
 
 const APP_THEME_FILE = "src/theme/theme.css";
@@ -92,6 +93,7 @@ export default defineConfig({
           "import/no-named-export": "error",
         },
       },
+      screenLintOverride,
     ],
     plugins: ["typescript", "unicorn", "oxc", "import", "promise", "react"],
     rules: {

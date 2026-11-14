@@ -2,26 +2,28 @@ import { OsmozSignature } from "@osmoz/brand/osmoz-signature";
 import { RiArrowGoBackLine, RiArrowGoForwardLine, RiQuestionLine } from "@remixicon/react";
 import type { ReactElement } from "react";
 
+import { LangToggle } from "@/components/preferences/lang-toggle";
+import { ThemeToggle } from "@/components/preferences/theme-toggle";
+import { Heading } from "@/components/ui/heading";
+import { IconButton } from "@/components/ui/icon-button";
+import { Separator } from "@/components/ui/separator";
+import { Stack } from "@/components/ui/stack";
+import { Text } from "@/components/ui/text";
 import { useMessages } from "@/i18n/use-messages";
-
-import { LangToggle } from "./lang-toggle";
-import { ThemeToggle } from "./theme-toggle";
-import { IconButton } from "./ui/icon-button";
-import { Separator } from "./ui/separator";
 
 export const Header = (): ReactElement => {
   const messages = useMessages();
 
   return (
     <header className="flex h-14 items-center gap-3 border-b border-border bg-card py-2 pr-3 pl-5">
-      <div className="flex items-baseline gap-2">
-        <h1 className="font-mono text-title">{messages.app.name}</h1>
-        <span className="hidden text-control text-muted-foreground lg:inline">
+      <Stack align="baseline" direction="row" gap={2}>
+        <Heading level={1}>{messages.app.name}</Heading>
+        <Text as="span" className="hidden lg:inline" tone="muted" variant="control">
           {messages.app.tagline}
-        </span>
-      </div>
+        </Text>
+      </Stack>
 
-      <div className="ml-auto flex gap-1">
+      <Stack className="ml-auto" direction="row" gap={1}>
         <IconButton
           disabled
           icon={RiArrowGoBackLine}
@@ -34,16 +36,16 @@ export const Header = (): ReactElement => {
           label={messages.header.redo}
           variant="ghost"
         />
-      </div>
+      </Stack>
 
-      <div className="flex gap-1 max-lg:hidden">
+      <Stack className="max-lg:hidden" direction="row" gap={1}>
         <LangToggle />
         <ThemeToggle />
-      </div>
+      </Stack>
 
       <IconButton icon={RiQuestionLine} label={messages.header.help} variant="ghost" />
 
-      <Separator aria-hidden className="h-5 self-center max-lg:hidden" orientation="vertical" />
+      <Separator aria-hidden className="max-lg:hidden" length="inset" orientation="vertical" />
 
       <OsmozSignature label={messages.signature.label} newTabLabel={messages.link.newTab} />
     </header>

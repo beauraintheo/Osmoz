@@ -1,7 +1,7 @@
 import type { StorybookConfig } from "@storybook/react-vite";
 import remarkGfm from "remark-gfm";
 
-import { previewHead } from "./theme/preview-paint";
+import { previewHead } from "./theme/preview-paint.ts";
 
 const STORY_FILES = "**/*.@(mdx|stories.tsx)";
 

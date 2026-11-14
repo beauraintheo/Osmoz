@@ -1,0 +1,70 @@
+import { Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+
+import * as HeadingStories from "./heading.stories";
+
+<Meta of={HeadingStories} />
+
+# Heading
+
+A title whose `level` sets its tag, `<h1>` to `<h6>`. Base UI has no heading:
+the component builds on the native elements, so the page outline that screen
+readers navigate comes from a required prop, never from a tag picked for its
+look.
+
+<Canvas of={HeadingStories.Default} />
+
+## Usage
+
+<Guidelines>
+  <Guideline when="To title a page, a region or a group of content.">
+    One `level={1}` per page, then one level deeper per nested section.
+  </Guideline>
+</Guidelines>
+
+Not every bold text is a heading:
+
+- To emphasize a label or a value: use the app's text component, which does
+  not enter the outline.
+- To make a title look bigger or smaller: change its look in the app, never
+  its `level`.
+
+## Examples
+
+### Levels
+
+`level` goes from `1` to `6` and renders the matching tag, announced as a
+heading of that level.
+
+<Canvas of={HeadingStories.Levels} />
+
+## Keyboard
+
+None: a heading is never focusable. Screen readers jump between headings with
+their own keys.
+
+## Accessibility
+
+- `level` is required, so every heading takes its place in the outline on
+  purpose.
+- Levels are not skipped: an `h2` section holds `h3` titles, not `h4`.
+- The title comes from the app's catalog, as `children`.
+
+## API
+
+### Props
+
+The props of a native `<h1>`, plus `level`:
+
+<Controls of={HeadingStories.Default} />
+
+### Attributes
+
+None: `level` changes the tag, `<h1>` to `<h6>`, and no attribute. An app
+styles the heading from its own props, never from the tag.
+
+### Styling
+
+The component has no class. Each app, in its own `components/ui/heading.tsx`,
+gives it its typography roles, picked by a prop of its own and never derived
+from `level`: two headings of the same level can look different, and two of
+different levels alike.

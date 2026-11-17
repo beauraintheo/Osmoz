@@ -4,9 +4,12 @@ import type { ComponentProps, ReactElement } from "react";
 import { cn } from "@/lib/cn";
 
 import { Spinner } from "./spinner";
+import { TYPOGRAPHY_CLASSES } from "./typography-classes";
 
-export const BUTTON_CLASSES =
-  "inline-flex max-w-full cursor-pointer items-center justify-center border text-center text-control font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-disabled:opacity-45 aria-busy:cursor-progress data-disabled:not-aria-busy:cursor-not-allowed";
+export const BUTTON_CLASSES = cn(
+  TYPOGRAPHY_CLASSES.control,
+  "inline-flex max-w-full cursor-pointer items-center justify-center border text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-busy:cursor-progress data-disabled:opacity-45 data-disabled:not-aria-busy:cursor-not-allowed",
+);
 
 export const BUTTON_VARIANT_CLASSES = {
   ghost: "border-transparent bg-transparent not-data-disabled:hover:bg-muted",

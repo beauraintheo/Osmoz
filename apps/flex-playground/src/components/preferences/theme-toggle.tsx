@@ -1,10 +1,9 @@
 import { RiMoonLine, RiSunLine } from "@remixicon/react";
 import type { ReactElement } from "react";
 
+import { IconButton } from "@/components/ui/icon-button";
 import { useMessages } from "@/i18n/use-messages";
 import { useThemeStore } from "@/theme/use-theme-store";
-
-import { IconButton } from "./ui/icon-button";
 
 export const ThemeToggle = (): ReactElement => {
   const messages = useMessages();

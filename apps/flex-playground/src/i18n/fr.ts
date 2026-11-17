@@ -27,7 +27,7 @@ export const fr = {
     controls: "Contrôles",
   },
   signature: {
-    label: "par Osmoz",
+    label: "Osmoz",
   },
   theme: {
     switchTo: {

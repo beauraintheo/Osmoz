@@ -81,6 +81,10 @@ The component has no class. Each app, in its own
 
 Pick those classes from the prop rather than with
 `data-[orientation=vertical]:` variants: a variant's attribute selector
-outweighs a plain class, so a caller's `className="h-5"` would lose to it. A
-fixed height also needs `self-center`, since `self-stretch` with a set height
-aligns the line to the start.
+outweighs a plain class, so a caller's `className="h-5"` would lose to it.
+
+A short vertical line, centered in its row, is a prop of the app's wrapper
+too, never a caller's `self-center` on top of `self-stretch`: two classes that
+set the same property resolve by their order in Tailwind's stylesheet, not in
+`className`, and `self-stretch` comes last, so the line sticks to the top of
+its row.

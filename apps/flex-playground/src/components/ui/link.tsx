@@ -4,9 +4,11 @@ import type { ComponentProps, ReactElement } from "react";
 
 import { cn } from "@/lib/cn";
 
+import { TYPOGRAPHY_CLASSES } from "./typography-classes";
+
 const VARIANT_CLASSES = {
   inline: "text-primary hover:text-accent-foreground",
-  quiet: "text-control text-muted-foreground hover:text-foreground",
+  quiet: cn(TYPOGRAPHY_CLASSES.control, "text-muted-foreground hover:text-foreground"),
 } as const;
 
 type StyledLinkProps = ComponentProps<typeof BaseLink> & {

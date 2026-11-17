@@ -31,8 +31,30 @@ apps with different identities share the same behavior. A component goes to
 
 👀 **A component belongs to `@osmoz/ui`** when it matches a Base UI component,
 or when it enforces an accessibility guarantee that Base UI leaves to the
-caller, like a required label. Anything else is the app's own component, built
-from `components/ui/`.
+caller, like a required label or a heading level. Anything else is the app's
+own component, built from `components/ui/`.
+
+👀 **No behavior, no `@osmoz/ui`.** A primitive that only lays out or sets
+text, like a stack or a text, has nothing to share but its look: it lives in
+the app's `components/ui/` alone, with its stories, and no counterpart in
+`@osmoz/ui`.
+
+**Screens are assembled from components, on three levels:**
+
+| Level      | Folder                    | Holds                                                                                                            |
+| ---------- | ------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Primitives | `components/ui/`          | Layout and text, and the styled `@osmoz/ui` components. Props closed on the app's scales: a role, a step, a tone |
+| Patterns   | `components/`             | An assembly that has a name on the mockups. It writes classes, the responsive layout included                    |
+| Screens    | `features/` and `routes/` | Components only                                                                                                  |
+
+- 🔒 A screen writes no `className` nor `style`, and no layout or text
+  element (`div`, `span`, `p`, `h1`…, `section`, `ul`…): it uses a primitive
+  or a pattern instead. A visual decision then lives in one component, and a
+  change to it applies everywhere.
+- 👀 A primitive takes no responsive prop: what changes with the screen
+  width is a pattern.
+- 👀 A component of `components/ui/` sets its own typography: its children
+  are content, never a text primitive.
 
 👀 **Base UI first, native otherwise.** An `@osmoz/ui` component wraps the
 [Base UI](https://base-ui.com) component that matches it, which brings its
@@ -332,11 +354,13 @@ name is allowed only for a real role, like `--font-display`.
 label, code) gets a named role in the app's `@theme`: `--text-<role>` with its
 `--line-height`, and its `--letter-spacing` and `--font-weight` when the role
 sets them. A component writes `text-title`, never a raw `text-lg font-semibold
-tracking-tight` combination for a role. The font family stays its own class
-(`font-mono`), and a role name never repeats a color name, so `text-<role>`
-stays a size. No `@apply`, no class constants in JS: a component for a role
-only when it also carries an element and behavior, like a `<Label>` tied to
-its field.
+tracking-tight` combination for a role. A role name never repeats a color
+name, so `text-<role>` stays a size. No `@apply`.
+
+👀 **A role's font family is set once**, in the app's `components/ui/`, next
+to the role's class: Tailwind's `@theme` cannot attach a family to a role.
+The app's text and heading primitives read that single map, so a screen
+never writes `font-mono`.
 
 👀 **No arbitrary value** in a component: no `p-[13px]`, no `bg-[#fff]`.
 
@@ -621,7 +645,11 @@ reviewer:
   its `play` test: those of its behavior in `@osmoz/ui`, those of its look in
   each app.
 - A component joins `@osmoz/ui` only if it matches a Base UI component or
-  enforces an accessibility guarantee; its Osmoz page follows the outline.
+  enforces an accessibility guarantee; its Osmoz page follows the outline. A
+  primitive without behavior stays in the app.
+- Three levels: primitives in `components/ui/`, patterns in `components/`,
+  screens in `features/` and `routes/`. No responsive prop on a primitive,
+  no text primitive inside a component of `components/ui/`.
 - Only the first story is interactive; the state stories of `@osmoz/ui` stay
   out of the sidebar.
 - One concern per file, named after its main export, no category suffix.

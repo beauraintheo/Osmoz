@@ -28,8 +28,9 @@ and why is in [spec.md](spec.md).
 ```
 src/
   routes/       TanStack Router file routes; thin, they only compose features
+                and components, with no class and no layout element
   features/     one folder per mode, its UI and logic: playground/, docs/,
-                exercises/
+                exercises/; screens, assembled from components like routes
   domain/       Flexbox knowledge shared by every mode; plain TypeScript
     length/          parsing and normalizing a typed length
     property-kinds/  one helper per kind of property, and what the kinds
@@ -37,11 +38,20 @@ src/
     properties/      the Flexbox properties, built with those kinds: the
                      container and item lists, their MDN links
     layout/          the layout state, its schema and its transitions
-  components/   shared UI with no domain knowledge, built from components/ui
+  components/   patterns: shared UI with no domain knowledge, built from
+                components/ui, holding the classes and the responsive
+                layout of the screens; one folder per family, named after
+                what its components do, never after a kind of file
+    layout/     the regions of the screen: the shell, the top bar, the
+                workspace columns
+    preferences/ the visitor's settings: language and theme
     ui/         Flux's design system: one styled version per @osmoz/ui
-                component with its stories, and nothing that knows the
-                app; introduction.mdx, the Flux section's entry page in
-                the Storybook, is the one file that describes Flux
+                component, and the layout and text primitives with no
+                @osmoz/ui counterpart, each with its stories, and nothing
+                that knows the app; typography-classes.ts maps each
+                typography role to its classes, font family included;
+                introduction.mdx, the Flux section's entry page in the
+                Storybook, is the one file that describes Flux
   lib/          pure utilities with no domain knowledge, cn.ts included
   theme/        the app's theme: theme.css, its font faces (fonts.css),
                 its themes (theme-options.ts) and the theme store
@@ -79,20 +89,22 @@ file.
 
 ## Where a file goes
 
-| Kind of file                 | Folder                   | Example                   |
-| ---------------------------- | ------------------------ | ------------------------- |
-| Page                         | `routes/`                | `home.tsx`                |
-| Mode component               | `features/<feature>/`    | `flex-container-view.tsx` |
-| Mode logic or state          | `features/<feature>/`    | `use-history.ts`          |
-| Length parsing               | `domain/length/`         | `parse-length.ts`         |
-| Kind of property             | `domain/property-kinds/` | `keyword-property.ts`     |
-| Property descriptions        | `domain/properties/`     | `container-properties.ts` |
-| Layout state and its schema  | `domain/layout/`         | `layout-state.ts`         |
-| Code generation              | `domain/`                | `to-css.ts`               |
-| Styled `@osmoz/ui` component | `components/ui/`         | `button.tsx`              |
-| Other shared UI component    | `components/`            | `lang-toggle.tsx`         |
-| Pure utility                 | `lib/`                   | `cn.ts`                   |
-| Message catalog              | `i18n/`                  | `fr.ts`                   |
+| Kind of file                 | Folder                    | Example                   |
+| ---------------------------- | ------------------------- | ------------------------- |
+| Page                         | `routes/`                 | `home.tsx`                |
+| Mode component               | `features/<feature>/`     | `flex-container-view.tsx` |
+| Mode logic or state          | `features/<feature>/`     | `use-history.ts`          |
+| Length parsing               | `domain/length/`          | `parse-length.ts`         |
+| Kind of property             | `domain/property-kinds/`  | `keyword-property.ts`     |
+| Property descriptions        | `domain/properties/`      | `container-properties.ts` |
+| Layout state and its schema  | `domain/layout/`          | `layout-state.ts`         |
+| Code generation              | `domain/`                 | `to-css.ts`               |
+| Styled `@osmoz/ui` component | `components/ui/`          | `button.tsx`              |
+| Layout or text primitive     | `components/ui/`          | `stack.tsx`               |
+| Region of the screen         | `components/layout/`      | `workspace-layout.tsx`    |
+| Visitor setting              | `components/preferences/` | `lang-toggle.tsx`         |
+| Pure utility                 | `lib/`                    | `cn.ts`                   |
+| Message catalog              | `i18n/`                   | `fr.ts`                   |
 
 Properties are described in lists, one file per target (container, item).
 Each entry is built by the helper of its kind (`<kind>Property`), which
@@ -121,8 +133,9 @@ messages, not domain data. MDN links are derived from the property's name
   component is sized for the mouse (32 px controls, 24 px small ones) and
   grows with `pointer-coarse:` (44 px, 36 px small). The `lg:` breakpoint
   only changes the layout.
-- Fonts: Geist for the interface, Geist Mono for code, with system fallback
-  stacks. Only `--font-sans` and `--font-mono` change in `@theme`.
+- Fonts: Geist for the interface, Geist Mono for code and titles, with
+  system fallback stacks. Only `--font-sans` and `--font-mono` change in
+  `@theme`; each role's family is set in `components/ui/typography-classes.ts`.
 - Font loading: `fonts.css`, imported by `theme.css`, declares the latin and
   latin-ext faces of both fonts from Fontsource's files, with
   `font-display: optional`: a font is used only if it is ready for the first

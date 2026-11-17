@@ -29,7 +29,7 @@ export const en = {
     controls: "Controls",
   },
   signature: {
-    label: "by Osmoz",
+    label: "Osmoz",
   },
   theme: {
     switchTo: {

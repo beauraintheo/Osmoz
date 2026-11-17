@@ -18,7 +18,7 @@ describe("emptyMessages", () => {
       emptyMessages({
         header: {
           menu: { close: "" },
-          signature: "by Osmoz",
+          signature: "Osmoz",
           tagline: "  ",
         },
         title: "",

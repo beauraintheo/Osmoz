@@ -51,16 +51,18 @@ export const Variants: Story = {
     docs: {
       description: {
         story:
-          "`title`, the default, and `label` in Geist Mono; `overline` in Geist capitals, above a group of controls.",
+          "`title`, the default, in Bricolage Grotesque; `label` in Geist Mono; `overline` in Geist capitals, above a group of controls.",
       },
     },
   },
   play: async ({ canvas }): Promise<void> => {
     const title = canvas.getByRole("heading", { name: LABELS.title });
     const overline = canvas.getByRole("heading", { name: LABELS.overline });
+    const label = canvas.getByRole("heading", { name: LABELS.label });
 
-    await expect(getComputedStyle(title).fontFamily).toMatch(/Mono/);
-    await expect(getComputedStyle(overline).fontFamily).not.toMatch(/Mono/);
+    await expect(getComputedStyle(title).fontFamily).toMatch(/Bricolage Grotesque/);
+    await expect(getComputedStyle(label).fontFamily).toMatch(/Mono/);
+    await expect(getComputedStyle(overline).fontFamily).not.toMatch(/Mono|Bricolage/);
   },
   render: (): ReactElement => (
     <Stack gap={2}>

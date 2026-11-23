@@ -151,7 +151,9 @@ screen:
   announced to screen readers.
 - The O takes the app's accent and the cloud the Osmoz cloud color, through
   the theme tokens `--osmoz-o` and `--osmoz-cloud`, with the values of the
-  table below; the text takes the app's muted foreground token.
+  table below; the text takes the app's muted foreground token. An app that
+  derives its accent from a variable, like a hue the visitor can change,
+  keeps `--osmoz-o` pointing at that accent, so the O always follows it.
 - The signature is one component for every app,
   `@osmoz/brand/osmoz-signature`: the `@osmoz/ui` link around the symbol, with
   its look fixed here. The app passes its texts (`label`, `newTabLabel`) and,

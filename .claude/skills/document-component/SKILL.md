@@ -10,7 +10,7 @@ Input: `$ARGUMENTS`, the folder name of a component in `packages/ui/src/`, like 
 
 Read first, and follow strictly: the "Architecture", "Texts and languages", "Accessibility" and "Tests" sections of `docs/conventions.md`, and "Create a component" in `docs/getting-started.md`. This skill only describes the process.
 
-The reference is what already exists: `packages/ui/src/button/button.stories.tsx`, `packages/ui/src/button/button.mdx`, `apps/flex-playground/src/components/ui/button.stories.tsx`, and `.storybook/`. Match their shape, naming and density. Never write a comment in a story.
+The reference is what already exists: `packages/ui/src/button/button.stories.tsx`, `packages/ui/src/button/button.mdx`, `apps/osmoz-css/src/components/ui/button.stories.tsx`, and `.storybook/`. Match their shape, naming and density. Never write a comment in a story.
 
 ## 1. Check the ground
 

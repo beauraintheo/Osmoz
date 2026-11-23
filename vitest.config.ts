@@ -6,9 +6,9 @@ import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vite-plus";
 import type { BrowserConfigOptions } from "vite-plus/test/node";
 
-const flux = defineAppConfig({
+const osmozCss = defineAppConfig({
   reactCompiler: false,
-  root: join(import.meta.dirname, "apps/flex-playground"),
+  root: join(import.meta.dirname, "apps/osmoz-css"),
 });
 
 const chromium = (): BrowserConfigOptions => ({
@@ -37,8 +37,8 @@ export default defineConfig({
     projects: [
       {
         optimizeDeps: prebundled,
-        plugins: [flux.plugins, storybookTest({ configDir: ".storybook" })],
-        resolve: flux.resolve,
+        plugins: [osmozCss.plugins, storybookTest({ configDir: ".storybook" })],
+        resolve: osmozCss.resolve,
         test: { browser: chromium(), name: "stories" },
       },
       {

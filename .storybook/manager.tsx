@@ -38,7 +38,10 @@ const STORYBOOK_TOOLS = [
   "open-in-editor",
 ];
 
-const SECTION_NAMES: Readonly<Record<Section, string>> = { flux: "Flux", osmoz: "Osmoz" };
+const SECTION_NAMES: Readonly<Record<Section, string>> = {
+  osmoz: "Osmoz",
+  "osmoz-css": "osmoz.css",
+};
 
 const THEME_NAMES = { dark: "Dark", light: "Light" } as const;
 

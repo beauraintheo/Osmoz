@@ -350,7 +350,7 @@ importers:
         specifier: 'catalog:'
         version: 4.6.7
 
-  apps/flex-playground:
+  apps/osmoz-css:
     dependencies:
       '@fontsource-variable/geist':
         specifier: 'catalog:'

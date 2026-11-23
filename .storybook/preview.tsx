@@ -17,8 +17,8 @@ import "./docs/demo/demo.css";
 type ViewMode = "docs" | "story";
 
 const STORY_SURFACES: Readonly<Record<Section, Readonly<Record<ViewMode, Variant | undefined>>>> = {
-  flux: { docs: "block", story: "canvas" },
   osmoz: { docs: undefined, story: "bare" },
+  "osmoz-css": { docs: "block", story: "canvas" },
 };
 
 const withThemeSurface: Decorator = (Story, { parameters, viewMode }) => {
@@ -72,7 +72,7 @@ const preview: Preview = {
             "Feedback",
             "Display",
           ],
-          "Flux",
+          "osmoz.css",
           ["Introduction", "Actions", "Navigation", "Feedback", "Display"],
         ],
       },

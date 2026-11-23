@@ -6,7 +6,7 @@ export const TYPOGRAPHY_CLASSES = {
   label: "font-mono text-label",
   overline: "font-sans text-overline uppercase",
   tile: "font-sans text-tile",
-  title: "font-mono text-title",
+  title: "font-display text-title",
 } as const;
 
 export type TypographyRole = keyof typeof TYPOGRAPHY_CLASSES;

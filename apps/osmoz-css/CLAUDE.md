@@ -8,7 +8,7 @@ code (`src/tools/<tool>/spec.md`).
 
 ## Stack
 
-- Fontsource (Geist, Geist Mono): bundles the fonts with the app, no
+- Fontsource (Geist, Geist Mono, Bricolage Grotesque): bundles the fonts with the app, no
   third-party request.
 - Zod: validates a tool's state at its boundaries (browser storage, URLs).
   Its schema is derived from the tool's property descriptions, never written
@@ -139,6 +139,11 @@ name (`mdn-url.ts`), not stored.
 - Tokens: the contract's aliases, the roles beyond the contract and the
   typography roles are declared in `theme.css`, the single source. A role
   keeps the same size on every screen.
+- Accent: `primary`, `primary-foreground` (light), `accent` and
+  `accent-foreground` derive from one hue, `--primary-hue` (215), each with
+  its own lightness and chroma; `ring` and `--osmoz-o` point at `primary`.
+  The contrasts of the mockups hold at 215; any other hue offered to the
+  visitor must be checked against them.
 - Osmoz mark: the O is `primary`, `#00778D` in light (4.84:1) and `#56D2DF`
   in dark (9.73:1) on the reference grounds (docs/brand.md).
 - 4 px grid: spacing, sizes (heights, widths, icons) and line heights are
@@ -148,16 +153,18 @@ name (`mdn-url.ts`), not stored.
   component is sized for the mouse (32 px controls, 24 px small ones) and
   grows with `pointer-coarse:` (44 px, 36 px small). The `lg:` breakpoint
   only changes the layout.
-- Fonts: Geist for the interface, Geist Mono for code and titles, with
-  system fallback stacks. Only `--font-sans` and `--font-mono` change in
-  `@theme`; each role's family is set in `components/ui/typography-classes.ts`.
+- Fonts: Geist for the interface, Geist Mono for code and labels, Bricolage
+  Grotesque for titles, with system fallback stacks. `--font-sans` and
+  `--font-mono` change in `@theme`, and `--font-display` is added for the
+  titles; each role's family is set in `components/ui/typography-classes.ts`.
 - Font loading: `fonts.css`, imported by `theme.css`, declares the latin and
-  latin-ext faces of both fonts from Fontsource's files, with
+  latin-ext faces of each font from Fontsource's files (Bricolage Grotesque's
+  with its optical size axis), with
   `font-display: optional`: a font is used only if it is ready for the first
   paint, otherwise the system stack stays for the visit, so text never
   reflows. Fontsource's own CSS is not imported, since it forces `swap`; its
   `unicode-range` values are copied and must be checked when Fontsource is
-  updated. `index.html` preloads both latin files so they are usually ready;
+  updated. `index.html` preloads the latin files so they are usually ready;
   Vite rewrites the links to the hashed files the CSS requests.
 
 ## Languages

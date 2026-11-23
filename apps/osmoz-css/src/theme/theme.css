@@ -10,6 +10,7 @@
   --font-mono:
     "Geist Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
 
   --text-title: 1.125rem;
   --text-title--line-height: 1.5rem;
@@ -60,6 +61,7 @@
   --secondary-foreground: var(--foreground);
   --ring: var(--primary);
   --osmoz-o: var(--primary);
+  --primary-hue: 215;
 }
 
 :root,
@@ -68,12 +70,12 @@
   --background: oklch(0.985 0.004 285);
   --foreground: oklch(0.24 0.035 285);
   --card: oklch(1 0 0);
-  --primary: oklch(0.52 0.1 215);
-  --primary-foreground: oklch(0.99 0.003 215);
+  --primary: oklch(0.52 0.1 var(--primary-hue));
+  --primary-foreground: oklch(0.99 0.003 var(--primary-hue));
   --muted: oklch(0.955 0.007 285);
   --muted-foreground: oklch(0.5 0.025 285);
-  --accent: oklch(0.955 0.025 210);
-  --accent-foreground: oklch(0.4 0.08 215);
+  --accent: oklch(0.955 0.025 calc(var(--primary-hue) - 5));
+  --accent-foreground: oklch(0.4 0.08 var(--primary-hue));
   --destructive: oklch(0.54 0.19 25);
   --destructive-foreground: oklch(1 0 0);
   --border: oklch(0.905 0.009 285);
@@ -92,12 +94,12 @@
   --background: oklch(0.185 0.035 275);
   --foreground: oklch(0.95 0.012 285);
   --card: oklch(0.225 0.037 275);
-  --primary: oklch(0.8 0.11 205);
+  --primary: oklch(0.8 0.11 calc(var(--primary-hue) - 10));
   --primary-foreground: oklch(0.2 0.04 260);
   --muted: oklch(0.26 0.035 275);
   --muted-foreground: oklch(0.74 0.025 280);
-  --accent: oklch(0.3 0.05 215);
-  --accent-foreground: oklch(0.88 0.08 205);
+  --accent: oklch(0.3 0.05 var(--primary-hue));
+  --accent-foreground: oklch(0.88 0.08 calc(var(--primary-hue) - 10));
   --destructive: oklch(0.7 0.17 22);
   --destructive-foreground: oklch(0.185 0.035 275);
   --border: oklch(0.32 0.035 275);

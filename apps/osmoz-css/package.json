@@ -12,6 +12,7 @@
     "validate": "vp run check-types && vp run test:coverage"
   },
   "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "catalog:",
     "@fontsource-variable/geist": "catalog:",
     "@fontsource-variable/geist-mono": "catalog:",
     "@osmoz/brand": "workspace:*",

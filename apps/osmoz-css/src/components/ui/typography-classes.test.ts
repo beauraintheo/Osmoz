@@ -15,7 +15,11 @@ const byName = (a: string, b: string): number => a.localeCompare(b);
 const rolesOf = (source: string, pattern: RegExp): string[] =>
   [...source.matchAll(pattern)].flatMap(([, role]) => (role === undefined ? [] : [role]));
 
-const MONO_ROLES = rolesOf(introduction, /<Token name="text-([a-z]+)">[^<]*`font-mono`/g);
+const FAMILIES = new Map(
+  [...introduction.matchAll(/<Token name="text-([a-z]+)">[^<]*`(font-[a-z]+)`/g)].map(
+    ([, role, family]) => [role, family],
+  ),
+);
 
 describe("TYPOGRAPHY_CLASSES", () => {
   it.each(ROLES)("gives %s its own size class", (role, classes) => {
@@ -25,7 +29,7 @@ describe("TYPOGRAPHY_CLASSES", () => {
   it.each(ROLES)(
     "sets the font family of %s as the osmoz.css introduction says",
     (role, classes) => {
-      expect(classes).toContain(MONO_ROLES.includes(role) ? "font-mono" : "font-sans");
+      expect(classes.split(" ")).toContain(FAMILIES.get(role) ?? "font-sans");
     },
   );
 

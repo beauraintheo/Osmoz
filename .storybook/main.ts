@@ -17,7 +17,7 @@ const config: StorybookConfig = {
   core: {
     builder: {
       name: "@storybook/builder-vite",
-      options: { viteConfigPath: "apps/flex-playground/vite.config.ts" },
+      options: { viteConfigPath: "apps/osmoz-css/vite.config.ts" },
     },
     disableTelemetry: true,
   },
@@ -35,9 +35,9 @@ const config: StorybookConfig = {
       titlePrefix: "Osmoz",
     },
     {
-      directory: "../apps/flex-playground/src/components/ui",
+      directory: "../apps/osmoz-css/src/components/ui",
       files: STORY_FILES,
-      titlePrefix: "Flux",
+      titlePrefix: "osmoz.css",
     },
   ],
 };

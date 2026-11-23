@@ -15,9 +15,9 @@ is careful and the author worth contacting.
 ## Product Purpose
 
 Osmoz is Théo Beaurain's personal brand: the umbrella of his projects, a
-portfolio and front-end tools such as an interactive Flexbox reference (Flux)
-and a Grid playground. Success is a visitor who recognizes the same author
-behind every app and leaves convinced of his craft.
+portfolio and front-end tools gathered in osmoz.css, such as an interactive
+Flexbox reference and a Grid playground. Success is a visitor who recognizes
+the same author behind every app and leaves convinced of his craft.
 
 ## Positioning
 
@@ -47,7 +47,7 @@ rather than read about it.
 ## Evidence on Hand
 
 - No logo, favicon or brand asset exists yet.
-- `apps/flex-playground/spec.md` describes Flux, the first app.
+- `apps/osmoz-css/src/tools/flexbox/spec.md` describes Flexbox, the first tool of osmoz.css.
 - No portfolio content, client work or testimonial is in the repository; none
   may be invented.
 

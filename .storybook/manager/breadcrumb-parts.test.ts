@@ -4,7 +4,10 @@ import { breadcrumbParts } from "./breadcrumb-parts";
 
 describe("breadcrumbParts", () => {
   it("splits a title into its section and the current page", () => {
-    expect(breadcrumbParts("Flux/Button")).toEqual({ current: "Button", parents: ["Flux"] });
+    expect(breadcrumbParts("osmoz.css/Button")).toEqual({
+      current: "Button",
+      parents: ["osmoz.css"],
+    });
   });
 
   it("keeps a title without section as the current page", () => {

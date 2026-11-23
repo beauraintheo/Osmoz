@@ -4,20 +4,20 @@ import { isSection, sectionOf, sectionOfEntry, THEME_STORES } from "./theme-stor
 
 describe("THEME_STORES", () => {
   afterEach(() => {
-    THEME_STORES.flux.getState().setPreference("system");
+    THEME_STORES["osmoz-css"].getState().setPreference("system");
     THEME_STORES.osmoz.getState().setPreference("system");
   });
 
   it("offers each section the themes of its app", () => {
-    expect(THEME_STORES.flux.getState().themes).toEqual(["light", "dark"]);
+    expect(THEME_STORES["osmoz-css"].getState().themes).toEqual(["light", "dark"]);
     expect(THEME_STORES.osmoz.getState().themes).toEqual(["light", "dark"]);
   });
 
   it("keeps one choice per section", () => {
-    THEME_STORES.flux.getState().setPreference("dark");
+    THEME_STORES["osmoz-css"].getState().setPreference("dark");
 
-    expect(THEME_STORES.flux.getState().resolved).toBe("dark");
-    expect(localStorage.getItem("osmoz-storybook:flux:theme")).toContain("dark");
+    expect(THEME_STORES["osmoz-css"].getState().resolved).toBe("dark");
+    expect(localStorage.getItem("osmoz-storybook:osmoz-css:theme")).toContain("dark");
     expect(THEME_STORES.osmoz.getState().preference).toBe("system");
   });
 
@@ -34,7 +34,7 @@ describe("THEME_STORES", () => {
 
 describe("isSection", () => {
   it("accepts a section", () => {
-    expect(isSection("flux")).toBe(true);
+    expect(isSection("osmoz-css")).toBe(true);
   });
 
   it("rejects anything else", () => {
@@ -45,7 +45,7 @@ describe("isSection", () => {
 
 describe("sectionOf", () => {
   it("returns the section of an app", () => {
-    expect(sectionOf("flux")).toBe("flux");
+    expect(sectionOf("osmoz-css")).toBe("osmoz-css");
   });
 
   it("falls back to Osmoz without an app", () => {
@@ -54,8 +54,8 @@ describe("sectionOf", () => {
 });
 
 describe("sectionOfEntry", () => {
-  it("returns the section named by the entry's id", () => {
-    expect(sectionOfEntry("flux-introduction--docs")).toBe("flux");
+  it("returns the longest section named by the entry's id", () => {
+    expect(sectionOfEntry("osmoz-css-introduction--docs")).toBe("osmoz-css");
   });
 
   it("returns Osmoz for its components", () => {
@@ -64,7 +64,7 @@ describe("sectionOfEntry", () => {
 
   it("falls back to Osmoz for an unknown section or without an id", () => {
     expect(sectionOfEntry("unknown-page--docs")).toBe("osmoz");
-    expect(sectionOfEntry("fluxy-page--docs")).toBe("osmoz");
+    expect(sectionOfEntry("osmoz-cssy-page--docs")).toBe("osmoz");
     expect(sectionOfEntry(null)).toBe("osmoz");
   });
 });

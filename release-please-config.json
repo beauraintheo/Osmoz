@@ -6,7 +6,7 @@
   "separate-pull-requests": true,
   "plugins": [{ "type": "node-workspace", "merge": false }],
   "packages": {
-    "apps/flex-playground": {},
+    "apps/osmoz-css": {},
     "packages/brand": {},
     "packages/config": {},
     "packages/preferences": {},

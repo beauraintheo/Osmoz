@@ -14,7 +14,7 @@ import type { Section } from "./theme-stores";
 import { docsTheme, readThemeTokens } from "./theme-tokens";
 import type { FontTokens } from "./theme-tokens";
 
-import fluxTheme from "../../apps/flex-playground/src/theme/theme.css?inline";
+import osmozCssTheme from "../../apps/osmoz-css/src/theme/theme.css?inline";
 import osmozTheme from "@osmoz/brand/osmoz-theme.css?inline";
 
 interface SectionLook {
@@ -26,17 +26,6 @@ interface SectionLook {
 }
 
 const SECTION_LOOKS: Readonly<Record<Section, SectionLook>> = {
-  flux: {
-    brand: brandTitle({
-      mono: true,
-      name: "Flux",
-      tagline: "Design system",
-    }),
-    brandUrl: `./${docsPath("flux-introduction")}`,
-    fonts: { code: "font-mono", text: "font-sans" },
-    style: fluxTheme,
-    themeName: (theme) => theme,
-  },
   osmoz: {
     brand: brandTitle({
       mono: false,
@@ -47,6 +36,17 @@ const SECTION_LOOKS: Readonly<Record<Section, SectionLook>> = {
     fonts: { code: "osmoz-font-mono", text: "osmoz-font-sans" },
     style: osmozTheme,
     themeName: (theme) => `osmoz-${theme}`,
+  },
+  "osmoz-css": {
+    brand: brandTitle({
+      mono: true,
+      name: "osmoz.css",
+      tagline: "Design system",
+    }),
+    brandUrl: `./${docsPath("osmoz-css-introduction")}`,
+    fonts: { code: "font-mono", text: "font-sans" },
+    style: osmozCssTheme,
+    themeName: (theme) => theme,
   },
 };
 

@@ -7,8 +7,8 @@ const KEY = "osmoz-storybook:manager-theme";
 
 const EVENT: ThemeEvent = {
   brandTitle: "<span>Osmoz</span>",
-  brandUrl: "./?path=/docs/flux-introduction--docs",
-  section: "flux",
+  brandUrl: "./?path=/docs/osmoz-css-introduction--docs",
+  section: "osmoz-css",
   tokens: {
     accent: "#252b5e",
     accentForeground: "#ede8ff",
@@ -42,7 +42,7 @@ describe("readThemeEvent", () => {
   });
 
   it("rejects missing tokens", () => {
-    expect(readThemeEvent({ section: "flux" })).toBeUndefined();
+    expect(readThemeEvent({ section: "osmoz-css" })).toBeUndefined();
   });
 });
 
@@ -68,7 +68,7 @@ describe("theme event cache", () => {
   });
 
   it("ignores a stored value that is not a theme", () => {
-    localStorage.setItem(KEY, JSON.stringify({ section: "flux" }));
+    localStorage.setItem(KEY, JSON.stringify({ section: "osmoz-css" }));
 
     expect(restoreThemeEvent()).toBeUndefined();
   });

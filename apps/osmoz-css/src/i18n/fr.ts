@@ -1,0 +1,38 @@
+export const fr = {
+  app: {
+    name: "osmoz.css",
+    tagline: "Flexbox, en direct",
+  },
+  header: {
+    help: "Aide",
+    redo: "Rétablir",
+    undo: "Annuler",
+  },
+  language: {
+    short: {
+      en: "EN",
+      fr: "FR",
+    },
+    switchTo: {
+      en: "Passer en anglais (EN)",
+      fr: "Passer en français (FR)",
+    },
+  },
+  link: {
+    newTab: "(nouvel onglet)",
+  },
+  playground: {
+    canvas: "Canvas",
+    code: "Code généré",
+    controls: "Contrôles",
+  },
+  signature: {
+    label: "Osmoz",
+  },
+  theme: {
+    switchTo: {
+      dark: "Passer au thème sombre",
+      light: "Passer au thème clair",
+    },
+  },
+};

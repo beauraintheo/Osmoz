@@ -137,8 +137,8 @@ One author, many identities: an app shares the signature, nothing else.
 
 ## App name and signature
 
-The app's own name comes first, in the app's own type: Flux is Flux, not Osmoz
-Flux.
+The app's own name comes first, in the app's own type: osmoz.css is osmoz.css,
+not Osmoz osmoz.css.
 
 The Osmoz signature sits in the header, next to the app name, on every
 screen:

@@ -4,11 +4,6 @@ import { addedProps, importSnippet, pageStories, pageTokens, uiStoryId } from ".
 
 const INDEX = {
   entries: {
-    "flux-button--primary": {
-      id: "flux-button--primary",
-      title: "Flux/Button",
-      type: "story",
-    },
     "osmoz-button--default": {
       id: "osmoz-button--default",
       title: "Osmoz/Button",
@@ -18,6 +13,11 @@ const INDEX = {
       id: "osmoz-button--docs",
       title: "Osmoz/Button",
       type: "docs",
+    },
+    "osmoz-css-button--primary": {
+      id: "osmoz-css-button--primary",
+      title: "osmoz.css/Button",
+      type: "story",
     },
   },
   v: 5,
@@ -41,14 +41,14 @@ describe("uiStoryId", () => {
   it("finds the Osmoz component inside its group", () => {
     const grouped = {
       entries: {
-        "flux-actions-button--primary": {
-          id: "flux-actions-button--primary",
-          title: "Flux/Actions/Button",
-          type: "story",
-        },
         "osmoz-actions-button--default": {
           id: "osmoz-actions-button--default",
           title: "Osmoz/Actions/Button",
+          type: "story",
+        },
+        "osmoz-css-actions-button--primary": {
+          id: "osmoz-css-actions-button--primary",
+          title: "osmoz.css/Actions/Button",
           type: "story",
         },
       },
@@ -93,7 +93,7 @@ describe("pageTokens", () => {
   it("lists each token the stories declare, with its role", () => {
     expect(
       pageTokens({
-        app: "flux",
+        app: "osmoz-css",
         tokens: {
           input: "Border of a secondary action.",
           primary: "Background of the main action.",
@@ -106,7 +106,7 @@ describe("pageTokens", () => {
   });
 
   it("lists nothing when the stories declare no token", () => {
-    expect(pageTokens({ app: "flux" })).toEqual([]);
+    expect(pageTokens({ app: "osmoz-css" })).toEqual([]);
   });
 
   it("lists nothing when a role is not a text", () => {
@@ -118,7 +118,7 @@ describe("importSnippet", () => {
   it("imports the component from the file next to its stories", () => {
     expect(
       importSnippet("IconButton", {
-        fileName: "./apps/flex-playground/src/components/ui/icon-button.stories.tsx",
+        fileName: "./apps/osmoz-css/src/components/ui/icon-button.stories.tsx",
       }),
     ).toBe('import { IconButton } from "@/components/ui/icon-button";');
   });
